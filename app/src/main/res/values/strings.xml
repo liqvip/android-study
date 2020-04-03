@@ -7,4 +7,6 @@
     <string name="comm_service">可通讯服务</string>
     <string name="bind_service">绑定服务</string>
     <string name="unbind_service">解绑服务</string>
+    <string name="service_content_title">MyServcie</string>
+    <string name="service_content">点击我可以进入到MainActivity</string>
 </resources>
