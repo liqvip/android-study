@@ -1,25 +1,23 @@
 package cn.blogss.android_study.service;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import cn.blogss.android_study.R;
+import cn.blogss.android_study.base.BaseActivity;
 
 /**
  *  类关系:Activity->Binder<->Service
  * */
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class ServiceActivity extends BaseActivity implements View.OnClickListener {
     private Button btnStartSer,btnStopSer,btnBindSer,btnUnbindSer;
 
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "ServiceActivity";
 
     public MyService.MyBinder mBinder;
 
@@ -44,15 +42,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     };
 
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        findView();
+    public int getLayoutId() {
+        return R.layout.activity_service;
     }
 
-    private void findView() {
+    @Override
+    protected void initView() {
         btnStartSer = findViewById(R.id.bt_start_service);
         btnStopSer = findViewById(R.id.bt_stop_service);
         btnBindSer = findViewById(R.id.bt_bind_service);

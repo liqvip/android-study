@@ -60,7 +60,7 @@ public class MyService extends Service {
 
 
     private Notification getNotification() {
-        Intent notificationIntent = new Intent(this,MainActivity.class);
+        Intent notificationIntent = new Intent(this, ServiceActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,0,notificationIntent,0);
         //新建Builer对象
         return new NotificationCompat.Builder(this,CHANNEL_ID).
