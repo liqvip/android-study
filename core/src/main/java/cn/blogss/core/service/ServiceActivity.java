@@ -1,4 +1,4 @@
-package cn.blogss.android_study.service;
+package cn.blogss.core.service;
 
 import android.content.ComponentName;
 import android.content.Intent;
@@ -8,8 +8,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import cn.blogss.android_study.R;
-import cn.blogss.android_study.base.BaseActivity;
+import cn.blogss.core.R;
+import cn.blogss.core.base.BaseActivity;
 
 /**
  *  类关系:Activity->Binder<->Service
@@ -63,29 +63,23 @@ public class ServiceActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        switch (id){
-            /*本地Service的启动与停止*/
-            case R.id.bt_start_service:
-                Intent startIntent = new Intent(this,MyService.class);
-                startService(startIntent);
-                break;
-            case R.id.bt_stop_service:
-                Intent stopIntent = new Intent(this,MyService.class);
-                stopService(stopIntent);
-                break;
+        /*本地Service的启动与停止*/
+        if (id == R.id.bt_start_service) {
+            Intent startIntent = new Intent(this, MyService.class);
+            startService(startIntent);
+        } else if (id == R.id.bt_stop_service) {
+            Intent stopIntent = new Intent(this, MyService.class);
+            stopService(stopIntent);
             /*可通讯Service的绑定与解绑*/
-            case R.id.bt_bind_service:
-                /*第一个参数:Intent对象
+        } else if (id == R.id.bt_bind_service) {/*第一个参数:Intent对象
                 第二个参数:上面创建的Serviceconnection实例
                 第三个参数:标志位
                 这里传入BIND_AUTO_CREATE表示在Activity和Service建立关联后自动创建Service
                 这会使得MyService中的onCreate()方法得到执行，但onStartCommand()方法不会执行*/
-                Intent intent = new Intent(this,MyService.class);
-                bindService(intent,mConnection,BIND_AUTO_CREATE);
-                break;
-            case R.id.bt_unbind_service:
-                unbindService(mConnection);
-                break;
+            Intent intent = new Intent(this, MyService.class);
+            bindService(intent, mConnection, BIND_AUTO_CREATE);
+        } else if (id == R.id.bt_unbind_service) {
+            unbindService(mConnection);
         }
     }
 }

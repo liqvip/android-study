@@ -1,4 +1,4 @@
-package cn.blogss.android_study.service;
+package cn.blogss.core.service;
 
 import android.annotation.TargetApi;
 import android.app.Notification;
@@ -13,10 +13,9 @@ import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 
-
 import androidx.core.app.NotificationCompat;
 
-import cn.blogss.android_study.R;
+import cn.blogss.core.R;
 
 /**
  * @创建人 560266

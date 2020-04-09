@@ -1,4 +1,4 @@
-package cn.blogss.android_study.base;
+package cn.blogss.core.base;
 
 import android.graphics.Color;
 import android.os.Bundle;
