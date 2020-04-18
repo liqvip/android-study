@@ -5,4 +5,6 @@
 本项目使用 androidx 替代 V7，区别请参考：<br>
 [Android Support v4\v7\v13和AndroidX的区别及应用场景](https://blog.csdn.net/csdn_aiyang/article/details/80859771)
 
+[Androidx初尝及其新旧包对照表](https://www.jianshu.com/p/1466ebefe4d0)
+
 [Android关于沉浸式状态栏总结](https://juejin.im/post/5989ded56fb9a03c3b6c8bde#heading-2)

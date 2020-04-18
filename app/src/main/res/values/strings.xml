@@ -1,4 +1,7 @@
 <resources>
+    <string name="tab_menu_home">首页</string>
+    <string name="tab_menu_discovery">发现</string>
+    <string name="tab_menu_profile">我的</string>
     <string name="app_name">android_study</string>
     <string name="test">测试</string>
     <string name="local_service">本地服务</string>
@@ -9,4 +12,7 @@
     <string name="unbind_service">解绑服务</string>
     <string name="service_content_title">MyServcie</string>
     <string name="service_content">点击我可以进入到MainActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
