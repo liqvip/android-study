@@ -9,12 +9,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.List;
-
 import cn.blogss.android_study.R;
-import cn.blogss.android_study.fragments.DiscoveryFragment;
-import cn.blogss.android_study.fragments.HomeFragment;
-import cn.blogss.android_study.fragments.ProfileFragment;
+import cn.blogss.android_study.discovery.view.DiscoveryFragment;
+import cn.blogss.android_study.home.view.HomeFragment;
+import cn.blogss.android_study.profile.view.ProfileFragment;
 import cn.blogss.core.base.BaseActivity;
 
 public class MainActivity extends BaseActivity {

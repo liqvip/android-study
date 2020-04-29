@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="home_rv_item_data">
+        <item>Service 服务</item>
+        <item>View 事件体系</item>
+    </string-array>
+</resources>
