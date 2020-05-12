@@ -1,14 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cn.blogss.core">
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application>
-        <!--service-->
-        <service android:name="cn.blogss.core.service.MyService" />
-
         <!--activity-->
         <activity
             android:name=".service.ServiceActivity"
+            android:launchMode="singleTask" />
+
+        <activity
+            android:name=".view.ViewActivity"
             android:launchMode="singleTask"/>
+
+        <!-- service -->
+        <service android:name=".service.MyService" />
     </application>
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
 </manifest>

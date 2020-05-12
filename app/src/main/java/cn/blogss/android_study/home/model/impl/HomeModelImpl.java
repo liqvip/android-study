@@ -26,9 +26,11 @@ public class HomeModelImpl implements HomeModel {
     public List<HomeRvItemBean> queryAllHomeRvData() {
         List<HomeRvItemBean> ls = new ArrayList<>();
         String[] strArr = ResUtil.getStrArr(mContext,R.array.home_rv_item_data);
-        for (String s : strArr) {
+        String[] intentActArr = ResUtil.getStrArr(mContext,R.array.home_rv_item_intent_act);
+        for (int i=0; i<strArr.length; i++) {
             HomeRvItemBean homeRvItemBean = new HomeRvItemBean();
-            homeRvItemBean.setName(s);
+            homeRvItemBean.setName(strArr[i]);
+            homeRvItemBean.setActName(intentActArr[i]);
             ls.add(homeRvItemBean);
         }
         return ls;

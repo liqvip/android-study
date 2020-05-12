@@ -1,6 +1,9 @@
 package cn.blogss.android_study.home.view;
 
+import android.content.Intent;
+import android.view.VelocityTracker;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -39,14 +42,16 @@ public class HomeFragment extends BaseFragment {
         };
 
         /*设置点击事件*/
-        homeRvItemAdapter.setOnItemClickListener(new OnItemClickListener() {
+        homeRvItemAdapter.setOnItemClickListener(new OnItemClickListener<HomeRvItemBean>() {
             @Override
-            public void onItemClick(ViewGroup parent, View view, Object itemData, int position) {
-
+            public void onItemClick(ViewGroup parent, View view, HomeRvItemBean itemData, int position) {
+                Intent intent = new Intent();
+                intent.setClassName(getContext(),itemData.getActName());
+                startActivity(intent);
             }
 
             @Override
-            public boolean onItemLongClick(ViewGroup parent, View view, Object itemData, int position) {
+            public boolean onItemLongClick(ViewGroup parent, View view, HomeRvItemBean itemData, int position) {
                 return false;
             }
         });

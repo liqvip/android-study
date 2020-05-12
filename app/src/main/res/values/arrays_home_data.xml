@@ -4,4 +4,9 @@
         <item>Service 服务</item>
         <item>View 事件体系</item>
     </string-array>
+
+    <string-array name="home_rv_item_intent_act">
+        <item>cn.blogss.core.service.ServiceActivity</item>
+        <item>cn.blogss.core.view.ViewActivity</item>
+    </string-array>
 </resources>
