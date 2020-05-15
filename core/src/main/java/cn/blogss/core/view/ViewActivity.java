@@ -1,9 +1,9 @@
 package cn.blogss.core.view;
 
+import android.view.View;
+
 import cn.blogss.core.R;
 import cn.blogss.core.base.BaseActivity;
-
-import android.view.View;
 
 /**
  * @创建人 560266
@@ -12,6 +12,9 @@ import android.view.View;
  */
 public class ViewActivity extends BaseActivity implements View.OnClickListener {
 
+    private MyScrollView vScroller;
+
+    private int mClickNum;
     @Override
     public int getLayoutId() {
         return R.layout.activity_view;
@@ -19,11 +22,23 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void initView() {
-
+        vScroller = findViewById(R.id.v_scroller);
+        vScroller.setOnClickListener(this);
     }
+
+
+
 
     @Override
     public void onClick(View v) {
-
+        int id = v.getId();
+        if(id == R.id.v_scroller){
+            mClickNum++;
+            if(mClickNum % 2 == 0){
+                vScroller.smoothScrollTo(0,0);
+            }else{
+                vScroller.smoothScrollTo(-500,0);
+            }
+        }
     }
 }
