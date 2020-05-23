@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 
 /**
  * @创建人 560266
- * @文件描述 弹性滑动
+ * @文件描述 弹性滑动，使用Scroller实现
  * @创建时间 2020/5/14
  */
 public class MyScrollView extends LinearLayout {

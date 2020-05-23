@@ -101,11 +101,22 @@ scrollTo 实现了基于所传递参数的绝对滑动，scrollBy实现了基于
 那么mScrollY为负值，反之为正值。
 
 ##### 1.2.2 使用动画(View动画和属性动画)
-View 动画是对 View 的影像做操作。它并不能真正改变 View 的位置参数，包括宽/高，并且如果希望动画后的状态得以保留还必须将fillAfter<br>
+**View 动画**是对 View 的影像做操作。它并不能真正改变 View 的位置参数，包括宽/高，并且如果希望动画后的状态得以保留还必须将fillAfter<br>
 属性设置为true,否则动画完成后其动画结果会消失。View 动画还会带来一个很严重的问题，比如我们通过View动画将一个Button向右移动100px，<br>
 并且这个View设置了单击事件，那么单击新位置将无法触发onClick事件，而单击原始位置仍然可以触发onClick事件。
 
-从 Android 3.0 开始，使用属性动画可以解决上面的问题。但在Android 2.2上无法使用属性动画。
+从 Android 3.0 开始，使用**属性动画**可以解决上面的问题。但在**Android 2.2上无法使用属性动画**。
 ##### 1.2.3 改变布局参数
 既改变LayoutParams
+
+#### 1.3 弹性滑动
+##### 1.3.1 使用 Scroller
+当使用View的scrollTo/scrollBy方法来进行滑动时，其过程是瞬间完成的，没有过渡效果。这个时候就可以使用Scroller来实现有过度效果的滑动。
+##### 1.3.2 通过动画
+动画本身就是一种渐近的过程，因此通过它来实现的滑动天然就具有弹性效果。比如以下代码可以让一个View在100ms内向右移动100像素
+``` java
+ObjectAnimator.ofFloat(targetView,"translationX",0,100).setDuration(100).start();
+```
+##### 1.3.3 使用延时策略
+核心思想是通过发送一系列延时消息从而达到一种渐进式效果，具体来说可以使用Handler或View的postDelayed方法，也可以使用线程的sleep方法。
 

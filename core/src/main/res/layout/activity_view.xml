@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="@string/AS_Scroller_View"/>
+            android:text="@string/AS_Slide_Use_Scroller"/>
         <cn.blogss.core.view.MyScrollView
             android:id="@+id/v_scroller"
             android:layout_width="match_parent"
@@ -34,5 +34,37 @@
                 android:layout_height="@dimen/dp_50"
                 android:background="@color/white"/>
         </cn.blogss.core.view.MyScrollView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/AS_Slide_Use_Animator"/>
+        <LinearLayout
+            android:id="@+id/ll_animator"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_100"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_vertical"
+            android:background="@color/blanchedalmond"
+            android:orientation="vertical">
+        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/AS_Slide_Use_Delayed"/>
+        <LinearLayout
+            android:id="@+id/ll_delayed"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_100"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_vertical"
+            android:background="@color/gainsboro"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="@dimen/dp_50"
+                android:layout_height="@dimen/dp_50"
+                android:background="@color/white"/>
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
