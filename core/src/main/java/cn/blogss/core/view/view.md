@@ -120,3 +120,55 @@ ObjectAnimator.ofFloat(targetView,"translationX",0,100).setDuration(100).start()
 ##### 1.3.3 使用延时策略
 核心思想是通过发送一系列延时消息从而达到一种渐进式效果，具体来说可以使用Handler或View的postDelayed方法，也可以使用线程的sleep方法。
 
+
+#### 1.4 View 的事件分发机制
+事件分发机制不仅仅是核心知识点更是难点。View 一大难点滑动冲突，解决方法的理论基础就是事件分发机制。
+##### 1.4.1 点击事件的传递规则
+点击事件的分析对象是MotionEvent。当一个MotionEvent产生了以后，系统需要把这个事件传递给一个具体的View，而这个传递的过程就是分发过程。点击事件的<br>
+分发过程由3个很重要的方法共同完成：dispatchTouchEvent、onInterceptTouchEvent和onTouchEvent。
+``` java
+public boolean dispatchTouchEvent(Event ev){
+    boolean consume = false;
+    if(onInterceptTouchEvent(ev)){
+        consume = onTouchEvent(ev);
+    }else{
+        consume = child.dispatchTouchEvent(ev);
+    }
+    return consume;
+}
+```
+上述代码已经将三者的关系表现得淋漓尽致。
+##### 1.4.2 事件分发的源码解析
+当一个点击事件产生后，它的传递过程遵循如下顺序：Activity->Window->View。
+
+**1.Activity 对点击事件的分发过程**
+<div align="center">源码：Activity#dispatchTouchEvent</div>
+
+``` java
+public boolean dispatchTouchEvent(MotionEvent ev) {
+    if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+        onUserInteraction();
+    }
+    if (getWindow().superDispatchTouchEvent(ev)) {
+        return true;
+    }
+    return onTouchEvent(ev);
+}
+```
+首先事件交给Activity所附属的Window进行分发，如果返回true，整个事件就结束了。返回false意味着事件没人处理，
+所有View的onTouchEvent都返回了false。那么Activity的onTouchEvent就会被调用。
+
+**2.Window对点击事件的分发过程**
+<div align="center">源码：PhoneWindow#superDispatchTouchEvent</div>
+
+``` java
+@Override
+public boolean superDispatchTouchEvent(MotionEvent event) {
+    return mDecor.superDispatchTouchEvent(event);
+}
+```
+
+
+
+
+
