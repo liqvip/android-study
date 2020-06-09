@@ -167,8 +167,55 @@ public boolean superDispatchTouchEvent(MotionEvent event) {
     return mDecor.superDispatchTouchEvent(event);
 }
 ```
+PhoneWindow将事件直接传递给了DecorView
 
+**3.顶级View对点击事件的分发过程**
+<div align="center">源码：ViewGroup#dispatchTouchEvent</div>
 
+``` java
+/ Check for interception.
+final boolean intercepted;
+if (actionMasked == MotionEvent.ACTION_DOWN
+        || mFirstTouchTarget != null) {
+    final boolean disallowIntercept = (mGroupFlags & FLAG_DISALLOW_INTERCEPT) != 0;
+    if (!disallowIntercept) {
+        intercepted = onInterceptTouchEvent(ev);/*默认返回false*/
+        ev.setAction(action); // restore action in case it was changed
+    } else {/*设置不拦截当前事件requestDisallowInterceptTouchEvent(true)*/
+        intercepted = false;
+    }
+} else {
+    // There are no touch targets and this action is not an initial down
+    // so this view group continues to intercept touches.
+    intercepted = true;
+}
+```
+从上面代码可以看出，ACTION_DOWN事件或mFirstTouchTarget != null会判断是否要拦截事件。当ViewGroup不拦截事件并将事件交由  
+子元素处理时 mFirstTouchTarget != null 成立。
 
+#### 1.5 View的滑动冲突
+其实只要在界面中内外两层同时可以滑动，这个时候就会产生滑动冲突。
+
+##### 1.5.1 常见的滑动冲突场景
+**1.外部滑动方向和内部滑动方向不一致**<br>
+常见的是ViewPager和Fragment配合使用所组成的页面滑动效果<br>
+**2.外部滑动方向和内部滑动方向一致**<br>
+**3.上面两种情况的嵌套**<br>
+
+##### 1.5.2 滑动冲突的处理规则
+
+##### 1.5.3 滑动冲突的解决方式
+**1.外部拦截法**<br>
+点击事件都要经过父容器的拦截处理，如果父容器需要此事件就拦截，如果不需要就不拦截。
+
+**2.内部拦截法**<br>
+父容器不拦截任何事件，所有的事件都传递给子元素，如果子元素需要此事件就直接消耗掉，否则就交由父容器进行处理
+
+### View 的工作原理
+#### 2.1 ViewRoot 和 DecorView
+
+#### 2.2 理解 MeasureSpec
+
+#### 2.3 View 的工作流程
 
 
