@@ -16,7 +16,7 @@ import cn.blogss.core.R;
 import cn.blogss.core.base.BaseActivity;
 
 /**
- * 广播接收器，动态注册与静态注册
+ * 广播接收器，动态注册与静态注册,接收系统广播
  * 示例，动态注册一个广播，监听系统网络变化
  */
 public class MainActivity extends BaseActivity {
@@ -61,6 +61,7 @@ public class MainActivity extends BaseActivity {
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            /*不要在onReceive()方法中添加过多的逻辑或进行任何的耗时操作，因为在广播接收器中是不允许开启线程的*/
             if(isConnectedQ29()){
                 Toast.makeText(context, "network is available", Toast.LENGTH_SHORT).show();
             }else{
