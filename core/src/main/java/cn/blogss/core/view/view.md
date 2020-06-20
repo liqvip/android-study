@@ -205,17 +205,133 @@ if (actionMasked == MotionEvent.ACTION_DOWN
 ##### 1.5.2 滑动冲突的处理规则
 
 ##### 1.5.3 滑动冲突的解决方式
-**1.外部拦截法**<br>
+**1.外部拦截法，需要重写父容器的 onInterceptTouchEvent方法**<br>
 点击事件都要经过父容器的拦截处理，如果父容器需要此事件就拦截，如果不需要就不拦截。
+<div align="center">重写：ViewGroup#onInterceptTouchEvent</div>
 
-**2.内部拦截法**<br>
-父容器不拦截任何事件，所有的事件都传递给子元素，如果子元素需要此事件就直接消耗掉，否则就交由父容器进行处理
+``` java
+public boolean onInterceptTouchEvent(MotionEvent ev){
+    boolean intercepted = false;
+    int x = (int) ev.getX();
+    int y = (int) ev.getY();
+    
+    switch(ev.getAction()){
+        case MotionEvent.ACTIOIN_DOWN:
+            intercepted =false;
+            break;
+        case MotionEvent.ACTIOIN_MOVE:
+            if(父容器需要当前点击事件){
+                intercepted = true;
+            }
+            break;
+        case MotionEvent.ACTIOIN_UP:
+            intercepted =false;
+            break;
+        default:
+            break;
+    }
+    
+    mLastXIntecept = x;
+    mLastYIntecept = y;
+    return intercepted;
+}
+```
+
+**2.内部拦截法，重写子元素的dispatchTouchEvent方法**<br>
+父容器不拦截任何事件，所有的事件都传递给子元素，如果子元素需要此事件就直接消耗掉，否则就交由父容器进行处理。
+<div align="center">子元素重写：dispatchTouchEvent</div>
+
+``` java
+public boolean dispatchTouchEvent(MotionEvent ev){
+    int x = (int) ev.getX();
+    int y = (int) ev.getY();
+    
+    switch(ev.getAction()){
+        case MotionEvent.ACTIOIN_DOWN:
+            parent.requestDisallowInterceptTouchEvent(true);
+            break;
+        case MotionEvent.ACTIOIN_MOVE:
+            if(父容器需要当前点击事件){
+                parent.requestDisallowInterceptTouchEvent(false);
+            }
+        case MotionEvent.ACTIOIN_UP:
+            break;
+        default:
+            break;
+    }
+    mLastX = x;
+    mLastY = y;
+    return super.dispatchTouchEvent(ev);
+}
+```
+
+<div align="center">父元素改动：onInterceptTouchEvent</div>
+
+``` java
+public boolean onInterceptTouchEvent(MotionEvent ev){
+    int action = (int) ev.getAction();
+    if(action == MotionEvent.DOWN){
+        return false;
+    }else{
+        return true;
+    }
+}
+```
+
 
 ### View 的工作原理
 #### 2.1 ViewRoot 和 DecorView
 
 #### 2.2 理解 MeasureSpec
+MeasureSpec 在很大程度上决定了一个View的尺寸规格，其尺寸大小还受到父容器的影响，父容器影响其 MeasureSpec 的过程。
+
+##### 2.2.1 MeasureSpec
+<div align="center">源码：View#MeasureSpec</div>
+
+``` java
+public static class MeasureSpec {
+    private static final int MODE_SHIFT = 30;
+    private static final int MODE_MASK  = 0x3 << MODE_SHIFT;
+    
+    public static final int UNSPECIFIED = 0 << MODE_SHIFT;
+    public static final int EXACTLY     = 1 << MODE_SHIFT;
+    public static final int AT_MOST     = 2 << MODE_SHIFT;
+    
+    public static int makeMeasureSpec(@IntRange(from = 0, to = (1 << MeasureSpec.MODE_SHIFT) - 1) int size,
+                                          @MeasureSpecMode int mode) {
+        if (sUseBrokenMakeMeasureSpec) {
+            return size + mode;
+        } else {
+            return (size & ~MODE_MASK) | (mode & MODE_MASK);
+        }
+    }
+    
+    public static int getMode(int measureSpec) {
+        //noinspection ResourceType
+        return (measureSpec & MODE_MASK);
+    }
+    
+    public static int getSize(int measureSpec) {
+        return (measureSpec & ~MODE_MASK);
+    }
+}
+```
+MeasureSpec 代表一个32位的int值，高2位代表SpecMode(测量模式)，而SpecSize是指在某种测量模式模式下的规格大小。
+
+##### 2.2.2 MeasureSpec 和 LayoutParams 的对应关系
 
 #### 2.3 View 的工作流程
 
+#### 2.4 自定义 View
+##### 2.4.1 自定义 View 的分类
+**1.继承 View 重写 onDraw 方法**<br>
+这种方法主要用于实现一些不规则的效果，即这种效果不方便通过布局的组合方式来达到。很显然，这需要通过绘制的方法来实现。
+。采用这种方式需要自己支持wrap_content，并且padding也需要自己处理。
 
+**2.继承 ViewGroup 派生特殊的 Layout**<br>
+需要合适的处理ViewGroup的测量、布局这两个过程，并同时处理子元素的测量和布局过程。<br>
+
+**3.继承特定的 View （比如 TextView）**<br>
+
+**4.继承特定的 ViewGroup （比如 LinearLayout）**<br>
+这种方法不需要自己处理ViewGroup的测量和布局这两个过程。

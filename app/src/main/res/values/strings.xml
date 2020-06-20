@@ -2,7 +2,7 @@
     <string name="tab_menu_home">首页</string>
     <string name="tab_menu_discovery">发现</string>
     <string name="tab_menu_profile">我的</string>
-    <string name="app_name">android_study</string>
+    <string name="app_name">androidStudy</string>
     <string name="test">测试</string>
     <string name="local_service">本地服务</string>
     <string name="start_service">启动服务</string>

@@ -2,20 +2,24 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cn.blogss.core">
 
+    <!--系统网络状态-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
     <application>
-        <!--activity-->
+        <!-- activity -->
+        <activity
+            android:name=".broadcast.MainActivity"
+            android:launchMode="singleTask"/>
         <activity
             android:name=".service.ServiceActivity"
             android:launchMode="singleTask" />
-
         <activity
             android:name=".view.ViewActivity"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask" />
 
         <!-- service -->
         <service android:name=".service.MyService" />
     </application>
-
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
 </manifest>

@@ -1,20 +1,61 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    /*签名配置*/
+    /*signingConfigs {
+        debug {
+            keyAlias 'greejia'
+            keyPassword 'greejia'
+            storeFile file('D:/work/greejia.jks')
+            storePassword 'greejia'
+        }
+
+        release {
+
+        }
+    }*/
+
     defaultConfig {
         applicationId "cn.blogss.android_study"
-        minSdkVersion 15
-        targetSdkVersion 29
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    /*构建类型配置*/
     buildTypes {
-        release {
+        /*测试版本*/
+        debug {
+            /*是否开启代码混淆，默认false*/
             minifyEnabled false
+            /*混淆规则配置文件*/
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        /*生产版本*/
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    /*修改生成的apk文件的名称*/
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                def fileName
+                if (variant.buildType.name == "release") {
+                    fileName = "Android_Study_${variant.versionName}.apk"
+                } else {
+                    fileName = "Android_Study_${variant.versionName}_debug.apk"
+                }
+                outputFileName = fileName
+            }
         }
     }
 }
