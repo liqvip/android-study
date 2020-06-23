@@ -18,4 +18,10 @@
     <string name="AS_Slide_Use_Scroller">弹性滑动(使用Scroller)</string>
     <string name="AS_Slide_Use_Animator">弹性滑动(使用动画)</string>
     <string name="AS_Slide_Use_Delayed">弹性滑动(使用延时策略)</string>
+
+    <!--broadcast 部分-->
+    <string name="AS_Broadcast_Send_One_Static_Standard_Broadcast_Unused">发送一条静态注册的标准广播</string>
+    <string name="AS_Broadcast_Send_One_Static_Standard_Broadcast_Unused_Tips">Android 8 及其以上收不到这个广播</string>
+    <string name="AS_Broadcast_Send_One_Static_Standard_Broadcast">发送一条静态注册的标准广播，指定应用包名和广播接收器类名</string>
+    <string name="AS_Broadcast_Send_One_Static_Standard_Broadcast_Tips">Android 8 及其以上可以收到这个广播</string>
 </resources>

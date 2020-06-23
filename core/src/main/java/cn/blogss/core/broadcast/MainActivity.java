@@ -2,6 +2,7 @@ package cn.blogss.core.broadcast;
 
 
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -10,6 +11,8 @@ import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import cn.blogss.core.R;
@@ -17,19 +20,23 @@ import cn.blogss.core.base.BaseActivity;
 
 /**
  * 广播接收器，动态注册与静态注册,接收系统广播
- * 示例，动态注册一个广播，监听系统网络变化
+ * 示例:
+ * 1.动态注册一个广播，监听系统网络变化
+ * 2.静态注册一个广播，发送一个自定义的广播
  */
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = "broadcast:MainActivity";
 
     private IntentFilter intentFilter;
 
     private NetChangeReceiver netChangeReceiver;
+
+    private Button btSendBroadcastUnused, btSendBroadcast;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         intentFilter = new IntentFilter();
-        /*网络状态发生变化时，系统会发送这样一条广播*/
+        /*【示例1】网络状态发生变化时，系统会发送这样一条广播*/
         intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         netChangeReceiver = new NetChangeReceiver();
         /*注册广播接收器*/
@@ -38,12 +45,16 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public int getLayoutId() {
-        return R.layout.activity_blank;
+        return R.layout.activity_broadcast;
     }
 
     @Override
     protected void initView() {
+        btSendBroadcastUnused = findViewById(R.id.bt_send_broadcast_unused);
+        btSendBroadcast = findViewById(R.id.bt_send_broadcast);
 
+        btSendBroadcastUnused.setOnClickListener(this);
+        btSendBroadcast.setOnClickListener(this);
     }
 
     @Override
@@ -51,6 +62,24 @@ public class MainActivity extends BaseActivity {
         super.onDestroy();
         /*Act 生命周期结束后，取消注册*/
         unregisterReceiver(netChangeReceiver);
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        /*
+         *【示例2】发送一个自定义的广播，所有监听这条广播的广播接收器都会收到消息。此时发出去的广播就是一条标准广播
+         *由于广播是使用Intent进行传递的，因此还可以在Intent中携带一些数据传递给广播接收器
+         */
+        Intent intent;
+        if(id == R.id.bt_send_broadcast_unused){
+            intent = new Intent("cn.blogss.core.broadcast.MY_BROADCAST");
+            sendBroadcast(intent);
+        }else if(id == R.id.bt_send_broadcast){
+            intent = new Intent("cn.blogss.core.broadcast.MY_BROADCAST");
+            //intent.setComponent(new ComponentName(this, "cn.blogss.core.broadcast.MyBroadcastReceiver"));
+            sendBroadcast(intent);
+        }
     }
 
     /**

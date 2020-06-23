@@ -1,12 +1,17 @@
 package cn.blogss.core.base;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import cn.blogss.core.R;
 import cn.blogss.helper.StatusBarCompatUtil;
 
 public abstract class BaseActivity extends AppCompatActivity {
@@ -20,7 +25,18 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(layoutId);
         hideActionBar();
         setStatusBarColor(Color.TRANSPARENT);
+        contentNotOverlayStatusBar();
         initView();
+    }
+
+    /**
+     * 设置布局内容不与状态栏重叠
+     */
+    private void contentNotOverlayStatusBar() {
+        View decorView = getWindow().getDecorView();
+        View contentView = ((ViewGroup) decorView.findViewById(android.R.id.content)).getChildAt(0);
+        int statusBarHeight = getStatusBarHeight(this);
+        contentView.setPadding(0,statusBarHeight,0,0);
     }
 
     /**
@@ -30,6 +46,21 @@ public abstract class BaseActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null)
             actionBar.hide();
+    }
+
+    /**
+     * 获取状态栏高度
+     * @param context
+     * @return
+     */
+    public int getStatusBarHeight(Context context) {
+        int result = 0;
+        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen",
+                "android");
+        if (resourceId > 0) {
+            result = context.getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 
     @Override
