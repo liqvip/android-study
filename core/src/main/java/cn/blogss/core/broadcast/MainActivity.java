@@ -79,6 +79,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             intent = new Intent("cn.blogss.core.broadcast.MY_BROADCAST");
             intent.setComponent(new ComponentName(this, "cn.blogss.core.broadcast.MyBroadcastReceiver"));
             sendBroadcast(intent);
+            //sendOrderedBroadcast(intent, null);
         }
     }
 

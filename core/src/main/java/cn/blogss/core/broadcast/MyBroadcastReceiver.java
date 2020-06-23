@@ -14,5 +14,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Toast.makeText(context, "received in MyBroadcastReceiver", Toast.LENGTH_SHORT).show();
+        /*有序广播中，可以截断广播的传递。后续优先级低的广播接收器将无法接收到这条广播*/
+        //abortBroadcast();
     }
 }
