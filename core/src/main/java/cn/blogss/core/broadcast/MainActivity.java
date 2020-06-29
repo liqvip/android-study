@@ -31,7 +31,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private NetChangeReceiver netChangeReceiver;
 
-    private Button btSendBroadcastUnused, btSendBroadcast;
+    /**==================本地广播部分，Android 新版本中已被废弃======================**/
+
+
+    private Button btSendBroadcastUnused, btSendBroadcast, btSendOfflineBroadcast;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +44,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         netChangeReceiver = new NetChangeReceiver();
         /*注册广播接收器*/
         registerReceiver(netChangeReceiver,intentFilter);
+
+        /*本地广播部分*/
     }
 
     @Override
@@ -52,9 +57,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     protected void initView() {
         btSendBroadcastUnused = findViewById(R.id.bt_send_broadcast_unused);
         btSendBroadcast = findViewById(R.id.bt_send_broadcast);
+        btSendOfflineBroadcast = findViewById(R.id.bt_send_offline_broadcast);
 
         btSendBroadcastUnused.setOnClickListener(this);
         btSendBroadcast.setOnClickListener(this);
+        btSendOfflineBroadcast.setOnClickListener(this);
     }
 
     @Override
@@ -80,6 +87,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             intent.setComponent(new ComponentName(this, "cn.blogss.core.broadcast.MyBroadcastReceiver"));
             sendBroadcast(intent);
             //sendOrderedBroadcast(intent, null);
+        }else if(id == R.id.bt_send_offline_broadcast){/*发送一条强制下线的广播*/
+            intent = new Intent("cn.blogss.core.base.FORCE_OFFLINE");
+            sendBroadcast(intent);
         }
     }
 
@@ -113,5 +123,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         if(networkCapabilities == null)
             return false;
         return networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
+    }
+
+    /**
+     * 本地广播接收器
+     */
+    class LocalReceiver extends BroadcastReceiver{
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Toast.makeText(context, "received local broadcast", Toast.LENGTH_SHORT).show();
+        }
     }
 }
