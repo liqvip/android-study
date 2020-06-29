@@ -25,4 +25,8 @@
     <string name="AS_Broadcast_Send_One_Static_Standard_Broadcast">发送一条静态注册的标准广播，指定应用包名和广播接收器类名</string>
     <string name="AS_Broadcast_Send_One_Static_Standard_Broadcast_Tips">Android 8 及其以上可以收到这个广播</string>
     <string name="AS_Broadcast_Send_One_Offline_Broadcast">发送一条强制下线的广播</string>
+
+    <!--Content Provider 部分-->
+    <string name="AS_Content_Provider_Call_Phone">拨打电话：10086</string>
+    <string name="AS_Content_Provider_Call_Phone_Tips">需要申请运行时权限</string>
 </resources>

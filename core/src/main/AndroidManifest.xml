@@ -2,17 +2,22 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="cn.blogss.core">
-
-    <!--系统权限-->
-
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <!-- 系统权限 -->
     <!-- 访问系统网络状态权限 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!--监听系统开机广播权限-->
+    <!-- 监听系统开机广播权限 -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <!--拨打电话的权限-->
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
     <application>
-        <!--活动-->
+        <!-- 活动 -->
+        <activity
+            android:name=".contentprovider.MainActivity"
+            android:launchMode="singleTask"/>
         <activity
             android:name=".broadcast.MainActivity"
             android:launchMode="singleTask" />
@@ -22,34 +27,29 @@
         <activity
             android:name=".view.ViewActivity"
             android:launchMode="singleTask" />
-
         <!--
             注意：若App的TargetSDK达到了26及其以上，有些正常静态注册的广播就没有用了，如这个
             广播接收器
             enabled:是否启用这个广播接收器
             exported:是否允许这个广播接收器接收本程序以外的广播
         -->
-        <!--系统开机广播，TargetSDK达到了26及其以上，无效-->
+        <!-- 系统开机广播，TargetSDK达到了26及其以上，无效 -->
         <receiver
             android:name=".broadcast.BootCompleteReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
-        </receiver>
-
-        <!--静态注册一个自定义的广播接收器，用来接收自定义的广播，TargetSDK达到了26及其以上，无效-->
+        </receiver> <!-- 静态注册一个自定义的广播接收器，用来接收自定义的广播，TargetSDK达到了26及其以上，无效 -->
         <receiver
             android:name=".broadcast.MyBroadcastReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="cn.blogss.core.broadcast.MY_BROADCAST"/>
+                <action android:name="cn.blogss.core.broadcast.MY_BROADCAST" />
             </intent-filter>
-        </receiver>
-
-        <!-- 服务 -->
+        </receiver> <!-- 服务 -->
         <service android:name=".service.MyService" />
     </application>
 
