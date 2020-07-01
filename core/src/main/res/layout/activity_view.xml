@@ -66,5 +66,17 @@
                 android:layout_height="@dimen/dp_50"
                 android:background="@color/white"/>
         </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/AS_Custom_View_Circle_View"/>
+        <cn.blogss.core.view.customview.CircleView
+            android:id="@+id/circleView1"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_100"
+            android:background="#000000"
+            android:layout_margin="@dimen/dp_20"
+            android:paddingTop="@dimen/dp_20"/>
     </LinearLayout>
 </RelativeLayout>

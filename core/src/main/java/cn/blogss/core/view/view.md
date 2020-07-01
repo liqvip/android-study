@@ -247,12 +247,13 @@ public boolean dispatchTouchEvent(MotionEvent ev){
     int y = (int) ev.getY();
     
     switch(ev.getAction()){
-        case MotionEvent.ACTIOIN_DOWN:
+        case MotionEvent.ACTIOIN_DOWN:/*设置父容器不拦截除ACTION_DOWN的任何事件*/
+        /*设置为true之后，父容器不会再调用onInterceptTouchEvent方法判断是否拦截当前事件*/
             parent.requestDisallowInterceptTouchEvent(true);
             break;
         case MotionEvent.ACTIOIN_MOVE:
             if(父容器需要当前点击事件){
-                parent.requestDisallowInterceptTouchEvent(false);
+                parent.requestDisallowInterceptTouchEvent(false);/*交由父容器处理*/
             }
         case MotionEvent.ACTIOIN_UP:
             break;
@@ -319,6 +320,18 @@ public static class MeasureSpec {
 MeasureSpec 代表一个32位的int值，高2位代表SpecMode(测量模式)，而SpecSize是指在某种测量模式模式下的规格大小。
 
 ##### 2.2.2 MeasureSpec 和 LayoutParams 的对应关系
+1.当 View 采用固定宽/高的时候，不管父容器的 MeasureSpec 是什么，View 的MeasureSpec 都是精准模式，
+并且其大小遵循 LayoutParams 中的大小。<br>
+
+2.当 View 的宽高是 match_parent 时，父容器的 MeasureSpec 是什么模式，View 的MeasureSpec 也是什么模式，
+其大小不会超过父容器的剩余空间。<br>
+
+3.当 View 的宽高是 wrap_content 时，不管父容器的 MeasureSpec 是什么模式，View 的MeasureSpec 总是最大化模式，
+其大小不能超过父容器的剩余空间。<br>
+
+4.UNSPECIFIED 这个模式主要用于系统内部多次 Measure 的情形，一般来说，我们不需要关注此模式。
+
+<div align="center">普通 View 的 MeasureSpec 的创建规则</div>
 
 #### 2.3 View 的工作流程
 
@@ -332,6 +345,14 @@ MeasureSpec 代表一个32位的int值，高2位代表SpecMode(测量模式)，�
 需要合适的处理ViewGroup的测量、布局这两个过程，并同时处理子元素的测量和布局过程。<br>
 
 **3.继承特定的 View （比如 TextView）**<br>
+一般用于扩展某种已有的View的功能，比如TextView，这种方法比较容易实现。不需要自己支持wrap_content和padding等。
 
 **4.继承特定的 ViewGroup （比如 LinearLayout）**<br>
 这种方法不需要自己处理ViewGroup的测量和布局这两个过程。
+
+##### 2.4.2 自定义 View 须知
+1.让 View 支持 wrap_content
+2.如果有必要，让你的View支持padding
+3.尽量不要在View中使用Handler，没必要
+4.View 中如果有线程或者动画，需要及时停止，参考 View#onDetachedFromWindow
+5.View 带有滑动冲突情形时，需要处理好滑动冲突
