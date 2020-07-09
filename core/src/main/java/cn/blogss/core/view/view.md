@@ -331,9 +331,60 @@ MeasureSpec 代表一个32位的int值，高2位代表SpecMode(测量模式)，�
 
 4.UNSPECIFIED 这个模式主要用于系统内部多次 Measure 的情形，一般来说，我们不需要关注此模式。
 
-<div align="center">普通 View 的 MeasureSpec 的创建规则</div>
-
 #### 2.3 View 的工作流程
+View 的工作流程是指 measure、layout、draw 这三大流程，即测量、布局和绘制，其中 measure 确定
+View 的测量宽/高，layout 确定 View 的最终宽/高和四个顶点的位置，而 draw 则将 View 绘制到屏幕上
+##### 2.3.1 Measure 过程
+**1.View 的 Measure 过程**
+<div align="center">View#onMeasure(int widthMeasureSpec, int heightMeasureSpec)</div>
+
+``` java
+protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    /*setMeasuredDimension方法会设置 View 宽/高的测量值*/
+    setMeasuredDimension(getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec),
+            getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec));
+}
+```
+
+<div align="center">View#getDefaultSize(int size, int measureSpec)</div>
+
+``` java
+public static int getDefaultSize(int size, int measureSpec) {
+    int result = size;
+    int specMode = MeasureSpec.getMode(measureSpec);
+    int specSize = MeasureSpec.getSize(measureSpec);
+
+    switch (specMode) {
+    case MeasureSpec.UNSPECIFIED:
+        result = size;
+        break;
+    /*View 的宽/高由specSize决定*/
+    case MeasureSpec.AT_MOST:
+    case MeasureSpec.EXACTLY:
+        result = specSize;
+        break;
+    }
+    return result;
+}
+```
+从 getDefaultSize 方法的实现来看，View 的宽/高由 specSize 决定，所以我们可以得出如下结论：
+**直接继承 View 的自定义控件需要重写 onMeasure 方法并设置 wrap_content 时的自身大小，否则在布局中使用wrap_content就相当于使用 match_parent。**
+
+<div align="center">View#getSuggestedMinimumWidth()</div>
+
+``` java
+protected int getSuggestedMinimumWidth() {
+    return (mBackground == null) ? mMinWidth : max(mMinWidth, mBackground.getMinimumWidth());
+}
+```
+由上面源码可知，对于 UNSPECIFIED 这种情况，View 的测量宽/高遵循如下规则：如果 View 没有设置背景，那么返回 android:minWidth 这个属性所指定的值，这个值可以为0(默认值)；
+如果 View 设置了背景，则返回 android:minWidth 和背景的最小宽度两者中的最大值。
+
+**2.ViewGroup 的 Measure 过程**<br>
+ViewGroup 是一个抽象类，它没有重写 View 的 onMeasure 方法，但是它提供了一个叫 measureChildren 的方法。
+ViewGroup 在 measure 时，会对每一个子 元素进行 measure。我们知道，ViewGroup 并没有定义其测量的具体过程，
+其测量过程的 onMeasure 方法需要各个子类去具体实现，比如 LinearLayout、RelativeLayout等。这是因为不同的
+ ViewGroup 子类有不同的布局特性，这导致它们的测量细节各不相同。
 
 #### 2.4 自定义 View
 ##### 2.4.1 自定义 View 的分类
@@ -351,8 +402,8 @@ MeasureSpec 代表一个32位的int值，高2位代表SpecMode(测量模式)，�
 这种方法不需要自己处理ViewGroup的测量和布局这两个过程。
 
 ##### 2.4.2 自定义 View 须知
-1.让 View 支持 wrap_content
-2.如果有必要，让你的View支持padding
-3.尽量不要在View中使用Handler，没必要
-4.View 中如果有线程或者动画，需要及时停止，参考 View#onDetachedFromWindow
+1.让 View 支持 wrap_content<br>
+2.如果有必要，让你的View支持padding<br>
+3.尽量不要在View中使用Handler，没必要<br>
+4.View 中如果有线程或者动画，需要及时停止，参考 View#onDetachedFromWindow<br>
 5.View 带有滑动冲突情形时，需要处理好滑动冲突

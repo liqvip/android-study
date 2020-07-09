@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--为了使用自定义属性，必须在布局文件中添加schemas声明：
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    在这个声明中，app是自定义属性的前缀，当然也可以换其他名字，
+    但是CircleView中的自定义属性的前缀必须和这里的一致。
+-->
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="@dimen/dp_24">
@@ -74,9 +81,9 @@
         <cn.blogss.core.view.customview.CircleView
             android:id="@+id/circleView1"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_100"
+            android:layout_height="wrap_content"
+            app:circle_color="@color/pink"
             android:background="#000000"
-            android:layout_margin="@dimen/dp_20"
-            android:paddingTop="@dimen/dp_20"/>
+            android:layout_marginTop="@dimen/dp_20"/>
     </LinearLayout>
 </RelativeLayout>
