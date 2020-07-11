@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".screen_adaptation.ScreenAdaptationActivity">
+    <Button
+        android:id="@+id/bt_print_metrics_info"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintHorizontal_weight="1"
+        android:text="@string/AS_Screen_Adaptation_print_metrics_info"/>
+    <Button
+        android:id="@+id/bt_hide_metrics_info"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_weight="1"
+        android:text="@string/AS_Screen_Adaptation_hide_metrics_info"/>
+    <TextView
+        android:id="@+id/tv_metrics_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/bt_print_metrics_info"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

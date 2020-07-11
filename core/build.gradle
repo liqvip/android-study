@@ -22,6 +22,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'me.jessyan:autosize:1.2.1'
 
     api 'androidx.appcompat:appcompat:1.1.0'
     api 'androidx.constraintlayout:constraintlayout:1.1.3'
