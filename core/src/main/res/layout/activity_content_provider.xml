@@ -20,10 +20,11 @@
         android:gravity="center_horizontal"/>
     <Button
         android:id="@+id/bt_read_phone_contacts"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/dp_0"
         android:layout_height="wrap_content"
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/bt_hide_phone_contacts"
         app:layout_constraintTop_toBottomOf="@+id/tv_call_phone"
         android:text="@string/AS_Content_Provider_Read_Phone_Contacts"/>
     <Button
@@ -33,6 +34,7 @@
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintTop_toBottomOf="@+id/tv_call_phone"
         app:layout_constraintLeft_toRightOf="@+id/bt_read_phone_contacts"
+        app:layout_constraintRight_toRightOf="parent"
         android:text="@string/AS_Content_Provider_Hide_Phone_Contacts"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_phone_contacts_list"
