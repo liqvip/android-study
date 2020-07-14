@@ -11,3 +11,22 @@ Android 6.0 系统中引入了运行时权限这个功能，更好地保护了�
 到用户隐私或者对设备安全性造成影响的的权限，如获取设备联系人信息、定位设备的地理位置等，对于这部分权限申请，必须要用户
 手动点击授权才可以，否则程序就无法使用相应的功能。
 
+#### 访问其他程序中的数据
+内容提供器的用法一般有两种，一种是使用现有的内容提供器来读取和操作相应程序中的数据；另外一种是创建自己的内容提供器给我们
+程序的数据提供外部访问接口。
+##### ContentResolver 的基本用法
+对于每一个应用程序来说，如果想要访问内容提供器中共享的数据，就一定要借助 ContentResolver 类。ContentResolver
+提供了一系列的方法用于对数据进行CRUD操作。不同于SQLiteDatabase，ContentResolver 中的增删改查方法都是不接收表名
+参数的，而是使用一个 Uri 参数代替，这个参数被称为内容 URI 。它主要由两部分组成：authority 和 path 。
+
+<div align="center">ContentResolver#query方法参数</div>
+
+| query()方法参数 | 对应SQL部分               | 描 述                           |
+|:---------------|:--------------------------|:-------------------------------|
+| uri            | from table_name           | 指定查询某个应用程序下的某一张表 |
+| projection     | select column1, column2   | 指定查询的列名                  |
+| selection      | where column = value      | 指定where的约束条件             |
+| selectionArgs  | -                         | 为where中的占位符提供具体的值    |
+| sortOrder      | order by column1, column2 | 指定查询结果的排序方式           |
+
+##### 读取系统电话联系人

@@ -30,6 +30,7 @@
     <!--Content Provider 部分-->
     <string name="AS_Content_Provider_Call_Phone">拨打电话：10086</string>
     <string name="AS_Content_Provider_Call_Phone_Tips">需要申请运行时权限</string>
+    <string name="AS_Content_Provider_Read_Phone_Contacts">读取电话联系人</string>
 
     <!--屏幕适配部分-->
     <string name="AS_Screen_Adaptation_print_metrics_info">打印设备的 Metrics 信息</string>

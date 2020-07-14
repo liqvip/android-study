@@ -9,16 +9,24 @@
         android:id="@+id/bt_call_phone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:text="@string/AS_Content_Provider_Call_Phone"/>
     <TextView
+        android:id="@+id/tv_call_phone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bt_call_phone"
         android:text="@string/AS_Content_Provider_Call_Phone_Tips"
         android:gravity="center_horizontal"/>
+    <Button
+        android:id="@+id/bt_read_phone_contacts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/tv_call_phone"
+        android:text="@string/AS_Content_Provider_Read_Phone_Contacts"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_phone_contacts_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/bt_read_phone_contacts"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
