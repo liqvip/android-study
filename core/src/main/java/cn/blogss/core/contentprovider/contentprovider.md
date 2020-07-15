@@ -17,7 +17,8 @@ Android 6.0 系统中引入了运行时权限这个功能，更好地保护了�
 ##### ContentResolver 的基本用法
 对于每一个应用程序来说，如果想要访问内容提供器中共享的数据，就一定要借助 ContentResolver 类。ContentResolver
 提供了一系列的方法用于对数据进行CRUD操作。不同于SQLiteDatabase，ContentResolver 中的增删改查方法都是不接收表名
-参数的，而是使用一个 Uri 参数代替，这个参数被称为内容 URI 。它主要由两部分组成：authority 和 path 。
+参数的，而是使用一个 Uri 参数代替，这个参数被称为内容 URI 。它主要由两部分组成：authority 和 path 。authority
+是用于对不同应用程序做区分的。path 则是用于对同一应用程序中不同的表做区分的。通常都会添加到 authority 的后面。
 
 <div align="center">ContentResolver#query方法参数</div>
 
@@ -30,3 +31,5 @@ Android 6.0 系统中引入了运行时权限这个功能，更好地保护了�
 | sortOrder      | order by column1, column2 | 指定查询结果的排序方式           |
 
 ##### 读取系统电话联系人
+
+#### 创建自己的内容提供器
