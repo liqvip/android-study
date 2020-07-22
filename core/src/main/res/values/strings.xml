@@ -36,4 +36,7 @@
     <!--屏幕适配部分-->
     <string name="AS_Screen_Adaptation_print_metrics_info">打印设备的 Metrics 信息</string>
     <string name="AS_Screen_Adaptation_hide_metrics_info">隐藏设备的 Metrics 信息</string>
+
+    <!--网络部分-->
+    <string name="AS_Send_One_Req">使用HttpURLConnection发送一条请求</string>
 </resources>

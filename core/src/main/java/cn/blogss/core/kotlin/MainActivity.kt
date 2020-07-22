@@ -1,10 +1,14 @@
 package cn.blogss.core.kotlin
 
-import android.support.v7.app.AppCompatActivity
-import android.os.Bundle
+import cn.blogss.core.base.BaseActivity
 
-class MainActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+class MainActivity : BaseActivity() {
+
+    override fun getLayoutId(): Int {
+        TODO("Not yet implemented")
+    }
+
+    override fun initView() {
+        TODO("Not yet implemented")
     }
 }
