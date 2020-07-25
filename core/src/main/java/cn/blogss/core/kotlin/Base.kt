@@ -1,7 +1,6 @@
 package cn.blogss.core.kotlin
 
 import android.view.View
-import kotlin.contracts.contract
 
 /**
  * @创建人 560266
