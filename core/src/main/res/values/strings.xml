@@ -39,4 +39,11 @@
 
     <!--网络部分-->
     <string name="AS_Send_One_Req">使用HttpURLConnection发送一条请求</string>
+
+    <!--RemoteViews 部分-->
+    <string name="AS_Pop_One_Notification">弹出一条通知</string>
+    <string name="AS_Pop_One_Custom_Notification">弹出一条自定义布局的通知，使用 RemoteViews 加载布局</string>
+    <string name="AS_Notification_Title_Default">Default Notification</string>
+    <string name="AS_Notification_Content_Default">Click me into RemoteViews Activity</string>
+    <string name="AS_RemoteViews_Title_Custom">Custom Notification Use RemoteViews</string>
 </resources>

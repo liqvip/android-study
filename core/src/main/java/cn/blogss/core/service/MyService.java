@@ -63,9 +63,10 @@ public class MyService extends Service {
         PendingIntent pendingIntent = PendingIntent.getActivity(this,0,notificationIntent,0);
         //新建Builer对象
         return new NotificationCompat.Builder(this,CHANNEL_ID).
-        setContentTitle(getApplicationContext().getResources().getString(R.string.service_content_title)).//设置通知的标题
-        setContentText(getApplicationContext().getResources().getString(R.string.service_content)).//设置通知的内容
+        setContentTitle(getString(R.string.service_content_title)).//设置通知的标题
+        setContentText(getString(R.string.service_content)).//设置通知的内容
         setWhen(System.currentTimeMillis()).
+        setAutoCancel(true)./*设置点击后自动消失*/
         setSmallIcon(R.mipmap.ic_launcher).//设置通知的图标
         setLargeIcon(BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher)).
         setContentIntent(pendingIntent).build();
