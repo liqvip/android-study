@@ -49,7 +49,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         val remoteViews = RemoteViews(packageName, R.layout.layout_custom_notification)
         remoteViews.setTextViewText(R.id.tv_notification_time, Date(System.currentTimeMillis()).toString())
         val cusNotification = getCustomNotification(this@MainActivity, MainActivity::class.java,
-                ChannelName.MESSAGE.channelName, remoteViews)
-        manager.notify(1, cusNotification)
+                ChannelName.MESSAGE.channelName, remoteViews, R.mipmap.ic_launcher)
+        manager.notify(2, cusNotification)
     }
 }

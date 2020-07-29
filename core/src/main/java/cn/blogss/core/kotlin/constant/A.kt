@@ -10,7 +10,14 @@ class A {
     companion object {
         var age: Int = 18
         fun method(){
-            print("B.method()")
+            print("method()")
+        }
+    }
+
+    object B{
+        var name:String = "B"
+        fun method(){
+            print("method()")
         }
     }
 }

@@ -63,7 +63,7 @@ fun getNotification(context: Context, cls: Class<*>, channelName: String, title:
 /**
  * 获取一个自定义布局的通知
  */
-fun getCustomNotification(context: Context, cls: Class<*>, channelName: String, remoteViews: RemoteViews): Notification {
+fun getCustomNotification(context: Context, cls: Class<*>, channelName: String, remoteViews: RemoteViews, icon: Int): Notification {
     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){/*确保的是当前手机的系统版本必须是Android 8.0系统或者更高，
         因为低版本的手机系统并没有通知渠道这个功能，不做系统版本检查的话会在低版本手机上造成崩溃。*/
         val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -72,8 +72,9 @@ fun getCustomNotification(context: Context, cls: Class<*>, channelName: String, 
     val intent = Intent(context, cls)
     val pendingIntent: PendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
     return NotificationCompat.Builder(context, CHANNEL_ID).
+    setSmallIcon(icon).
     setAutoCancel(true).
-    setContent(remoteViews).
+    setCustomContentView(remoteViews).
     setContentIntent(pendingIntent).
     build()
 }
