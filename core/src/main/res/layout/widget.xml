@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--桌面小部件布局文件-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/iv_widget"
+        android:layout_width="@dimen/dp_50"
+        android:layout_height="@dimen/dp_50"
+        android:src="@drawable/dog"/>
+</LinearLayout>
