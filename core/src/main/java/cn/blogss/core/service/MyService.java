@@ -118,11 +118,11 @@ public class MyService extends Service {
             this.mService = service;
         }
 
-        public void receiveMsgFromnAct(String str) {
+        public void sendMsgToService(String str) {
             // Activity通过Binder来调用Service的方法将消息传给Service
             mService.receiveMsgFromnAct(str);
             // 并回调mListener.replyActMsg告诉Activity已收到消息
-            mListener.replyActMsg("hi, activity.");
+            mListener.sendMsgToAct("hi, activity.");
         }
 
         // MyBinder 里面提供一个注册回调的方法
@@ -132,7 +132,7 @@ public class MyService extends Service {
 
         //自定义一个回调接口
         public interface ReplyActMsgListener {
-            void replyActMsg(String str);
+            void sendMsgToAct(String str);
         }
     }
 }

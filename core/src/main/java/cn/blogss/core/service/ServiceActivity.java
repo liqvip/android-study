@@ -29,11 +29,11 @@ public class ServiceActivity extends BaseActivity implements View.OnClickListene
             //第6步注册自定义回调 
             mBinder.setReplyActMsgListener(new MyService.MyBinder.ReplyActMsgListener() {
                 @Override
-                public void replyActMsg(String str) {
+                public void sendMsgToAct(String str) {
                     Log.d(TAG, "receive msg from service: "+str);
                 }
             });
-            mBinder.receiveMsgFromnAct("hi, Service .");
+            mBinder.sendMsgToService("hi, Service .");
         }
 
         @Override
