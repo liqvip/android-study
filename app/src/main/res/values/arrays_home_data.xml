@@ -7,6 +7,7 @@
         <item>View 事件体系</item>
         <item>屏幕适配</item>
         <item>RemoteViews</item>
+        <item>Window 窗口</item>
     </string-array>
 
     <string-array name="home_rv_item_intent_act">
@@ -16,5 +17,6 @@
         <item>cn.blogss.core.view.ViewActivity</item>
         <item>cn.blogss.core.screen_adaptation.ScreenAdaptationActivity</item>
         <item>cn.blogss.core.remoteviews.MainActivity</item>
+        <item>cn.blogss.core.window.MainActivity</item>
     </string-array>
 </resources>

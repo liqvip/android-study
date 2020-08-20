@@ -46,4 +46,7 @@
     <string name="AS_Notification_Title_Default">Default Notification</string>
     <string name="AS_Notification_Content_Default">Click me into RemoteViews Activity</string>
     <string name="AS_RemoteViews_Title_Custom">Custom Notification Use RemoteViews</string>
+
+    <!--Window 部分-->
+    <string name="AS_Create_One_Window">添加一个 Window</string>
 </resources>
