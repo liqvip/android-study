@@ -48,5 +48,8 @@
     <string name="AS_RemoteViews_Title_Custom">Custom Notification Use RemoteViews</string>
 
     <!--Window 部分-->
-    <string name="AS_Create_One_Window">添加一个 Window</string>
+    <string name="AS_Create_Application_Window">添加应用 Window</string>
+    <string name="AS_Create_Sub_Window">添加子 Window</string>
+    <string name="AS_Create_Sys_Window">添加系统 Window</string>
+    <string name="AS_Del_Window">删除 Window</string>
 </resources>

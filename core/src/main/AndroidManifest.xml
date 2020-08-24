@@ -2,9 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="cn.blogss.core">
-    <!-- 拨打电话的权限，危险权限，需要运行时申请 -->
     <application>
-        <activity android:name=".window.MainActivity"></activity>
+        <activity android:name=".window.MainActivity"
+            android:launchMode="singleTask"/>
         <activity
             android:name=".remoteviews.MainActivity"
             android:launchMode="singleTask" />
@@ -64,13 +64,12 @@
                 android:resource="@xml/appwidget_provider_info" />
         </receiver> <!-- 服务 -->
         <service android:name=".service.MyService" />
-    </application> <!-- 访问系统网络状态权限 -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 读取手机联系人，危险权限，需要运行时申请 -->
-    <uses-permission android:name="android.permission.READ_CONTACTS" /> <!-- 访问网络的权限 -->
-    <uses-permission android:name="android.permission.INTERNET" />
+    </application>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 访问系统网络状态权限 -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" /> <!-- 读取手机联系人，危险权限，需要运行时申请 -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- 访问网络的权限 -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-
-    <uses-permission android:name="android.permission.CALL_PHONE" />
-
+    <uses-permission android:name="android.permission.CALL_PHONE" /> <!-- 拨打电话的权限，危险权限，需要运行时申请 -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/> <!--系统 Window 权限-->
 </manifest>

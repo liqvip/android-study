@@ -4,15 +4,27 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <Button
-        android:id="@+id/bt_create_one_window"
+        android:id="@+id/bt_create_application_window"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="@string/AS_Create_One_Window"/>
+        android:text="@string/AS_Create_Application_Window"/>
     <Button
-        android:id="@+id/bt_pop_one_custom_notification"
+        android:id="@+id/bt_create_sub_window"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/bt_create_one_window"
-        android:text="@string/AS_Pop_One_Custom_Notification"/>
+        app:layout_constraintTop_toBottomOf="@+id/bt_create_application_window"
+        android:text="@string/AS_Create_Sub_Window"/>
+    <Button
+        android:id="@+id/bt_create_sys_window"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/bt_create_sub_window"
+        android:text="@string/AS_Create_Sys_Window"/>
+    <Button
+        android:id="@+id/bt_del_window"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/AS_Del_Window"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
