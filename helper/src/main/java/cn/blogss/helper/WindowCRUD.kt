@@ -12,11 +12,7 @@ import android.view.WindowManager
  * @创建时间 2020/8/24
  */
 
-/**
- * 创建一个 window
- */
-fun createWindow(view: View, x: Int, y: Int, windowType: Int, context: Context){
-    val windowManager: WindowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+fun getWindowLayoutParamsInstance(x: Int, y: Int, windowType: Int): WindowManager.LayoutParams{
     val layoutParams: WindowManager.LayoutParams = WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,
             WindowManager.LayoutParams.WRAP_CONTENT, windowType, 0, PixelFormat.TRANSPARENT)
     layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or
@@ -25,6 +21,14 @@ fun createWindow(view: View, x: Int, y: Int, windowType: Int, context: Context){
     layoutParams.gravity = Gravity.START or Gravity.TOP
     layoutParams.x = x
     layoutParams.y = y
+    return layoutParams
+}
+
+/**
+ * 创建一个 window
+ */
+fun createWindow(view: View, layoutParams: WindowManager.LayoutParams, context: Context){
+    val windowManager: WindowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
     windowManager.addView(view, layoutParams)
 }
 
