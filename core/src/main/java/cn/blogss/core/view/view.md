@@ -289,7 +289,7 @@ MeasureSpec 在很大程度上决定了一个View的尺寸规格，其尺寸大�
 ##### 2.2.1 MeasureSpec
 <div align="center">源码：View#MeasureSpec</div>
 
-``` java
+```java
 public static class MeasureSpec {
     private static final int MODE_SHIFT = 30;
     private static final int MODE_MASK  = 0x3 << MODE_SHIFT;
@@ -338,7 +338,7 @@ View 的测量宽/高，layout 确定 View 的最终宽/高和四个顶点的位
 **1.View 的 Measure 过程**
 <div align="center">View#onMeasure(int widthMeasureSpec, int heightMeasureSpec)</div>
 
-``` java
+```java
 protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     /*setMeasuredDimension方法会设置 View 宽/高的测量值*/
     setMeasuredDimension(getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec),
@@ -348,7 +348,7 @@ protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 
 <div align="center">View#getDefaultSize(int size, int measureSpec)</div>
 
-``` java
+```java
 public static int getDefaultSize(int size, int measureSpec) {
     int result = size;
     int specMode = MeasureSpec.getMode(measureSpec);

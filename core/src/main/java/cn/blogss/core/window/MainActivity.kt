@@ -87,6 +87,7 @@ class MainActivity : BaseActivity(), View.OnClickListener, View.OnTouchListener 
     /**
      * 实现 window 的拖动，拦截 ACTION_MOVE 事件更新 Window 的 layoutParams 即可
      */
+    @SuppressLint("ClickableViewAccessibility")
     override fun onTouch(v: View?, event: MotionEvent?): Boolean {
         val rawX = event!!.rawX.toInt()
         val rawY = event.rawY.toInt()
@@ -109,10 +110,10 @@ class MainActivity : BaseActivity(), View.OnClickListener, View.OnTouchListener 
                         updateWindow(v, this, layoutParamsSysType)
                     }
                 }
+                /**
+                 * 返回 true，则 onTouchEvent 不会调用
+                 */
                 return true
-            }
-            MotionEvent.ACTION_UP -> {
-                v!!.performClick()
             }
         }
         return false
