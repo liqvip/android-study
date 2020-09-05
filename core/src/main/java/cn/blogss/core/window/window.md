@@ -73,7 +73,7 @@ public void startActivityForResult(@RequiresPermission Intent intent, int reques
 
         cancelInputsAndStartExitTransition(options);
         // TODO Consider clearing/flushing other event sources and events for child windows.
-    } else {
+    } else {    
         if (options != null) {
             mParent.startActivityFromChild(this, intent, requestCode, options);
         } else {
@@ -83,4 +83,145 @@ public void startActivityForResult(@RequiresPermission Intent intent, int reques
         }
     }
 }
+```
+
+<div align="center">Instrumentation#execStartActivity</div>
+
+```java
+public ActivityResult execStartActivity(
+        Context who, IBinder contextThread, IBinder token, Activity target,
+        Intent intent, int requestCode, Bundle options) {
+    IApplicationThread whoThread = (IApplicationThread) contextThread;
+    Uri referrer = target != null ? target.onProvideReferrer() : null;
+    if (referrer != null) {
+        intent.putExtra(Intent.EXTRA_REFERRER, referrer);
+    }
+    if (mActivityMonitors != null) {
+        synchronized (mSync) {
+            final int N = mActivityMonitors.size();
+            for (int i=0; i<N; i++) {
+                final ActivityMonitor am = mActivityMonitors.get(i);
+                ActivityResult result = null;
+                if (am.ignoreMatchingSpecificIntents()) {
+                    result = am.onStartActivity(intent);
+                }
+                if (result != null) {
+                    am.mHits++;
+                    return result;
+                } else if (am.match(who, null, intent)) {
+                    am.mHits++;
+                    if (am.isBlocking()) {
+                        return requestCode >= 0 ? am.getResult() : null;
+                    }
+                    break;
+                }
+            }
+        }
+    }
+    try {
+        intent.migrateExtraStreamToClipData();
+        intent.prepareToLeaveProcess(who);
+        int result = ActivityTaskManager.getService()
+            .startActivity(whoThread, who.getBasePackageName(), intent,
+                    intent.resolveTypeIfNeeded(who.getContentResolver()),
+                    token, target != null ? target.mEmbeddedID : null,
+                    requestCode, 0, null, options);
+        checkStartActivityResult(result, intent);
+    } catch (RemoteException e) {
+        throw new RuntimeException("Failure from system", e);
+    }
+    return null;
+}
+```
+
+<div align="center">ActivityTaskManagerService#startActivity</div>
+
+```java
+@Override
+public final int startActivity(IApplicationThread caller, String callingPackage,
+        Intent intent, String resolvedType, IBinder resultTo, String resultWho, int requestCode,
+        int startFlags, ProfilerInfo profilerInfo, Bundle bOptions) {
+    return startActivityAsUser(caller, callingPackage, intent, resolvedType, resultTo,
+            resultWho, requestCode, startFlags, profilerInfo, bOptions,
+            UserHandle.getCallingUserId());
+}
+```
+
+<div align="center">ActivityTaskManagerService#startActivityAsUser</div>
+
+```java
+int startActivityAsUser(IApplicationThread caller, String callingPackage,
+        Intent intent, String resolvedType, IBinder resultTo, String resultWho, int requestCode,
+        int startFlags, ProfilerInfo profilerInfo, Bundle bOptions, int userId,
+        boolean validateIncomingUser) {
+    enforceNotIsolatedCaller("startActivityAsUser");
+
+    userId = getActivityStartController().checkTargetUser(userId, validateIncomingUser,
+            Binder.getCallingPid(), Binder.getCallingUid(), "startActivityAsUser");
+
+    // TODO: Switch to user app stacks here.
+    return getActivityStartController().obtainStarter(intent, "startActivityAsUser")
+            .setCaller(caller)
+            .setCallingPackage(callingPackage)
+            .setResolvedType(resolvedType)
+            .setResultTo(resultTo)
+            .setResultWho(resultWho)
+            .setRequestCode(requestCode)
+            .setStartFlags(startFlags)
+            .setProfilerInfo(profilerInfo)
+            .setActivityOptions(bOptions)
+            .setMayWait(userId)
+            .execute();
+}
+```
+
+<div align="center">ActivityStarter#execute</div>
+
+```java
+int execute() {
+    try {
+        // TODO(b/64750076): Look into passing request directly to these methods to allow
+        // for transactional diffs and preprocessing.
+        if (mRequest.mayWait) {//走这里
+            return startActivityMayWait(mRequest.caller, mRequest.callingUid,
+                    mRequest.callingPackage, mRequest.realCallingPid, mRequest.realCallingUid,
+                    mRequest.intent, mRequest.resolvedType,
+                    mRequest.voiceSession, mRequest.voiceInteractor, mRequest.resultTo,
+                    mRequest.resultWho, mRequest.requestCode, mRequest.startFlags,
+                    mRequest.profilerInfo, mRequest.waitResult, mRequest.globalConfig,
+                    mRequest.activityOptions, mRequest.ignoreTargetSecurity, mRequest.userId,
+                    mRequest.inTask, mRequest.reason,
+                    mRequest.allowPendingRemoteAnimationRegistryLookup,
+                    mRequest.originatingPendingIntent, mRequest.allowBackgroundActivityStart);
+        } else {
+            return startActivity(mRequest.caller, mRequest.intent, mRequest.ephemeralIntent,
+                    mRequest.resolvedType, mRequest.activityInfo, mRequest.resolveInfo,
+                    mRequest.voiceSession, mRequest.voiceInteractor, mRequest.resultTo,
+                    mRequest.resultWho, mRequest.requestCode, mRequest.callingPid,
+                    mRequest.callingUid, mRequest.callingPackage, mRequest.realCallingPid,
+                    mRequest.realCallingUid, mRequest.startFlags, mRequest.activityOptions,
+                    mRequest.ignoreTargetSecurity, mRequest.componentSpecified,
+                    mRequest.outActivity, mRequest.inTask, mRequest.reason,
+                    mRequest.allowPendingRemoteAnimationRegistryLookup,
+                    mRequest.originatingPendingIntent, mRequest.allowBackgroundActivityStart);
+        }
+    } finally {
+        onExecutionComplete();
+    }
+}
+```
+
+<div align="center">ActivityStarter#startActivityMayWait</div>
+
+```java
+...
+...
+int res = startActivity(caller, intent, ephemeralIntent, resolvedType, aInfo, rInfo,
+        voiceSession, voiceInteractor, resultTo, resultWho, requestCode, callingPid,
+        callingUid, callingPackage, realCallingPid, realCallingUid, startFlags, options,
+        ignoreTargetSecurity, componentSpecified, outRecord, inTask, reason,
+        allowPendingRemoteAnimationRegistryLookup, originatingPendingIntent,
+        allowBackgroundActivityStart);
+...
+...
 ```
