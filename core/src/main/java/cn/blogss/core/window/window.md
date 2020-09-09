@@ -191,6 +191,12 @@ Activity 是一种展示型组件，Service 是一种计算型组件，用于在
 乃至其他应用共享数据。
 
 ### Activity 的工作过程
+下图是 Activity 的启动流程时序图，调用过程比较复杂，图片建议放大后查看。
+
+![Activity启动流程时序图](http://img.blogss.cn/myBlog/20200907192918145.jpg)
+
+<div align="center">Activity启动流程时序图</div>
+
 Android 9 及其以后 Activity 的启动过程有变化，主要体现在 realStartActivityLocked 方法。将启动一个 Activity 看做是
 执行一次事务。当调用 startActivity 那一刻开始，就进行了很深层次的方法调用，不过最终调用还是会回到 ActivityThread
 ，H 是 ActivityThread 的一个内部类，它继承了 Handler，启动一个 Activity 就是用 H 发送了一个 EXECUTE_TRANSACTION 类型的消息。
