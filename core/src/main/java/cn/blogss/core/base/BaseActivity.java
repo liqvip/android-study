@@ -48,7 +48,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     /**
-     *  隐藏 ActionBar
+     *  隐藏 ActionBar（标题栏）
      * */
     private void hideActionBar() {
         ActionBar actionBar = getSupportActionBar();

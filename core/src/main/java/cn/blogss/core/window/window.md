@@ -32,7 +32,154 @@ addView 方法有如下几步：
 
 ## Window 的创建过程
 ### Activity 的 Window 创建过程
+Activity 的 Window 创建过程和 Activity 的启动过程有很大联系。顺序上，在 Activity 调用 attach 方法的时候，就开始了 Window 的创建。
+下面代码直接实例化了一个 PhoneWindow 对象，并为 Window 设置了很多回调方法，方便在 Window 的状态改变时，回调 Activity
+中对应的方法做对应的处理，如我们再熟悉不过的 dispatchTouchEvent、onAttachedToWindow、onDetachedFromWindow、onContentChanged 等方法。
 
+<div align="center">Activity#attach</div>
+ 
+ ```java
+final void attach(Context context, ActivityThread aThread,
+        Instrumentation instr, IBinder token, int ident,
+        Application application, Intent intent, ActivityInfo info,
+        CharSequence title, Activity parent, String id,
+        NonConfigurationInstances lastNonConfigurationInstances,
+        Configuration config, String referrer, IVoiceInteractor voiceInteractor,
+        Window window, ActivityConfigCallback activityConfigCallback, IBinder assistToken) {
+    attachBaseContext(context);// 将 Activity 关联 ContextImpl
+    mFragments.attachHost(null /*parent*/);
+    mWindow = new PhoneWindow(this, window, activityConfigCallback);// 直接实例化一个 PhoneWindow
+    mWindow.setWindowControllerCallback(this);
+    // 由于 Activity 实现了 Window.Callback 接口，因此当 Window 接收到外界的状态改变时就会回调 Activity 中实现的 
+    // Callback 接口中的方法，比如我们比较熟悉的 dispatchTouchEvent、onAttachedToWindow、onDetachedFromWindow 等
+    mWindow.setCallback(this);
+    mWindow.setOnWindowDismissedCallback(this);
+    mWindow.getLayoutInflater().setPrivateFactory(this);
+    mWindow.setWindowManager(// Window 关联 WMS
+            (WindowManager)context.getSystemService(Context.WINDOW_SERVICE),
+            mToken, mComponent.flattenToString(),
+            (info.flags & ActivityInfo.FLAG_HARDWARE_ACCELERATED) != 0);
+}
+```
+
+实例化了 PhoneWindow 并不代表 Window 被添加了，Window 添加是一个 IPC 过程，必须通过 WMS 来添加。于是将焦点转移到 PhoneWindow 
+的实例化。preservedWindow 中文可以翻译为预先保留的 Window ，也从侧面说明，当前的这个 PhoneWindow 虽然已经被创建了，但是它并没有被
+WindowManager 所识别，所以这个时候的 Window 还无法提供具体功能，因为它还无法接收外界的输入信息。下面截取了部分代码，调用了 getDecorView
+方法。每一个 Window 都对应 一个View，Window 是 抽象的概念，而 View 是 Window 的具体表现形式，通过源码，是不是感觉对这句话的理解
+更加的深刻了呢。
+
+<div align="center">PhoneWindow#PhoneWindow()</div>
+
+```java
+public PhoneWindow(Context context, Window preservedWindow,
+        ActivityConfigCallback activityConfigCallback) {
+    this(context);
+    // Only main activity windows use decor context, all the other windows depend on whatever
+    // context that was given to them.
+    mUseDecorContext = true;
+    if (preservedWindow != null) {
+        mDecor = (DecorView) preservedWindow.getDecorView();//实例化 DecorView 对象。
+    }
+    mActivityConfigCallback = activityConfigCallback;
+}
+```
+
+之后内部调用了 installDecor() 方法
+
+<div align="center">PhoneWindow#getDecorView</div>
+
+```java
+@Override
+public final @NonNull View getDecorView() {
+    if (mDecor == null || mForceDecorInstall) {
+        installDecor();
+    }
+    return mDecor;
+}
+```
+
+下面是 installDecor 中截取的比较重要的代码，实例化了 DecorView 对象，DecorView 继承了 FrameLayout ，所有它本质上是一个 FrameLayout。
+DecorView 内部一定包含一个 id 为 content 的 FrameLayout，用来承载 Activity 的视图。
+**特别注意 mContentParent ，它是个 FrameLayout，他的 id 是 android.R.id.content**
+
+<div align="center">PhoneWindow#installDecor</div>
+
+```java
+private void installDecor() {
+    mForceDecorInstall = false;
+    if (mDecor == null) {
+        mDecor = generateDecor(-1);// 实例化 DecorView ，并将 PhoneWindow 关联到 DecorView 
+        mDecor.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
+        mDecor.setIsRootNamespace(true);
+        if (!mInvalidatePanelMenuPosted && mInvalidatePanelMenuFeatures != 0) {
+            mDecor.postOnAnimation(mInvalidatePanelMenuRunnable);
+        }
+    } else {
+        mDecor.setWindow(this);
+    }
+    if (mContentParent == null) {
+        mContentParent = generateLayout(mDecor);// 返回的 mContentParent 是个 FrameLayout，它就是 android.R.id.content
+    }
+}
+```
+
+到目前为止，我们还没有发现 WMS 添加 Window 的相关代码。在 Activity onCreate方法中我们不可避免的调用 setContentView 来设置布局，
+而我们设置的这个布局，就是 mContentParent 的唯一子 View。下面代码将我们设置的 View 添加到 mContentParent中。
+
+<div align="center">PhoneWindow#setContentView</div>
+
+```java
+@Override
+public void setContentView(int layoutResID) {
+    if (mContentParent == null) {// mContentParent 未实例化，则先实例化
+        installDecor();
+    } else if (!hasFeature(FEATURE_CONTENT_TRANSITIONS)) {// 走这里
+        mContentParent.removeAllViews();
+    }
+
+    if (hasFeature(FEATURE_CONTENT_TRANSITIONS)) {
+        final Scene newScene = Scene.getSceneForLayout(mContentParent, layoutResID,
+                getContext());
+        transitionTo(newScene);
+    } else {
+        mLayoutInflater.inflate(layoutResID, mContentParent);// 将我们设置的布局添加到mContentParent中
+    }
+    mContentParent.requestApplyInsets();
+    final Callback cb = getCallback();
+    if (cb != null && !isDestroyed()) {
+        cb.onContentChanged();// 回调，通知 Activity 布局已经加载，可以在 Activity 中重写这个方法做对应的处理
+    }
+}
+```
+
+执行完 onCreate，发现还是没有 WMS 添加 Window 的相关代码，可以猜测，这部分代码肯定在 onCreate 之后，事实证明的确如此。
+在 ActivityThread 的 handleResumeActivity 方法中，首先会调用 performResumeActivity 执行 onResume 方法，接着会调用 Activity
+的 makeVisible()，正是在 makeVisible 方法中，DecorView 通过 WM 完成了添加和显示这两个过程，到这里 Activity 的视图才能被用户看到。
+
+<div align="center">ActivityThread#handleResumeActivity</div>
+
+```java
+public void handleResumeActivity(IBinder token, boolean finalStateRequest, boolean isForward,
+            String reason) {
+    final ActivityClientRecord r = performResumeActivity(token, finalStateRequest, reason); // 执行 
+    if (r.activity.mVisibleFromClient) {
+        r.activity.makeVisible();
+    }            
+}
+```
+
+<div align="center">Activity#makeVisible</div>
+
+```java
+void makeVisible() {
+    if (!mWindowAdded) {
+        ViewManager wm = getWindowManager();
+        wm.addView(mDecor, getWindow().getAttributes());
+        mWindowAdded = true;
+    }
+    mDecor.setVisibility(View.VISIBLE);
+}
+```
 
 ### Dialog 的 Window 创建过程
 ### Toast 的 Window 创建过程
