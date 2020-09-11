@@ -15,6 +15,9 @@ startService(intentService,mServiceConnection,BIND_AUTO_CRATE);
 ```
 
 ### Service 的启动过程
+
+![Service 的启动过程](http://img.blogss.cn/myBlog/20200911170011247.jpg)
+
 Service 的启动从 ContextWrapper 中的 startService 方法开始。mBase 的类型是 ContextImpl，Activity 被创建时
 会通过 attach 方法将一个 ContextImpl 关联起来，这个 ContextImpl 对象就是 mBase。
 
@@ -157,14 +160,17 @@ handleCreateService 主要完成了如下几件事。
 2. 然后创建 ContextImpl 对象并通过 Service 的 attach 方法建立二者之间的关系，这个过程和 Activity 实际上是类似的，
 毕竟 Service 和 Activity 都是一个 Context。
 3. 接着创建 Application 对象并调用其 onCreate ,当然 Application 的创建过程只会有一次。
-4. 最后调用 Service 的 onCreate 方法并将 Service 对象存储到 ActivityThread 的一个列表中。这个列表的定义如下所示。
+4. **最后调用 Service 的 onCreate** 方法并将 Service 对象存储到 ActivityThread 的一个列表中。这个列表的定义如下所示。
 ```java
 final ArrayMap<IBinder, Service> mServices = new ArrayMap<>();
 ```
 
-由于 Service 的 onCreate 方法被执行了，这也意味着 Service 已经启动了。
+由于 Service 的 onCreate 方法被执行了，这也意味着 Service 已经启动了，**随后会调用 Service 的其他方法，比如 onStartCommand**。
 
 ### Service 的绑定过程
+
+![Service 的绑定过程](http://img.blogss.cn/myBlog/20200911170002333.jpg)
+
 Service 的绑定过程大致和启动过程一样，首先在 ContextWrapper 中调用 bindService，然后在 ContextImpl 中调用 
 bindServiceCommon 方法，如下所示。
 
@@ -177,7 +183,7 @@ private boolean bindServiceCommon(Intent service, ServiceConnection conn, int fl
     if (mPackageInfo != null) {
         if (executor != null) {
             sd = mPackageInfo.getServiceDispatcher(conn, getOuterContext(), executor, flags);
-        } else {
+        } else {// 将客户端的 ServiceConnection 对象转化为 ServiceDispatcher.InnerConnection对象
             sd = mPackageInfo.getServiceDispatcher(conn, getOuterContext(), handler, flags);
         }
     }
@@ -194,10 +200,6 @@ private boolean bindServiceCommon(Intent service, ServiceConnection conn, int fl
             mMainThread.getApplicationThread(), getActivityToken(), service,
             service.resolveTypeIfNeeded(getContentResolver()),
             sd, flags, instanceName, getOpPackageName(), user.getIdentifier());
-        if (res < 0) {
-            throw new SecurityException(
-                    "Not allowed to bind to service " + service);
-        }
         return res != 0;
     } catch (RemoteException e) {
         throw e.rethrowFromSystemServer();
@@ -205,7 +207,121 @@ private boolean bindServiceCommon(Intent service, ServiceConnection conn, int fl
 }
 ```
 
+bindServiceCommon 方法主要完成如下两件事情。
+1. 首先将客户端的 ServiceConnection 对象转化为 ServiceDispatcher.InnerConnection 对象。之所以不能直接使用
+ServiceConnection 对象，这是因为服务的绑定有可能是跨进程的，因此 ServiceConnection 对象必须借助于 Binder 
+才能让远程服务端回调自己的方法。而 ServiceDispatcher 的内部类 InnerConnection 刚好充当了 Binder 这个角色。
+当 Service 和客户端建立联系后，系统会通过 InnerConnection 来调用 ServiceConnection 中的 onServiceConnected 方法。
+2. 接着 bindServiceCommon 方法会通过 AMS 来完成 Service 的具体绑定过程，这对应 AMS 的 bindIsolatedService 方法。
 
+<div align="center">ActivityManagerService#bindIsolatedService</div>
+
+```java
+public int bindIsolatedService(IApplicationThread caller, IBinder token, Intent service,
+        String resolvedType, IServiceConnection connection, int flags, String instanceName,
+        String callingPackage, int userId) throws TransactionTooLargeException {
+
+    synchronized(this) {
+        return mServices.bindServiceLocked(caller, token, service,
+                resolvedType, connection, flags, instanceName, callingPackage, userId);
+    }
+}
+```
+
+AMS 中的 bindIsolatedService 方法会调用 ActiveServices 的 bindServiceLocked 方法，bindServiceLocked 再调用
+requestServiceBindingLocked 方法。对于 r.app.thread 我们再也熟悉不过，它就是 ApplicationThread 对象，那么最后
+的处理还是会交给 ApplicationThread 的内部类 H 来处理，这里就不再详细说明。
+
+<div align="center">ActiveServices#requestServiceBindingLocked</div>
+
+```java
+private final boolean requestServiceBindingLocked(ServiceRecord r, IntentBindRecord i,
+        boolean execInFg, boolean rebind) throws TransactionTooLargeException {
+    if ((!i.requested || rebind) && i.apps.size() > 0) {
+        try {
+            bumpServiceExecutingLocked(r, execInFg, "bind");
+            r.app.forceProcessStateUpTo(ActivityManager.PROCESS_STATE_SERVICE);
+            r.app.thread.scheduleBindService(r, i.intent.getIntent(), rebind,
+                    r.app.getReportedProcState());
+            if (!rebind) {
+                i.requested = true;
+            }
+            i.hasBound = true;
+            i.doRebind = false;
+        }
+    }
+    return true;
+}
+```
+
+通过 scheduleBindService 方法发送的是一个 BIND_SERVICE 类型的消息，H 对这个消息类型的处理如下，如果是第一次
+绑定，那么首先会调用 Service 的 onBind 方法，然后调用 AMS 中的 publishService 方法。如果是多次绑定同一个 Service，
+那么首先调用 Service 的 onRebind 方法，然后调用 AMS 中的 serviceDoneExecuting 方法。
+
+<div align="center">ActivityThread#handleBindService</div>
+
+```java
+private void handleBindService(BindServiceData data) {
+    Service s = mServices.get(data.token);
+    if (DEBUG_SERVICE)
+        Slog.v(TAG, "handleBindService s=" + s + " rebind=" + data.rebind);
+    if (s != null) {
+        try {
+            data.intent.setExtrasClassLoader(s.getClassLoader());
+            data.intent.prepareToEnterProcess();
+            try {
+                if (!data.rebind) {// 第一次绑定
+                    IBinder binder = s.onBind(data.intent);
+                    ActivityManager.getService().publishService(
+                            data.token, data.intent, binder);
+                } else {// 多次绑定同一个 Service
+                    s.onRebind(data.intent);
+                    ActivityManager.getService().serviceDoneExecuting(
+                            data.token, SERVICE_DONE_EXECUTING_ANON, 0, 0);
+                }
+            } catch (RemoteException ex) {
+                throw ex.rethrowFromSystemServer();
+            }
+        }
+    }
+}
+```
+
+publishService 尾部调用了 ActiveServices 中的 publishServiceLocked ，这个方法看起来很复杂，但其实核心代码只有
+就只有一句话：c.conn.connected(r.name, service, false)，其中 c 的类型是 ConnectionRecord，c.conn 的类型是
+LoadedApk.ServiceDispatcher.InnerConnection，service 就是 Service 的 onBind 方法返回的 Binder 对象。为了分析
+具体的逻辑，下面看一下 InnerConnection 的 connected 方法。
+
+
+<div align="center"><b>InnerConnection#connected</b></div>
+
+```java
+public void connected(ComponentName name, IBinder service, boolean dead)
+        throws RemoteException {
+    LoadedApk.ServiceDispatcher sd = mDispatcher.get();
+    if (sd != null) {
+        sd.connected(name, service, dead);
+    }
+}
+```
+
+connected 方法又调用了 ServiceDispatcher的 connected 方法。mActivityThread 就是 ActivityThread 中的 H，
+这样一来，RunConnection 就可以经由 H 的 post 方法从而运行在主线程中，因此客户端 ServiceConnection 中的方法
+是在主线程被回调的。
+
+<div align="center"><b>ServiceDispatcher的#connected</b></div>
+
+```java
+public void connected(ComponentName name, IBinder service, boolean dead) {
+    if (mActivityExecutor != null) {
+        mActivityExecutor.execute(new RunConnection(name, service, 0, dead));
+    } else if (mActivityThread != null) {// 调用 
+        mActivityThread.post(new RunConnection(name, service, 0, dead));
+    } else {
+        doConnected(name, service, dead);
+    }
+}
+```
 
 #### 1.4 Androidmanifest里Service的常见属性说明
 属性 | 说明 | 备注
