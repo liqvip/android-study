@@ -43,7 +43,9 @@
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
-        </receiver> <!-- 静态注册一个自定义的广播接收器，用来接收自定义的广播，TargetSDK达到了26及其以上，无效 -->
+        </receiver>
+        <!-- 静态注册一个自定义的广播接收器，用来接收自定义的广播，TargetSDK达到了26及其以上，
+        需要指定应用程序的包名和广播接收器的类名，否则无效 -->
         <receiver
             android:name=".broadcast.MyBroadcastReceiver"
             android:enabled="true"

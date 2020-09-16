@@ -323,7 +323,7 @@ public void connected(ComponentName name, IBinder service, boolean dead) {
 }
 ```
 
-#### 1.4 Androidmanifest里Service的常见属性说明
+## Androidmanifest里Service的常见属性说明
 属性 | 说明 | 备注
 ---|---|---
 android:name | Service的类名 |
@@ -334,17 +334,17 @@ android:process | 表示该服务是否在另一个进程中运行（远程服�
 android:enabled | 系统默认启动 | true：Service 将会默认被系统启动；不设置则默认为false
 android:exported | 该服务是否能够被其他应用程序所控制或连接 | 不设置默认此项为 false
 
-### 2. 本地 Service
-#### 2.1 生命周期
+## 2. 本地 Service
+### 2.1 生命周期
 onCreate->onStartCommand->onDestroy
 
 
-### 3. 可通讯 Service
-#### 3.1 生命周期
+## 3. 可通讯 Service
+### 3.1 生命周期
 onCreate->onBind->onUnbind->onDestroy
 
-### 4. 前台 Service
-#### 4.1 使用方法
+## 4. 前台 Service
+### 4.1 使用方法
 1. 用法很简单，只需要在原有的Service类对onCreate()方法进行稍微修改即可。
 ``` java
 @Override
@@ -377,7 +377,7 @@ private Notification getNotification(PendingIntent pendingIntent) {
 2. 安卓8.0以后添加了前台所需要的权限<br>
 `<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />`
 
-#### 4.2 测试结果
+### 4.2 测试结果
 运行后，当点击启动服务或绑定服务按钮，Service就会以前台Service的模式启动（通知栏上有通知）
 
-### 5. 远程 Service
+## 5. 远程 Service
