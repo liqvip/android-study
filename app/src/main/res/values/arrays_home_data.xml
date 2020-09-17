@@ -5,6 +5,7 @@
         <item>Service 服务</item>
         <item>Content Provider 内容提供器</item>
         <item>View 事件体系</item>
+        <item>Network 网络</item>
         <item>屏幕适配</item>
         <item>RemoteViews</item>
         <item>Window 窗口</item>
@@ -15,6 +16,7 @@
         <item>cn.blogss.core.service.ServiceActivity</item>
         <item>cn.blogss.core.contentprovider.MainActivity</item>
         <item>cn.blogss.core.view.ViewActivity</item>
+        <item>cn.blogss.core.network.NetworkActivity</item>
         <item>cn.blogss.core.screen_adaptation.ScreenAdaptationActivity</item>
         <item>cn.blogss.core.remoteviews.MainActivity</item>
         <item>cn.blogss.core.window.MainActivity</item>
