@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    android:id="@+id/home_container"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <!-- Main content -->
-
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!--需要加 layout_above 属性，否则 BottomNavigationView 会遮挡 Fragment 的底部内容-->
+    <FrameLayout
+        android:id="@+id/home_container"
+        android:layout_above="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </FrameLayout>
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
+        android:layout_alignParentBottom="true"
         android:background="@color/white"
         app:itemIconTint="@color/wx_icon_gray"
         app:itemTextColor="@color/wx_icon_gray"
         app:menu="@menu/bottom_navigation_menu" />
+</RelativeLayout>
 
-</FrameLayout>

@@ -44,4 +44,24 @@ public class ResUtil {
         }
         return id;
     }
+
+    /**
+     * 根据资源的名字获取资源数组
+     * @param context
+     * @param name，资源名字数组
+     * @param type，资源类型
+     * @return
+     */
+    public static int[] getIds(Context context, String[] name, String type){
+        int[] ids = new int[name.length];
+        for(int i=0;i<name.length;i++){
+            try {
+                int id = context.getResources().getIdentifier(name[i], type, context.getPackageName());
+                ids[i] = id;
+            } catch (Exception e){
+
+            }
+        }
+        return ids;
+    }
 }

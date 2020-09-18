@@ -34,7 +34,7 @@ fun asynGetReq(url: String, listener: OnRequestListener){
                 val ins = conn.inputStream // 建立连接，阻塞获取输入流
                 reader = BufferedReader(InputStreamReader(ins))
                 val response = StringBuilder()
-                var line:String? = null
+                var line:String?
                 while (reader.readLine().also { line = it } != null)
                     response.append(line)
                 listener.onOK(response.toString())
