@@ -4,7 +4,8 @@
     package="cn.blogss.core">
 
     <application>
-        <activity android:name=".cache.MainActivity"></activity>
+        <activity android:name=".cache.MainActivity"
+            android:launchMode="singleTask"/>
         <activity
             android:name=".window.MainActivity"
             android:launchMode="singleTask" />
