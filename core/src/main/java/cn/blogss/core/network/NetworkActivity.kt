@@ -7,6 +7,8 @@ import android.widget.Button
 import android.widget.TextView
 import cn.blogss.core.R
 import cn.blogss.core.base.BaseActivity
+import cn.blogss.helper.originhttprequest.OnRequestListener
+import cn.blogss.helper.originhttprequest.asynGetReq
 
 class NetworkActivity : BaseActivity(), View.OnClickListener {
     private lateinit var wvBaiDu: WebView

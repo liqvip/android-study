@@ -1,8 +1,9 @@
-package cn.blogss.helper
+package cn.blogss.helper.imageloader
 
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import java.io.FileDescriptor
 
 /**
  * @创建人 560266
@@ -19,7 +20,7 @@ import android.graphics.BitmapFactory
  * @param targetHeight Int, 控件的高
  * @return Bitmap
  */
-fun compressImage(res: Resources, resId: Int, targetWidth: Int, targetHeight: Int): Bitmap{
+fun resizeImageFromRes(res: Resources, resId: Int, targetWidth: Int, targetHeight: Int): Bitmap{
     val options = BitmapFactory.Options()
     options.inJustDecodeBounds = true // 此参数设置为 true, BitmapFactory 只会解析图片的原始宽/高信息, 并不会真正的加载图片
     BitmapFactory.decodeResource(res, resId, options)
@@ -27,6 +28,23 @@ fun compressImage(res: Resources, resId: Int, targetWidth: Int, targetHeight: In
     options.inSampleSize = calculateInSampleSize(options, targetWidth, targetHeight)
     options.inJustDecodeBounds = false
     return BitmapFactory.decodeResource(res, resId, options)
+}
+
+/**
+ *
+ * @param fileDes FileDescriptor
+ * @param targetWidth Int
+ * @param targetHeight Int
+ * @return Bitmap
+ */
+fun resizeImageFromFileDes(fileDes: FileDescriptor, targetWidth: Int, targetHeight: Int): Bitmap{
+    val options = BitmapFactory.Options()
+    options.inJustDecodeBounds = true // 此参数设置为 true, BitmapFactory 只会解析图片的原始宽/高信息, 并不会真正的加载图片
+    BitmapFactory.decodeFileDescriptor(fileDes, null, options)
+    // 计算采样率
+    options.inSampleSize = calculateInSampleSize(options, targetWidth, targetHeight)
+    options.inJustDecodeBounds = false
+    return BitmapFactory.decodeFileDescriptor(fileDes, null, options)
 }
 
 /**

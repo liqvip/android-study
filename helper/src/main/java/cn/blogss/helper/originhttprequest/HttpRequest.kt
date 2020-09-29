@@ -1,7 +1,6 @@
-package cn.blogss.core.network
+package cn.blogss.helper.originhttprequest
 
-import java.io.BufferedReader
-import java.io.InputStreamReader
+import java.io.*
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -19,6 +18,8 @@ const val REQUEST_METHOD_POST = "POST"
 /**
  * 异步发送一个请求方式为 GET 的网络请求，使用 HttpURLConnection。
  * 从Android 4.4开始，HttpURLConnection的实现是通过调用 OkHttp 完成的
+ * @param url String
+ * @param listener OnRequestListener
  */
 fun asynGetReq(url: String, listener: OnRequestListener){
     Thread(object : Runnable {
@@ -39,9 +40,44 @@ fun asynGetReq(url: String, listener: OnRequestListener){
                     response.append(line)
                 listener.onOK(response.toString())
             } catch (e: Exception){
-
+                listener.onFail()
             } finally {
                 reader?.close()
+                conn?.disconnect()
+            }
+        }
+    }).start()
+}
+
+/**
+ * 异步发送一个请求方式为 GET 的网络请求，并将请求得到的网络资源缓存到本地
+ * @param url String
+ * @param out OutputStream，输出流，写入资源到本地
+ * @param listener OnRequestListener
+ */
+fun asynGetReq(url: String, out: OutputStream, listener: OnRequestListener){
+    Thread(object : Runnable {
+        override fun run() {
+            var conn: HttpURLConnection? = null
+            var bIns: BufferedInputStream? = null
+            var bOut = BufferedOutputStream(out)
+            try {
+                val realUrl = URL(url);
+                conn = realUrl.openConnection() as HttpURLConnection
+                conn.requestMethod = REQUEST_METHOD_GET
+                conn.connectTimeout = CONN_TIMEOUT
+                conn.readTimeout = READ_TIMEOUT
+                val ins = conn.inputStream // 建立连接，阻塞获取输入流
+                bIns = BufferedInputStream(ins)
+                var b: Int
+                while (bIns.read().also { b = it } != -1)
+                    bOut.write(b)
+                listener.onOK("")
+            } catch (e: Exception){
+                listener.onFail()
+            } finally {
+                bIns!!.close()
+                bOut.close()
                 conn?.disconnect()
             }
         }
