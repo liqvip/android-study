@@ -14,6 +14,7 @@ import com.jakewharton.disklrucache.DiskLruCache
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
+import java.lang.RuntimeException
 import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.ThreadFactory
 import java.util.concurrent.ThreadPoolExecutor
@@ -35,7 +36,7 @@ class ImageLoader private constructor(context: Context) {
             val result = msg.obj as LoadResult
             val imageView = result.imageView
             val uri = imageView.getTag(TAG_KEY_URI).toString()
-            if(uri == result.uri){// 防止 View 复用，导致列表错位问题
+            if(uri == result.uri){// 异步加载图片之后，防止 View 复用，导致列表错位问题
                 imageView.setImageBitmap(result.bitmap)
             }else{
                 Log.w(TAG, "handleMessage: set image bitmap,but url has be changed, ignored!")
@@ -159,7 +160,7 @@ class ImageLoader private constructor(context: Context) {
      * @param targetHeight Int
      * @return Bitmap
      */
-    private fun loadBitmap(uri: String, targetWidth: Int, targetHeight: Int): Bitmap {
+    private fun loadBitmap(uri: String, targetWidth: Int, targetHeight: Int): Bitmap? {
         var bitmap = loadBitmapFromCache(uri)
         if(bitmap != null){
             Log.d(TAG, "loadBitmap: loadBitmapFromCache,url: $uri")
@@ -178,9 +179,18 @@ class ImageLoader private constructor(context: Context) {
         } catch (e: IOException) {
             e.printStackTrace()
         }
+        if(mDiskLruCache == null && !mDiskCacheCreated){
+            Log.w(TAG, "loadBitmap: encounter error, DiskLruCache is not created.")
+        }
+        return bitmap
     }
 
     private fun loadBitmapFromHttp(uri: String, targetWidth: Int, targetHeight: Int): Bitmap? {
+        if(Looper.myLooper() == Looper.getMainLooper()){
+            throw RuntimeException("can not visit network from UI Thread.")
+        }
+        if(mDiskLruCache == null)
+            return null
 
     }
 

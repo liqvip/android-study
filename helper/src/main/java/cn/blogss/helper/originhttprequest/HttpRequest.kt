@@ -10,6 +10,7 @@ import java.net.URL
  * @创建时间 2020/9/17
  */
 
+const val BUFFER_SIZE = 8*1024
 const val READ_TIMEOUT = 8*1000
 const val CONN_TIMEOUT = 8*1000
 const val REQUEST_METHOD_GET = "GET"
@@ -21,30 +22,28 @@ const val REQUEST_METHOD_POST = "POST"
  * @param url String
  * @param listener OnRequestListener
  */
-fun asynGetReq(url: String, listener: OnRequestListener){
-    Thread(object : Runnable {
-        override fun run() {
-            var conn: HttpURLConnection? = null
-            var reader: BufferedReader? = null
-            try {
-                val realUrl = URL(url);
-                conn = realUrl.openConnection() as HttpURLConnection
-                conn.requestMethod = REQUEST_METHOD_GET
-                conn.connectTimeout = CONN_TIMEOUT
-                conn.readTimeout = READ_TIMEOUT
-                val ins = conn.inputStream // 建立连接，阻塞获取输入流
-                reader = BufferedReader(InputStreamReader(ins))
-                val response = StringBuilder()
-                var line:String?
-                while (reader.readLine().also { line = it } != null)
-                    response.append(line)
-                listener.onOK(response.toString())
-            } catch (e: Exception){
-                listener.onFail()
-            } finally {
-                reader?.close()
-                conn?.disconnect()
-            }
+fun asyncGetReq(url: String, listener: OnRequestListener){
+    Thread(Runnable {
+        var conn: HttpURLConnection? = null
+        var reader: BufferedReader? = null
+        try {
+            val realUrl = URL(url);
+            conn = realUrl.openConnection() as HttpURLConnection
+            conn.requestMethod = REQUEST_METHOD_GET
+            conn.connectTimeout = CONN_TIMEOUT
+            conn.readTimeout = READ_TIMEOUT
+            val ins = conn.inputStream // 建立连接，阻塞获取输入流
+            reader = BufferedReader(InputStreamReader(ins))
+            val response = StringBuilder()
+            var line:String?
+            while (reader.readLine().also { line = it } != null)
+                response.append(line)
+            listener.onOK(response.toString())
+        } catch (e: Exception){
+            listener.onFail()
+        } finally {
+            reader?.close()
+            conn?.disconnect()
         }
     }).start()
 }
@@ -55,31 +54,60 @@ fun asynGetReq(url: String, listener: OnRequestListener){
  * @param out OutputStream，输出流，写入资源到本地
  * @param listener OnRequestListener
  */
-fun asynGetReq(url: String, out: OutputStream, listener: OnRequestListener){
-    Thread(object : Runnable {
-        override fun run() {
-            var conn: HttpURLConnection? = null
-            var bIns: BufferedInputStream? = null
-            var bOut = BufferedOutputStream(out)
-            try {
-                val realUrl = URL(url);
-                conn = realUrl.openConnection() as HttpURLConnection
-                conn.requestMethod = REQUEST_METHOD_GET
-                conn.connectTimeout = CONN_TIMEOUT
-                conn.readTimeout = READ_TIMEOUT
-                val ins = conn.inputStream // 建立连接，阻塞获取输入流
-                bIns = BufferedInputStream(ins)
-                var b: Int
-                while (bIns.read().also { b = it } != -1)
-                    bOut.write(b)
-                listener.onOK("")
-            } catch (e: Exception){
-                listener.onFail()
-            } finally {
-                bIns!!.close()
-                bOut.close()
-                conn?.disconnect()
-            }
+fun asyncGetReq(url: String, out: OutputStream, listener: OnRequestListener){
+    Thread(Runnable {
+        var conn: HttpURLConnection? = null
+        var bIns: BufferedInputStream? = null
+        val bOut = BufferedOutputStream(out)
+        try {
+            val realUrl = URL(url);
+            conn = realUrl.openConnection() as HttpURLConnection
+            conn.requestMethod = REQUEST_METHOD_GET
+            conn.connectTimeout = CONN_TIMEOUT
+            conn.readTimeout = READ_TIMEOUT
+            val ins = conn.inputStream // 建立连接，阻塞获取输入流
+            bIns = BufferedInputStream(ins,BUFFER_SIZE)
+            var b: Int
+            while (bIns.read().also { b = it } != -1)
+                bOut.write(b)
+            listener.onOK("")
+        } catch (e: Exception){
+            listener.onFail()
+        } finally {
+            bIns!!.close()
+            bOut.close()
+            conn?.disconnect()
         }
     }).start()
+}
+
+/**
+ * 同步发送一个请求方式为 GET 的网络请求，并将请求得到的网络资源缓存到本地
+ * @param url String
+ * @param out OutputStream，输出流，写入资源到本地
+ * @param listener OnRequestListener
+ */
+fun syncGetReq(url: String, out: OutputStream, listener: OnRequestListener){
+    var conn: HttpURLConnection? = null
+    var bIns: BufferedInputStream? = null
+    val bOut = BufferedOutputStream(out)
+    try {
+        val realUrl = URL(url);
+        conn = realUrl.openConnection() as HttpURLConnection
+        conn.requestMethod = REQUEST_METHOD_GET
+        conn.connectTimeout = CONN_TIMEOUT
+        conn.readTimeout = READ_TIMEOUT
+        val ins = conn.inputStream // 建立连接，阻塞获取输入流
+        bIns = BufferedInputStream(ins,BUFFER_SIZE)
+        var b: Int
+        while (bIns.read().also { b = it } != -1)
+            bOut.write(b)
+        listener.onOK("")
+    } catch (e: Exception){
+        listener.onFail()
+    } finally {
+        bIns!!.close()
+        bOut.close()
+        conn?.disconnect()
+    }
 }

@@ -8,7 +8,7 @@ import android.widget.TextView
 import cn.blogss.core.R
 import cn.blogss.core.base.BaseActivity
 import cn.blogss.helper.originhttprequest.OnRequestListener
-import cn.blogss.helper.originhttprequest.asynGetReq
+import cn.blogss.helper.originhttprequest.asyncGetReq
 
 class NetworkActivity : BaseActivity(), View.OnClickListener {
     private lateinit var wvBaiDu: WebView
@@ -38,7 +38,7 @@ class NetworkActivity : BaseActivity(), View.OnClickListener {
         when(v.id){
             R.id.bt_send_one_req -> {
                 val url = "http://www.blogss.cn/"
-                asynGetReq(url, object : OnRequestListener {
+                asyncGetReq(url, object : OnRequestListener {
                     override fun onOK(result: String) {
                         runOnUiThread {/*切换到主线程更新 UI*/
                             tvResponseContent.text = result
