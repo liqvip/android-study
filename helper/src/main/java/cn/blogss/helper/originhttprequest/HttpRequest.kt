@@ -106,7 +106,7 @@ fun syncGetReq(url: String, out: OutputStream, listener: OnRequestListener){
     } catch (e: Exception){
         listener.onFail()
     } finally {
-        bIns!!.close()
+        bIns?.close()
         bOut.close()
         conn?.disconnect()
     }

@@ -2,6 +2,7 @@ package cn.blogss.helper.imageloader
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Environment
 import android.os.Handler
 import android.os.Looper
@@ -10,11 +11,18 @@ import android.util.Log
 import android.widget.ImageView
 import androidx.collection.LruCache
 import cn.blogss.helper.R
+import cn.blogss.helper.dp2px
+import cn.blogss.helper.originhttprequest.OnRequestListener
+import cn.blogss.helper.originhttprequest.syncGetReq
 import com.jakewharton.disklrucache.DiskLruCache
+import java.io.BufferedInputStream
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
+import java.lang.Exception
 import java.lang.RuntimeException
+import java.net.HttpURLConnection
+import java.net.URL
 import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.ThreadFactory
 import java.util.concurrent.ThreadPoolExecutor
@@ -23,7 +31,7 @@ import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * @创建人 560266
- * @文件描述 磁盘缓存的 curd 操作
+ * @文件描述 一个简单的图片加载库
  * @创建时间 2020/9/28
  */
 class ImageLoader private constructor(context: Context) {
@@ -126,10 +134,10 @@ class ImageLoader private constructor(context: Context) {
      * 外部可以调用的方法，用于将图片绑定到控件上。如果本地缓存没有这张图，那么需要请求网络。
      * @param uri String，图片地址
      * @param imageView ImageView，需要加载图片的控件
-     * @param targetWidth Int，控件的宽
-     * @param targetHeight Int，控件的高
+     * @param targetWidth Int，控件的宽 dp
+     * @param targetHeight Int，控件的高 dp
      */
-    fun bindBitmap(uri: String, imageView: ImageView, targetWidth: Int, targetHeight: Int){
+    fun bindBitmap(uri: String, imageView: ImageView, targetWidth: Float, targetHeight: Float){
         imageView.setTag(TAG_KEY_URI,uri)
         val bitmap = loadBitmapFromCache(uri)
         if(bitmap != null){
@@ -139,7 +147,7 @@ class ImageLoader private constructor(context: Context) {
 
         /*异步加载，从磁盘还是网络加载都是耗时的，所以需要异步加载*/
         val loadBitmapTask = Runnable {
-            val bitmap = loadBitmap(uri, targetWidth, targetHeight)
+            val bitmap = loadBitmap(uri, dp2px(mContext,targetWidth), dp2px(mContext,targetHeight))
             if(bitmap != null){//   加载成功后需要在主线程更新 UI
                 val loadResult = LoadResult(imageView,uri,bitmap)
                 mMainHandler.obtainMessage(MESSAGE_POST_RESULT,loadResult).sendToTarget()
@@ -185,13 +193,59 @@ class ImageLoader private constructor(context: Context) {
         return bitmap
     }
 
+    /**
+     * 从网络上下载一张图片到磁盘并添加到内存缓存
+     * @param uri String
+     * @param targetWidth Int
+     * @param targetHeight Int
+     * @return Bitmap?
+     */
     private fun loadBitmapFromHttp(uri: String, targetWidth: Int, targetHeight: Int): Bitmap? {
         if(Looper.myLooper() == Looper.getMainLooper()){
             throw RuntimeException("can not visit network from UI Thread.")
         }
         if(mDiskLruCache == null)
             return null
+        val key = Util.hashKeyFromUrl(uri)
+        val editor = mDiskLruCache!!.edit(key)
+        if(editor != null){
+          val os = editor.newOutputStream(DISK_CACHE_INDEX)
+            syncGetReq(uri,os,object: OnRequestListener{
+                override fun onOK(result: String) {
+                    editor.commit()
+                }
 
+                override fun onFail() {
+                    editor.abort()
+                }
+
+            })
+            mDiskLruCache!!.flush()
+        }
+        return loadBitmapFromDiskCache(uri,targetWidth,targetHeight)
+    }
+
+    /**
+     * 从网络上下载一张图片，并将其转化为 Bitmap
+     * @param uri String
+     * @return Bitmap?
+     */
+    private fun loadBitmapFromHttp(uri: String): Bitmap? {
+        var bitMap: Bitmap? = null
+        var urlConn: HttpURLConnection? = null
+        var ins: BufferedInputStream? = null
+        try {
+            val url = URL(uri)
+            urlConn = url.openConnection() as HttpURLConnection
+            ins = BufferedInputStream(urlConn.inputStream, cn.blogss.helper.originhttprequest.BUFFER_SIZE)
+            bitMap = BitmapFactory.decodeStream(ins)
+        } catch (e: Exception) {
+            Log.w(TAG, "loadBitmapFromHttp: Error in download Bitmap")
+        } finally {
+            urlConn?.disconnect()
+            ins?.close()
+        }
+        return bitMap
     }
 
     /**
