@@ -286,7 +286,7 @@ handleLaunchActivity 中又调用了 performLaunchActivity。这个方法是启�
  Activity 对象、ContextImpl 上下文对象、Application 对象，然后依次调用了 Activity 的 attach 和 onCreate 
  方法，这意味着 Activity 完成了整个启动过程。
 
-<div align="center">ActivityThread#handleLaunchActivity</div>
+<div align="center">ActivityThread#performLaunchActivity</div>
 
 ```java
 /**  Core implementation of activity launch. */

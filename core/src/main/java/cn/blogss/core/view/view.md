@@ -1,11 +1,9 @@
-[TOC]
-
-### View 的事件体系
-#### 1.1 View 基础知识
-##### 1.1.1 什么是 View
+## View 的事件体系
+### 1.1 View 基础知识
+#### 1.1.1 什么是 View
 View 是 Android 中所有控件的基类，除了 View ，还有ViewGroup，即控件组
 
-##### 1.1.2 View 的位置参数
+#### 1.1.2 View 的位置参数
 &nbsp;&nbsp;&nbsp;&nbsp;View 的位置主要由它的四个顶点来决定，分别对应于View的四个属性：
 1. top：左上角纵坐标，getTop()
 2. left：左上角横坐标，getLeft()
@@ -25,7 +23,7 @@ x = left + translatioinX<br>
 y = top + translationY
 </div>
 
-##### 1.1.3 MotionEvent 和 TouchSlop
+#### 1.1.3 MotionEvent 和 TouchSlop
 1. MotionEvent ，手指滑动事件<br>
 在手指接触屏幕后所产生的一系列事件中，典型的事件类型有如下几种：
 - ACTION_DOWN——手指刚接触屏幕
@@ -44,7 +42,7 @@ getRawY()<br>
 `ViewConfiguration.get(getContext()).getScaledTouchSlop()`
 
 
-##### 1.1.4 Velocity Tracker、GestureDetector 和 Scroller
+#### 1.1.4 Velocity Tracker、GestureDetector 和 Scroller
 1. Velocity Tracker ，速度追踪，用于追踪手指在滑动过程中的速度，包括水平和竖直方向的速度。<br>
 ``` java
 /*首先，在View的onTouchEvent方法中追踪当前单击事件的速度：*/
@@ -94,36 +92,36 @@ return consume;
 3. Scroller，弹性滑动对象，用于实现 View 的弹性滑动。当使用View的scrollTo/scrollBy方法来进行滑动时，其过程是瞬间完成的，没有过渡效果。<br>
 Scroller 本身无法让View弹性滑动，它需要和View的computeScroll方法配合使用才能共同完成这个功能。
 
-#### 1.2 View 的滑动
-##### 1.2.1 使用 scrollTo/scrollBy
+### 1.2 View 的滑动
+#### 1.2.1 使用 scrollTo/scrollBy
 scrollTo 实现了基于所传递参数的绝对滑动，scrollBy实现了基于当前位置的相对滑动。使用scrollTo和scrollBy来实现View的滑动，<br>
 只能将View的内容进行滑动，并不能将View本身进行滑动。如果从左向右滑动，那么mScrollX为负值，反之为正值；如果从上往下滑动，<br>
 那么mScrollY为负值，反之为正值。
 
-##### 1.2.2 使用动画(View动画和属性动画)
+#### 1.2.2 使用动画(View动画和属性动画)
 **View 动画**是对 View 的影像做操作。它并不能真正改变 View 的位置参数，包括宽/高，并且如果希望动画后的状态得以保留还必须将fillAfter<br>
 属性设置为true,否则动画完成后其动画结果会消失。View 动画还会带来一个很严重的问题，比如我们通过View动画将一个Button向右移动100px，<br>
 并且这个View设置了单击事件，那么单击新位置将无法触发onClick事件，而单击原始位置仍然可以触发onClick事件。
 
 从 Android 3.0 开始，使用**属性动画**可以解决上面的问题。但在**Android 2.2上无法使用属性动画**。
-##### 1.2.3 改变布局参数
+#### 1.2.3 改变布局参数
 既改变LayoutParams
 
-#### 1.3 弹性滑动
-##### 1.3.1 使用 Scroller
+### 1.3 弹性滑动
+#### 1.3.1 使用 Scroller
 当使用View的scrollTo/scrollBy方法来进行滑动时，其过程是瞬间完成的，没有过渡效果。这个时候就可以使用Scroller来实现有过度效果的滑动。
-##### 1.3.2 通过动画
+### 1.3.2 通过动画
 动画本身就是一种渐近的过程，因此通过它来实现的滑动天然就具有弹性效果。比如以下代码可以让一个View在100ms内向右移动100像素
 ``` java
 ObjectAnimator.ofFloat(targetView,"translationX",0,100).setDuration(100).start();
 ```
-##### 1.3.3 使用延时策略
+#### 1.3.3 使用延时策略
 核心思想是通过发送一系列延时消息从而达到一种渐进式效果，具体来说可以使用Handler或View的postDelayed方法，也可以使用线程的sleep方法。
 
 
-#### 1.4 View 的事件分发机制
+### 1.4 View 的事件分发机制
 事件分发机制不仅仅是核心知识点更是难点。View 一大难点滑动冲突，解决方法的理论基础就是事件分发机制。
-##### 1.4.1 点击事件的传递规则
+#### 1.4.1 点击事件的传递规则
 点击事件的分析对象是MotionEvent。当一个MotionEvent产生了以后，系统需要把这个事件传递给一个具体的View，而这个传递的过程就是分发过程。点击事件的<br>
 分发过程由3个很重要的方法共同完成：dispatchTouchEvent、onInterceptTouchEvent和onTouchEvent。
 ``` java
@@ -138,7 +136,7 @@ public boolean dispatchTouchEvent(Event ev){
 }
 ```
 上述代码已经将三者的关系表现得淋漓尽致。
-##### 1.4.2 事件分发的源码解析
+#### 1.4.2 事件分发的源码解析
 当一个点击事件产生后，它的传递过程遵循如下顺序：Activity->Window->View。
 
 **1.Activity 对点击事件的分发过程**
@@ -193,18 +191,18 @@ if (actionMasked == MotionEvent.ACTION_DOWN
 从上面代码可以看出，ACTION_DOWN事件或mFirstTouchTarget != null会判断是否要拦截事件。当ViewGroup不拦截事件并将事件交由  
 子元素处理时 mFirstTouchTarget != null 成立。
 
-#### 1.5 View的滑动冲突
+### 1.5 View的滑动冲突
 其实只要在界面中内外两层同时可以滑动，这个时候就会产生滑动冲突。
 
-##### 1.5.1 常见的滑动冲突场景
+#### 1.5.1 常见的滑动冲突场景
 **1.外部滑动方向和内部滑动方向不一致**<br>
 常见的是ViewPager和Fragment配合使用所组成的页面滑动效果<br>
 **2.外部滑动方向和内部滑动方向一致**<br>
 **3.上面两种情况的嵌套**<br>
 
-##### 1.5.2 滑动冲突的处理规则
+#### 1.5.2 滑动冲突的处理规则
 
-##### 1.5.3 滑动冲突的解决方式
+#### 1.5.3 滑动冲突的解决方式
 **1.外部拦截法，需要重写父容器的 onInterceptTouchEvent方法**<br>
 点击事件都要经过父容器的拦截处理，如果父容器需要此事件就拦截，如果不需要就不拦截。
 <div align="center">重写：ViewGroup#onInterceptTouchEvent</div>
@@ -280,13 +278,13 @@ public boolean onInterceptTouchEvent(MotionEvent ev){
 ```
 
 
-### View 的工作原理
-#### 2.1 ViewRoot 和 DecorView
+## View 的工作原理
+### 2.1 ViewRoot 和 DecorView
 
-#### 2.2 理解 MeasureSpec
+### 2.2 理解 MeasureSpec
 MeasureSpec 在很大程度上决定了一个View的尺寸规格，其尺寸大小还受到父容器的影响，父容器影响其 MeasureSpec 的过程。
 
-##### 2.2.1 MeasureSpec
+#### 2.2.1 MeasureSpec
 <div align="center">源码：View#MeasureSpec</div>
 
 ```java
@@ -319,7 +317,7 @@ public static class MeasureSpec {
 ```
 MeasureSpec 代表一个32位的int值，高2位代表SpecMode(测量模式)，而SpecSize是指在某种测量模式模式下的规格大小。
 
-##### 2.2.2 MeasureSpec 和 LayoutParams 的对应关系
+#### 2.2.2 MeasureSpec 和 LayoutParams 的对应关系
 1.当 View 采用固定宽/高的时候，不管父容器的 MeasureSpec 是什么，View 的MeasureSpec 都是精准模式，
 并且其大小遵循 LayoutParams 中的大小。<br>
 
@@ -331,10 +329,10 @@ MeasureSpec 代表一个32位的int值，高2位代表SpecMode(测量模式)，�
 
 4.UNSPECIFIED 这个模式主要用于系统内部多次 Measure 的情形，一般来说，我们不需要关注此模式。
 
-#### 2.3 View 的工作流程
+### 2.3 View 的工作流程
 View 的工作流程是指 measure、layout、draw 这三大流程，即测量、布局和绘制，其中 measure 确定
 View 的测量宽/高，layout 确定 View 的最终宽/高和四个顶点的位置，而 draw 则将 View 绘制到屏幕上
-##### 2.3.1 Measure 过程
+#### 2.3.1 Measure 过程
 **1.View 的 Measure 过程**
 <div align="center">View#onMeasure(int widthMeasureSpec, int heightMeasureSpec)</div>
 
@@ -386,8 +384,8 @@ ViewGroup 在 measure 时，会对每一个子 元素进行 measure。我们知�
 其测量过程的 onMeasure 方法需要各个子类去具体实现，比如 LinearLayout、RelativeLayout等。这是因为不同的
  ViewGroup 子类有不同的布局特性，这导致它们的测量细节各不相同。
 
-#### 2.4 自定义 View
-##### 2.4.1 自定义 View 的分类
+### 2.4 自定义 View
+#### 2.4.1 自定义 View 的分类
 **1.继承 View 重写 onDraw 方法**<br>
 这种方法主要用于实现一些不规则的效果，即这种效果不方便通过布局的组合方式来达到。很显然，这需要通过绘制的方法来实现。
 。采用这种方式需要自己支持wrap_content，并且padding也需要自己处理。
@@ -401,7 +399,7 @@ ViewGroup 在 measure 时，会对每一个子 元素进行 measure。我们知�
 **4.继承特定的 ViewGroup （比如 LinearLayout）**<br>
 这种方法不需要自己处理ViewGroup的测量和布局这两个过程。
 
-##### 2.4.2 自定义 View 须知
+#### 2.4.2 自定义 View 须知
 1.让 View 支持 wrap_content<br>
 2.如果有必要，让你的View支持padding<br>
 3.尽量不要在View中使用Handler，没必要<br>
