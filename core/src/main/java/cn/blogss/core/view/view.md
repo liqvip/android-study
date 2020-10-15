@@ -283,8 +283,12 @@ public boolean onInterceptTouchEvent(MotionEvent ev){
 
 ### 2.2 理解 MeasureSpec
 MeasureSpec 在很大程度上决定了一个View的尺寸规格，其尺寸大小还受到父容器的影响，父容器影响其 MeasureSpec 的过程。
+MeasureSpec 不是唯一由 View 的 LayoutParams 决定的，LayoutParams 需要和父容器一起才能决定 View 的 MeasureSpec。
+MeasureSpec 一旦确定后，onMeasure 就可以确定 View 的测量宽/高。
 
 #### 2.2.1 MeasureSpec
+MeasureSpec 代表一个32位的int值，高2位代表SpecMode(测量模式)，而SpecSize是指在某种测量模式模式下的规格大小。
+
 <div align="center">源码：View#MeasureSpec</div>
 
 ```java
@@ -315,38 +319,132 @@ public static class MeasureSpec {
     }
 }
 ```
-MeasureSpec 代表一个32位的int值，高2位代表SpecMode(测量模式)，而SpecSize是指在某种测量模式模式下的规格大小。
 
 #### 2.2.2 MeasureSpec 和 LayoutParams 的对应关系
-1.当 View 采用固定宽/高的时候，不管父容器的 MeasureSpec 是什么，View 的MeasureSpec 都是精准模式，
-并且其大小遵循 LayoutParams 中的大小。<br>
 
-2.当 View 的宽高是 match_parent 时，父容器的 MeasureSpec 是什么模式，View 的MeasureSpec 也是什么模式，
-其大小不会超过父容器的剩余空间。<br>
-
-3.当 View 的宽高是 wrap_content 时，不管父容器的 MeasureSpec 是什么模式，View 的MeasureSpec 总是最大化模式，
-其大小不能超过父容器的剩余空间。<br>
-
-4.UNSPECIFIED 这个模式主要用于系统内部多次 Measure 的情形，一般来说，我们不需要关注此模式。
-
-### 2.3 View 的工作流程
-View 的工作流程是指 measure、layout、draw 这三大流程，即测量、布局和绘制，其中 measure 确定
-View 的测量宽/高，layout 确定 View 的最终宽/高和四个顶点的位置，而 draw 则将 View 绘制到屏幕上
-#### 2.3.1 Measure 过程
-**1.View 的 Measure 过程**
-<div align="center">View#onMeasure(int widthMeasureSpec, int heightMeasureSpec)</div>
-
+普通 View 的 MeasureSpec 创建过程。
+看到 ViewGroup 中 measureChildWithMargins 方法，用来创建子 View 的 MeasureSpec。会将父容器的左右 padding 与子 View 的左右 margin 考虑进去。
 ```java
-protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-    /*setMeasuredDimension方法会设置 View 宽/高的测量值*/
-    setMeasuredDimension(getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec),
-            getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec));
+protected void measureChildWithMargins(View child,
+        int parentWidthMeasureSpec, int widthUsed,
+        int parentHeightMeasureSpec, int heightUsed) {
+    final MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams(); // 获取子 View 的 LayoutParams
+
+    final int childWidthMeasureSpec = getChildMeasureSpec(parentWidthMeasureSpec,
+            mPaddingLeft + mPaddingRight + lp.leftMargin + lp.rightMargin
+                    + widthUsed, lp.width);
+    final int childHeightMeasureSpec = getChildMeasureSpec(parentHeightMeasureSpec,
+            mPaddingTop + mPaddingBottom + lp.topMargin + lp.bottomMargin
+                    + heightUsed, lp.height);
+
+    child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
 }
 ```
 
-<div align="center">View#getDefaultSize(int size, int measureSpec)</div>
+然后看看 getChildMeasureSpec 方法，spec 参数是父容器宽/高的测量规格(MeasureSpec)，padding 参数是子 View 与父容器的边距，
+childDimension 是子 View 宽/高的尺寸。
+```java
+
+public static int getChildMeasureSpec(int spec, int padding, int childDimension) {
+    //根据测量规格计算出父容器的测量模式与规格大小
+    int specMode = MeasureSpec.getMode(spec);
+    int specSize = MeasureSpec.getSize(spec);
+
+    int size = Math.max(0, specSize - padding);
+
+    int resultSize = 0;
+    int resultMode = 0;
+
+    switch (specMode) {
+    // Parent has imposed an exact size on us
+    case MeasureSpec.EXACTLY:// 如果父容器的测量模式是精确模式
+        if (childDimension >= 0) {// 子 View 设置了固定宽高
+            resultSize = childDimension;
+            resultMode = MeasureSpec.EXACTLY;
+        } else if (childDimension == LayoutParams.MATCH_PARENT) {
+            // Child wants to be our size. So be it.
+            resultSize = size;
+            resultMode = MeasureSpec.EXACTLY;
+        } else if (childDimension == LayoutParams.WRAP_CONTENT) {
+            // Child wants to determine its own size. It can't be
+            // bigger than us.
+            resultSize = size;
+            resultMode = MeasureSpec.AT_MOST;
+        }
+        break;
+
+    // Parent has imposed a maximum size on us
+    case MeasureSpec.AT_MOST:// 如果父容器的测量模式是最大化模式
+        if (childDimension >= 0) {
+            // Child wants a specific size... so be it
+            resultSize = childDimension;
+            resultMode = MeasureSpec.EXACTLY;
+        } else if (childDimension == LayoutParams.MATCH_PARENT) {
+            // Child wants to be our size, but our size is not fixed.
+            // Constrain child to not be bigger than us.
+            resultSize = size;
+            resultMode = MeasureSpec.AT_MOST;
+        } else if (childDimension == LayoutParams.WRAP_CONTENT) {
+            // Child wants to determine its own size. It can't be
+            // bigger than us.
+            resultSize = size;
+            resultMode = MeasureSpec.AT_MOST;
+        }
+        break;
+
+    // Parent asked to see how big we want to be
+    case MeasureSpec.UNSPECIFIED:// 如果父容器的测量模式是不明确模式
+        if (childDimension >= 0) {
+            // Child wants a specific size... let him have it
+            resultSize = childDimension;
+            resultMode = MeasureSpec.EXACTLY;
+        } else if (childDimension == LayoutParams.MATCH_PARENT) {
+            // Child wants to be our size... find out how big it should
+            // be
+            resultSize = View.sUseZeroUnspecifiedMeasureSpec ? 0 : size;
+            resultMode = MeasureSpec.UNSPECIFIED;
+        } else if (childDimension == LayoutParams.WRAP_CONTENT) {
+            // Child wants to determine its own size.... find out how
+            // big it should be
+            resultSize = View.sUseZeroUnspecifiedMeasureSpec ? 0 : size;
+            resultMode = MeasureSpec.UNSPECIFIED;
+        }
+        break;
+    }
+    //noinspection ResourceType
+    return MeasureSpec.makeMeasureSpec(resultSize, resultMode);
+}
+```
+
+根据以上代码我们可以得出下面的结论：
+1. 当 View 采用固定宽/高的时候，不管父容器的 MeasureSpec 是什么，View 的 MeasureSpec 都是精准模式，
+并且其大小遵循 LayoutParams 中的大小。<br>
+
+2. 当 View 的宽高是 match_parent 时，父容器的 MeasureSpec 是什么模式，View 的 MeasureSpec 也是什么模式，
+其大小不会超过父容器的剩余空间。<br>
+
+3. 当 View 的宽高是 wrap_content 时，不管父容器的 MeasureSpec 是什么模式，View 的MeasureSpec 总是最大化模式，
+其大小不能超过父容器的剩余空间。<br>
+
+4. UNSPECIFIED 这个模式主要用于系统内部多次 Measure 的情形，一般来说，我们不需要关注此模式。
+
+### 2.3 View 的工作流程
+View 的工作流程是指 measure、layout、draw 这三大流程，即测量、布局和绘制，其中 measure 确定
+View 的测量宽/高，layout 确定 View 的最终宽/高和四个顶点的位置，而 draw 则将 View 绘制到屏幕上。
+
+#### 2.3.1 measure 过程
+首先看看 View 的 measure 过程。
+View 的 measure 过程由 measure 方法来完成，measure 是一个 final 类型的方法，这意味着所有继承它的子 View 均
+不能重写该方法。在 View 的 measure 方法中又会调用 onMeasure 方法，因此只需要看 onMeasure 的实现即可。
+View 的 onMeasure 如下所示。比较简单，调用了 setMeasuredDimension 方法，顾名思义，该方法是用来设置 View 宽/高的
+测量值的，因此只需要看 getDefaultSize 这个方法即可。
 
 ```java
+protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    setMeasuredDimension(getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec),
+            getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec));
+}
+
 public static int getDefaultSize(int size, int measureSpec) {
     int result = size;
     int specMode = MeasureSpec.getMode(measureSpec);
@@ -364,25 +462,26 @@ public static int getDefaultSize(int size, int measureSpec) {
     }
     return result;
 }
-```
-从 getDefaultSize 方法的实现来看，View 的宽/高由 specSize 决定，所以我们可以得出如下结论：
-**直接继承 View 的自定义控件需要重写 onMeasure 方法并设置 wrap_content 时的自身大小，否则在布局中使用wrap_content就相当于使用 match_parent。**
 
-<div align="center">View#getSuggestedMinimumWidth()</div>
-
-``` java
 protected int getSuggestedMinimumWidth() {
     return (mBackground == null) ? mMinWidth : max(mMinWidth, mBackground.getMinimumWidth());
 }
 ```
-由上面源码可知，对于 UNSPECIFIED 这种情况，View 的测量宽/高遵循如下规则：如果 View 没有设置背景，那么返回 android:minWidth 这个属性所指定的值，这个值可以为0(默认值)；
+
+从 getDefaultSize 方法的实现来看，View 的宽/高由 specSize 决定，所以我们可以得出如下结论：
+**直接继承 View 的自定义控件需要重写 onMeasure 方法并设置 wrap_content 时的自身大小，否则在布局中使用 wrap_content 就相当于使用 match_parent。**
+
+另外对于 UNSPECIFIED 这种情况，View 的测量宽/高遵循如下规则：如果 View 没有设置背景，那么返回 android:minWidth 这个属性所指定的值，这个值可以为0(默认值)；
 如果 View 设置了背景，则返回 android:minWidth 和背景的最小宽度两者中的最大值。
 
-**2.ViewGroup 的 Measure 过程**<br>
-ViewGroup 是一个抽象类，它没有重写 View 的 onMeasure 方法，但是它提供了一个叫 measureChildren 的方法。
-ViewGroup 在 measure 时，会对每一个子 元素进行 measure。我们知道，ViewGroup 并没有定义其测量的具体过程，
-其测量过程的 onMeasure 方法需要各个子类去具体实现，比如 LinearLayout、RelativeLayout等。这是因为不同的
+再来看看 ViewGroup 的 Measure 过程
+ViewGroup 是一个抽象类，它没有重写 View 的 onMeasure 方法，但是它提供了一个叫 measureChildren 的方法。ViewGroup 在 measure 时，会对每一个子 元素进行 measure。
+我们知道，ViewGroup 并没有定义其测量的具体过程，其测量过程的 onMeasure 方法需要各个子类去具体实现，比如 LinearLayout、RelativeLayout等。这是因为不同的
  ViewGroup 子类有不同的布局特性，这导致它们的测量细节各不相同。
+ 
+ #### 2.3.2  layout 过程
+Layout 的作用是 ViewGroup 用来确定子元素的位置，当 ViewGroup 的位置被确定后，它在 onLao
+
 
 ### 2.4 自定义 View
 #### 2.4.1 自定义 View 的分类

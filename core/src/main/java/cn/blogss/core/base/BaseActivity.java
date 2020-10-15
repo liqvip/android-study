@@ -7,10 +7,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,7 +21,7 @@ import cn.blogss.helper.ActivityCollector;
 import cn.blogss.helper.StatusBarCompatUtil;
 
 public abstract class BaseActivity extends AppCompatActivity {
-    private static String TAG = "BaseActivity";
+    private String TAG = "";
 
     /*强制用户下线的一个广播接收器*/
     private ForceOfflineReceiver forceOfflineReceiver;
@@ -27,14 +29,18 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i(TAG, "onCreate");
         ActivityCollector.addAct(this);
         int layoutId = getLayoutId();
-        Log.d(TAG,"layoutId:"+layoutId);
         setContentView(layoutId);
         hideActionBar();
         setStatusBarColor(Color.TRANSPARENT);
         contentNotOverlayStatusBar();
         initView();
+    }
+
+    protected void setTag(String tag) {
+        this.TAG = tag;
     }
 
     /**
@@ -74,11 +80,13 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        Log.i(TAG, "onStart");
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
+        Log.i(TAG, "onRestart");
     }
 
     /**
@@ -87,6 +95,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Log.i(TAG, "onResume");
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("cn.blogss.core.base.FORCE_OFFLINE");
         forceOfflineReceiver = new ForceOfflineReceiver();
@@ -96,6 +105,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        Log.i(TAG, "onPause");
         if(forceOfflineReceiver != null){
             unregisterReceiver(forceOfflineReceiver);
             forceOfflineReceiver = null;
@@ -105,12 +115,26 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        Log.i(TAG, "onStop");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.i(TAG, "onDestroy");
         ActivityCollector.removeAct(this);
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.i(TAG, "onSaveInstanceState");
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        Log.i(TAG, "onSaveInstanceState: two params.");
     }
 
     /**

@@ -1,5 +1,8 @@
 package cn.blogss.android_study.main
 
+import android.os.Bundle
+import android.os.PersistableBundle
+import android.util.Log
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -19,6 +22,14 @@ class MainActivity : BaseActivity() {
     private var profileFragment: ProfileFragment? = null
     private var preFragment: Fragment? = null
     private var curFragment: Fragment? = null
+
+    companion object {
+        private const val HOME_FRAGMENT_TAG = "home_fragment"
+        private const val DISCOVERY_FRAGMENT_TAG = "discovery_fragment"
+        private const val PROFILE_FRAGMENT_TAG = "profile_fragment"
+        private const val TAG = "MainActivity"
+    }
+
     override fun getLayoutId(): Int {
         return R.layout.activity_main
     }
@@ -67,9 +78,8 @@ class MainActivity : BaseActivity() {
         ft.commit()
     }
 
-    companion object {
-        private const val HOME_FRAGMENT_TAG = "home_fragment"
-        private const val DISCOVERY_FRAGMENT_TAG = "discovery_fragment"
-        private const val PROFILE_FRAGMENT_TAG = "profile_fragment"
+    override fun onCreate(savedInstanceState: Bundle?) {
+        setTag(TAG)
+        super.onCreate(savedInstanceState)
     }
 }

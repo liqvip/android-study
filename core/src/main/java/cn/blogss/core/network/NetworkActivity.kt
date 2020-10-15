@@ -1,5 +1,6 @@
 package cn.blogss.core.network
 
+import android.os.Bundle
 import android.view.View
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -16,6 +17,10 @@ class NetworkActivity : BaseActivity(), View.OnClickListener {
     private lateinit var btSendReq: Button
 
     private lateinit var tvResponseContent: TextView
+
+    companion object {
+        private const val TAG = "NetworkActivity"
+    }
 
     override fun getLayoutId(): Int {
         return R.layout.activity_network
@@ -51,5 +56,10 @@ class NetworkActivity : BaseActivity(), View.OnClickListener {
                 })
             }
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        setTag(TAG)
+        super.onCreate(savedInstanceState)
     }
 }
