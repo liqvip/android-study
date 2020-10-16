@@ -480,8 +480,120 @@ ViewGroup 是一个抽象类，它没有重写 View 的 onMeasure 方法，但�
  ViewGroup 子类有不同的布局特性，这导致它们的测量细节各不相同。
  
  #### 2.3.2  layout 过程
-Layout 的作用是 ViewGroup 用来确定子元素的位置，当 ViewGroup 的位置被确定后，它在 onLao
+ layout 是第二阶段的布局机制。layout 方法确定 View 本身的位置，而 onLayout 方法则会确定所有子元素的位置，先看 View 的 layout 方法，如下所示。
+ layout 方法的大致流程如下：首先会通过 setFrame 方法设定 View 4个顶点的位置；接着会调用 onLayout 方法确定所有子元素的位置，和 onMeasure 方法
+ 类似，onLayout 的实现和具体的布局有关，所以 View 和 ViewGroup 均没有实现 onLayout 方法。
+ ```java
+public void layout(int l, int t, int r, int b) {
+    if ((mPrivateFlags3 & PFLAG3_MEASURE_NEEDED_BEFORE_LAYOUT) != 0) {
+        onMeasure(mOldWidthMeasureSpec, mOldHeightMeasureSpec);
+        mPrivateFlags3 &= ~PFLAG3_MEASURE_NEEDED_BEFORE_LAYOUT;
+    }
 
+    int oldL = mLeft;
+    int oldT = mTop;
+    int oldB = mBottom;
+    int oldR = mRight;
+
+    boolean changed = isLayoutModeOptical(mParent) ?
+            setOpticalFrame(l, t, r, b) : setFrame(l, t, r, b); // setFrame 方法设定 View 4个顶点的位置
+
+    if (changed || (mPrivateFlags & PFLAG_LAYOUT_REQUIRED) == PFLAG_LAYOUT_REQUIRED) {
+        onLayout(changed, l, t, r, b);
+
+        if (shouldDrawRoundScrollbar()) {
+            if(mRoundScrollbarRenderer == null) {
+                mRoundScrollbarRenderer = new RoundScrollbarRenderer(this);
+            }
+        } else {
+            mRoundScrollbarRenderer = null;
+        }
+    }
+}
+
+protected boolean setFrame(int left, int top, int right, int bottom) {
+    boolean changed = false;
+    if (mLeft != left || mRight != right || mTop != top || mBottom != bottom) {
+        changed = true;
+
+        // Remember our drawn bit
+        int drawn = mPrivateFlags & PFLAG_DRAWN;
+
+        int oldWidth = mRight - mLeft;
+        int oldHeight = mBottom - mTop;
+        int newWidth = right - left;
+        int newHeight = bottom - top;
+        boolean sizeChanged = (newWidth != oldWidth) || (newHeight != oldHeight);
+
+        // Invalidate our old position
+        invalidate(sizeChanged);
+
+        mLeft = left;
+        mTop = top;
+        mRight = right;
+        mBottom = bottom;
+}
+```
+
+ #### 2.3.3  draw 过程
+draw 的过程比较简单，它的作用是将 View 绘制到屏幕上面。View 的绘制过程遵循如下几步：
+1. 绘制背景（drawBackground）
+2. 绘制自己（onDraw），与 onMeasure 和 onLayout 类似，View 与 ViewGroup 均没有实现绘制的具体过程，绘制过程需要各个子类去自己实现。
+3. 绘制 children（dispatchDraw）
+4. 绘制装饰
+
+在 draw 方法中也有很详细的注释，在源码中可以很明显的看出来，如下所示。
+```java
+public void draw(Canvas canvas) {
+    final int privateFlags = mPrivateFlags;
+    mPrivateFlags = (privateFlags & ~PFLAG_DIRTY_MASK) | PFLAG_DRAWN;
+
+    /*
+     * Draw traversal performs several drawing steps which must be executed
+     * in the appropriate order:
+     *
+     *      1. Draw the background
+     *      2. If necessary, save the canvas' layers to prepare for fading
+     *      3. Draw view's content
+     *      4. Draw children
+     *      5. If necessary, draw the fading edges and restore layers
+     *      6. Draw decorations (scrollbars for instance)
+     */
+
+    // Step 1, draw the background, if needed
+    int saveCount;
+
+    drawBackground(canvas);  // 绘制背景
+
+    // skip step 2 & 5 if possible (common case)
+    final int viewFlags = mViewFlags;
+    boolean horizontalEdges = (viewFlags & FADING_EDGE_HORIZONTAL) != 0;
+    boolean verticalEdges = (viewFlags & FADING_EDGE_VERTICAL) != 0;
+    if (!verticalEdges && !horizontalEdges) {
+        // Step 3, draw the content
+        onDraw(canvas); // 绘制自己
+
+        // Step 4, draw the children
+        dispatchDraw(canvas); // 绘制子元素
+
+        drawAutofilledHighlight(canvas);
+
+        // Overlay is part of the content and draws beneath Foreground
+        if (mOverlay != null && !mOverlay.isEmpty()) {
+            mOverlay.getOverlayView().dispatchDraw(canvas);
+        }
+
+        // Step 6, draw decorations (foreground, scrollbars)
+        onDrawForeground(canvas); // 绘制装饰
+
+        // Step 7, draw the default focus highlight
+        drawDefaultFocusHighlight(canvas);
+
+        // we're done...
+        return;
+    }
+}
+```
 
 ### 2.4 自定义 View
 #### 2.4.1 自定义 View 的分类
