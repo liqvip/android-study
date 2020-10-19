@@ -10,6 +10,7 @@
         <item>RemoteViews</item>
         <item>Window 窗口</item>
         <item>Cache 缓存</item>
+        <item>Handler 消息机制</item>
     </string-array>
 
     <string-array name="home_rv_item_intent_act">
@@ -21,7 +22,8 @@
         <item>cn.blogss.core.screen_adaptation.ScreenAdaptationActivity</item>
         <item>cn.blogss.core.remoteviews.MainActivity</item>
         <item>cn.blogss.core.window.MainActivity</item>
-        <item>cn.blogss.core.cache.MainActivity</item>
+        <item>cn.blogss.core.cache.CacheActivity</item>
+        <item>cn.blogss.core.message.MessageActivity</item>
     </string-array>
 
     <!--item 图片名字-->

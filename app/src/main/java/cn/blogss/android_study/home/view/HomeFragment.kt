@@ -32,9 +32,9 @@ open class HomeFragment : BaseFragment() {
                 val ivImage = holder.getView<ImageView>(R.id.iv_image)
                 val layoutParams = ivImage.layoutParams
                 if ((position and 1) == 0)
-                    layoutParams.height = dp2px(context!!, 150f)
+                    layoutParams.height = dp2px(context!!, 200f)
                 else
-                    layoutParams.height = dp2px(context!!, 100f)
+                    layoutParams.height = dp2px(context!!, 150f)
                 ivImage.layoutParams = layoutParams
                 tvName.text = itemData!!.name
                 ivImage.setImageResource(itemData.itemIcon)
@@ -54,7 +54,7 @@ open class HomeFragment : BaseFragment() {
             }
         })
         rvItems!!.adapter = homeRvItemAdapter
-        val layoutManager = StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL)
+        val layoutManager = StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
         rvItems!!.layoutManager = layoutManager
     }
 
