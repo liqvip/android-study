@@ -86,10 +86,10 @@ class RxJavaActivity : BaseActivity() {
          * 2. fromArray(T... items): 将传入的数组或 Iterable 拆分成具体对象后，依次发送出来
          */
         val observable1 = Observable.just("aaa","bbb","ccc")
-        //  将会依次调用 onSubscribe -> onNext("aaa") -> onNext("bbb") -> onNext("ccc") -> onComplete()
+        //  将会依次调用 onSubscribe() -> onNext("aaa") -> onNext("bbb") -> onNext("ccc") -> onComplete()
         val words = arrayOf("a","b","c")
         val observable2 = Observable.fromArray(words)
-        //  将会依次调用 onSubscribe -> onNext("aaa") -> onNext("bbb") -> onNext("ccc") -> onComplete()
+        //  将会依次调用 onSubscribe() -> onNext("aaa") -> onNext("bbb") -> onNext("ccc") -> onComplete()
 
         /**
          * Subscribe (订阅)
