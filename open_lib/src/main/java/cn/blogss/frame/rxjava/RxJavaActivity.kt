@@ -105,13 +105,14 @@ class RxJavaActivity : BaseActivity() {
         val onNextAction = object: Consumer<String>{
             //  onNext()
             override fun accept(t: String?) {
-
+                Log.i(TAG, "accept: $t")
             }
         }
 
         val onErrorAction = object:Consumer<Throwable>{
+            // onError()
             override fun accept(t: Throwable?) {
-                TODO("Not yet implemented")
+
             }
 
         }
@@ -119,10 +120,37 @@ class RxJavaActivity : BaseActivity() {
         val onCompletedAction = object: Action{
             // onCompleted
             override fun run() {
+                Log.i(TAG, "run: onCompleted()")
+            }
+        }
 
+        observable1.subscribe(onNextAction)
+        // 将会一次调用 accept("aaa")->accept("bbb")->accept("bbb")
+
+        /**
+         * 在 RxJava 的默认规则中，事件的发出和消费都是在同一个线程的。也就是说，如果只用上面的方法，实现出来的只是一个同步的观察者模式。
+         * 观察者模式本身的目的就是『后台处理，前台回调』的异步机制，因此异步对于 RxJava 是至关重要的。
+         * 而要实现异步，则需要用到 RxJava 的另一个概念： Scheduler 。
+            Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(final Subscriber<? super String> arg0) {
+            callFum(arg0, url, param, type, header);
+            arg0.onCompleted();
+            }
+            }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Subscriber<String>() {
+            @Override
+            public void onCompleted() {
             }
 
-        }
+            @Override
+            public void onError(Throwable arg0) {
+            }
+            @Override
+            public void onNext(String result) {
+            requestAsynNextFun(result, url, param, type, header, listener, 2,firstTiemL);//增加重试次数
+            }
+            });
+         */
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
