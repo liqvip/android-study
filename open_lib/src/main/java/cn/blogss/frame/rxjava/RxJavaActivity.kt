@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import cn.blogss.core.base.BaseActivity
 import cn.blogss.frame.R
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.annotations.NonNull
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.ObservableEmitter
@@ -12,6 +13,7 @@ import io.reactivex.rxjava3.core.Observer
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.functions.Action
 import io.reactivex.rxjava3.functions.Consumer
+import io.reactivex.rxjava3.internal.schedulers.IoScheduler
 import org.reactivestreams.Subscriber
 import org.reactivestreams.Subscription
 
@@ -125,7 +127,7 @@ class RxJavaActivity : BaseActivity() {
         }
 
         observable1.subscribe(onNextAction)
-        // 将会一次调用 accept("aaa")->accept("bbb")->accept("bbb")
+        // 将会依次调用 accept("aaa")->accept("bbb")->accept("bbb")
 
         /**
          * 在 RxJava 的默认规则中，事件的发出和消费都是在同一个线程的。也就是说，如果只用上面的方法，实现出来的只是一个同步的观察者模式。
@@ -151,6 +153,15 @@ class RxJavaActivity : BaseActivity() {
             }
             });
          */
+        Observable.just(1,2,3,4)
+                .subscribeOn(IoScheduler()) // 指定 subscribe() 发生在 IO 线程
+                .observeOn(AndroidSchedulers.mainThread())  // 指定 Subscriber 的回调发生在主线程
+                .subscribe(object: Consumer<Int>{
+                    override fun accept(t: Int?) {
+                        Log.i(TAG, "accept: $t")
+                    }
+                })
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
