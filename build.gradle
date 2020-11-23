@@ -11,7 +11,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.1'
+        classpath 'com.android.tools.build:gradle:3.5.4'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         /*Kotlin团队开发的一个插件，目的是让我们在开发过程中更少的编写代码，目前包括了视图绑定的功能。*/
         classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlin_version"
