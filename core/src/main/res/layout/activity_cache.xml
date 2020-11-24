@@ -6,5 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".cache.CacheActivity">
-
+    <GridView
+        android:id="@+id/gv_pics"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:horizontalSpacing="@dimen/dp_5"
+        android:verticalSpacing="@dimen/dp_5"
+        android:numColumns="3"
+        android:stretchMode="columnWidth"
+        android:gravity="center"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

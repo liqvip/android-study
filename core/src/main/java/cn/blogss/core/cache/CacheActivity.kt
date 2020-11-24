@@ -3,10 +3,19 @@ package cn.blogss.core.cache
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
+import android.view.View
+import android.widget.GridView
 import cn.blogss.core.R
 import cn.blogss.core.base.BaseActivity
+import cn.blogss.core.base.CommonBaseAdapter
+import cn.blogss.core.view.customview.SquareImageView
+import cn.blogss.helper.imageloader.ImageLoader
 
 class CacheActivity : BaseActivity() {
+    private lateinit var gvPics: GridView
+
+    private var pics = mutableListOf<String>()
+    private var imageLoader = ImageLoader.getSingleton(this)
 
     companion object {
         private const val TAG = "CacheActivity"
@@ -17,7 +26,13 @@ class CacheActivity : BaseActivity() {
     }
 
     override fun initView() {
-        printPath()
+        gvPics = findViewById(R.id.gv_pics)
+        gvPics.adapter = object: CommonBaseAdapter<String>(this,pics, R.layout.cache_gridview_item){
+            override fun convert(convertView: View?, itemData: String?, position: Int) {
+                val squareImageView = convertView?.findViewById(R.id.siv_item) as SquareImageView
+                imageLoader?.bindBitmap(itemData!!,squareImageView,50f,50f)
+            }
+        }
     }
 
     private fun printPath() {
