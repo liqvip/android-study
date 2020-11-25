@@ -1,5 +1,6 @@
 package cn.blogss.helper.imageloader
 
+import java.lang.Exception
 import java.lang.StringBuilder
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
@@ -22,7 +23,7 @@ class Util {
                 val mDigest = MessageDigest.getInstance("MD5")
                 mDigest.update(url.toByte())
                 bytesToHexString(mDigest.digest())
-            } catch (e: NoSuchAlgorithmException) {
+            } catch (e: Exception) {
                 url.hashCode().toString()
             }
             return cacheKey
