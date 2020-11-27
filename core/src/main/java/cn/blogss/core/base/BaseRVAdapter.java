@@ -1,6 +1,7 @@
 package cn.blogss.core.base;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,8 @@ import cn.blogss.core.listeners.OnItemClickListener;
  * @创建时间 2020/4/28
  */
 public abstract class BaseRVAdapter<T> extends RecyclerView.Adapter<BaseRvHolder> {
+    private static final String TAG = "BaseRVAdapter";
+
     protected Context mContext;
 
     protected int mLayoutId;
@@ -27,6 +30,8 @@ public abstract class BaseRVAdapter<T> extends RecyclerView.Adapter<BaseRvHolder
     protected LayoutInflater mInflater;
 
     private OnItemClickListener mOnItemClickListener;
+
+    private int mViewHolderCount = 0;
 
     public BaseRVAdapter(Context context, int mLayoutId, List<T> mData) {
         this.mContext = context;
@@ -38,6 +43,8 @@ public abstract class BaseRVAdapter<T> extends RecyclerView.Adapter<BaseRvHolder
     @NonNull
     @Override
     public BaseRvHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        mViewHolderCount++;
+        Log.d(TAG, "onCreateViewHolder: ViewHolderCount: "+mViewHolderCount);
         BaseRvHolder holder = BaseRvHolder.get(mContext,null,parent,mLayoutId,-1);
         setItemClickListener(parent,holder,viewType);
         return holder;
@@ -45,6 +52,7 @@ public abstract class BaseRVAdapter<T> extends RecyclerView.Adapter<BaseRvHolder
 
     @Override
     public void onBindViewHolder(@NonNull BaseRvHolder holder, int position) {
+        Log.d(TAG, "onBindViewHolder: "+position);
         holder.updatePosition(position);
         convert(holder,mData.get(position),position);
     }

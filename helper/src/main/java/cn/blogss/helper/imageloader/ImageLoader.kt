@@ -55,9 +55,11 @@ class ImageLoader private constructor(context: Context) {
     init {
         // 实例化内存缓存
         val maxMemorySize = Runtime.getRuntime().maxMemory().toInt() / 1024 // KB
+        Log.d(TAG, ": maxMemorySize : $maxMemorySize KB")
         val cacheSie = maxMemorySize / 8
         mMemoryCache = object: LruCache<String,Bitmap>(cacheSie){
             override fun sizeOf(key:String, bitMap:Bitmap): Int{
+                Log.d(TAG, "sizeOf: "+bitMap.rowBytes*bitMap.height/1024)
                 return bitMap.rowBytes * bitMap.height / 1024   //一张图片的大小(KB)
             }
         }
@@ -177,7 +179,6 @@ class ImageLoader private constructor(context: Context) {
         try {
             bitmap = loadBitmapFromDiskCache(uri, targetWidth, targetHeight)
             if(bitmap != null){
-                Log.d(TAG, "loadBitmap: loadBitmapFromDiskCache,url: $uri")
                 return bitmap
             }
             bitmap = loadBitmapFromHttp(uri,targetWidth,targetHeight)
@@ -264,6 +265,7 @@ class ImageLoader private constructor(context: Context) {
             return null
         var bitmap: Bitmap? = null
         val key = Util.hashKeyFromUrl(uri)
+        Log.d(TAG, "loadBitmapFromDiskCache: url: $uri key: $key")
         val snapshot = mDiskLruCache!!.get(key)
         if(snapshot != null){
             val fins = snapshot.getInputStream(DISK_CACHE_INDEX) as FileInputStream
@@ -271,7 +273,7 @@ class ImageLoader private constructor(context: Context) {
             bitmap = resizeImageFromFileDes(fs,targetWidth,targetHeight)
         }
         if(bitmap != null){
-            addBitmapToMemoryCache(key,bitmap)
+            addBitmapToMemoryCache(key,bitmap,uri)
         }
         return bitmap
     }
@@ -282,7 +284,9 @@ class ImageLoader private constructor(context: Context) {
      * @return Bitmap?
      */
     private fun loadBitmapFromCache(uri: String): Bitmap? {
-        return mMemoryCache.get(Util.hashKeyFromUrl(uri))
+        val key = Util.hashKeyFromUrl(uri)
+        Log.d(TAG, "loadBitmapFromCache: uri: $uri key: $key")
+        return mMemoryCache.get(key)
     }
 
     /**
@@ -290,7 +294,8 @@ class ImageLoader private constructor(context: Context) {
      * @param key String
      * @param bitmap Bitmap
      */
-    private fun addBitmapToMemoryCache(key: String, bitmap: Bitmap){
+    private fun addBitmapToMemoryCache(key: String, bitmap: Bitmap, uri: String){
+        Log.d(TAG, "addBitmapToMemoryCache: uri: $uri key: $key")
         if(getBitmapFromMemCache(key) == null){
             mMemoryCache.put(key, bitmap)
         }

@@ -1,5 +1,6 @@
 package cn.blogss.helper.imageloader
 
+import android.util.Log
 import java.lang.Exception
 import java.lang.StringBuilder
 import java.security.MessageDigest
@@ -12,6 +13,7 @@ import java.security.NoSuchAlgorithmException
  */
 class Util {
     companion object {
+        private const val TAG = "Util"
         /**
          * 图片 url 可能含有特殊字符, 将 url 用 md5 加密或直接使用 url hashcode 的值
          * @param url String, 图片的 url 地址
@@ -22,8 +24,10 @@ class Util {
             cacheKey = try {
                 val mDigest = MessageDigest.getInstance("MD5")
                 mDigest.update(url.toByte())
+                Log.d(TAG, "hashKeyFromUrl: Normal: $url key: "+ bytesToHexString(mDigest.digest()))
                 bytesToHexString(mDigest.digest())
             } catch (e: Exception) {
+                Log.d(TAG, "hashKeyFromUrl: Exception: url: $url hashcode: "+url.hashCode().toString())
                 url.hashCode().toString()
             }
             return cacheKey
