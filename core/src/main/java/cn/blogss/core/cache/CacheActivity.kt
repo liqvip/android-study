@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
+import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +16,6 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
-import androidx.recyclerview.widget.RecyclerView.Recycler
 import cn.blogss.core.R
 import cn.blogss.core.base.BaseActivity
 import cn.blogss.core.base.BaseRVAdapter
@@ -75,15 +75,25 @@ class CacheActivity : BaseActivity(), AbsListView.OnScrollListener {
         gvPics.setOnScrollListener(this)
         rvPics.setLayoutListener(object: RecyclerViewWrapper.LayoutListener {
             override fun onAfterLayout() {
+                Log.d(TAG, "onAfterLayout: ")
                 showMessage(rvPics)
             }
 
             override fun onBeforeLayout() {
+                Log.d(TAG, "\n\nonBeforeLayout: ")
+                val mRecycler = Class.forName("androidx.recyclerview.widget.RecyclerView").getDeclaredField("mRecycler")
+                mRecycler.isAccessible = true
+                val mRecyclerValue = mRecycler.get(rvPics) as RecyclerView.Recycler
+                val mRecyclerClassObj = Class.forName(mRecycler.type.name)
+
+                val mAttachedScrap = mRecyclerClassObj.getDeclaredField("mAttachedScrap")
+                mAttachedScrap.isAccessible = true
+                mAttachedScrap.set(mRecyclerValue, ArrayListWrapper<RecyclerView.ViewHolder>())
                 showMessage(rvPics)
             }
 
         })
-        rvPics.addOnScrollListener(object: RecyclerView.OnScrollListener(){
+        /*rvPics.addOnScrollListener(object: RecyclerView.OnScrollListener(){
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 // ignore
             }
@@ -96,7 +106,7 @@ class CacheActivity : BaseActivity(), AbsListView.OnScrollListener {
                     mIsGridViewIdle = false
                 }
             }
-        })
+        })*/
         mDefaultPic = resources.getDrawable(R.drawable.image_load_default,null)
         imageLoader = ImageLoader.getSingleton(this)
         val screenWidth = getScreenMetrics(this).widthPixels
@@ -133,29 +143,87 @@ class CacheActivity : BaseActivity(), AbsListView.OnScrollListener {
     }
 
     private fun showMessage(rvPics: RecyclerViewWrapper) {
-        val classObj = rvPics.javaClass
-        val mRecycler = classObj.getDeclaredField("mRecycler")
+        val recyclerViewClassObj = RecyclerView::class.java
+        val mRecycler = recyclerViewClassObj.getDeclaredField("mRecycler")
         mRecycler.isAccessible = true
-        val mRecyclerValue = mRecycler.get(classObj) as RecyclerView.Recycler
+        val mRecyclerValue = mRecycler.get(rvPics) as RecyclerView.Recycler
 
-        val mRecyclerClassObj  = mRecyclerValue.javaClass
+        val mRecyclerClassObj  = Class.forName(mRecycler.type.name)
+
         // 一级缓存
         val mAttachedScrap = mRecyclerClassObj.getDeclaredField("mAttachedScrap")
-        val mAttachedScrapValue = mAttachedScrap.get(mRecyclerClassObj) as ArrayList<RecyclerView.ViewHolder>
+        mAttachedScrap.isAccessible = true
+        val mAttachedScrapValue = mAttachedScrap.get(mRecyclerValue) as ArrayListWrapper<RecyclerView.ViewHolder>
 
         // 默认二级缓存容量
         val mViewCacheMax = mRecyclerClassObj.getDeclaredField("mViewCacheMax")
-        val mViewCacheMaxValue = mViewCacheMax.get(mRecyclerClassObj) as Int
+        mViewCacheMax.isAccessible = true
+        val mViewCacheMaxValue = mViewCacheMax.get(mRecyclerValue) as Int
 
         // 二级缓存
         val mCachedViews = mRecyclerClassObj.getDeclaredField("mCachedViews")
-        val mCachedViewsValue = mCachedViews.get(mRecyclerClassObj) as ArrayList<RecyclerView.ViewHolder>
+        mCachedViews.isAccessible = true
+        val mCachedViewsValue = mCachedViews.get(mRecyclerValue) as ArrayList<RecyclerView.ViewHolder>
 
         //四级缓存
         val mRecyclerPool = mRecyclerClassObj.getDeclaredField("mRecyclerPool")
-        val mRecyclerPoolValue = mRecyclerPool.get(mRecyclerClassObj) as RecycledViewPool
+        mRecyclerPool.isAccessible = true
+        val mRecyclerPoolValue = mRecyclerPool.get(mRecyclerValue) as RecycledViewPool
 
-        Log.d(TAG, "showMessage: \n一级缓存：${mAttachedScrapValue.size}\n二级缓存最大容量：$mViewCacheMax\n二级缓存实际容量：${mCachedViewsValue.size}")
+        printAttachedScrapValue(mAttachedScrapValue)
+        printCachedViewsValue(mCachedViewsValue,mViewCacheMaxValue)
+        printRecyclerPoolValue(mRecyclerPool,mRecyclerPoolValue)
+    }
+
+    private fun printRecyclerPoolValue(mRecyclerPool: Field, mRecyclerPoolValue: RecycledViewPool) {
+        val mRecycledViewPoolClassObj = Class.forName(mRecyclerPool.type.name)
+
+        val mScrap = mRecycledViewPoolClassObj.getDeclaredField("mScrap")
+        mScrap.isAccessible = true
+        val mScrapValue = mScrap.get(mRecyclerPoolValue) as SparseArray<*>
+
+        Log.d(TAG, "四级缓存type个数：${mScrapValue.size()}个")
+
+        val mScrapDataClassObj = Class.forName("androidx.recyclerview.widget.RecyclerView\$RecycledViewPool\$ScrapData")
+        val mScrapHeap  = mScrapDataClassObj.getDeclaredField("mScrapHeap")
+        val mMaxScrap = mScrapDataClassObj.getDeclaredField("mMaxScrap")
+        mScrapHeap.isAccessible = true
+        mMaxScrap.isAccessible = true
+        for (index in 0 until mScrapValue.size()){
+            val mScrapHeapValue = mScrapHeap.get(mScrapValue[index]) as ArrayList<RecyclerView.ViewHolder>
+            val mMaxScrapValue = mMaxScrap.get(mScrapValue[index]) as Int
+            Log.d(TAG, "Type: $index,最大容量: $mMaxScrapValue,四级缓存ViewHolder:")
+            for (item in mScrapHeapValue){
+                Log.d(TAG, "$item")
+            }
+        }
+    }
+
+    /**
+     * 打印二级缓存的信息
+     * @param mCachedViewsValue ArrayList<ViewHolder>
+     * @param mViewCacheMaxValue Int
+     */
+    private fun printCachedViewsValue(mCachedViewsValue: ArrayList<RecyclerView.ViewHolder>, mViewCacheMaxValue: Int) {
+        Log.d(TAG, "二级缓存容量：$mViewCacheMaxValue")
+        Log.d(TAG, "二级级缓存ViewHolder:")
+        for (item in mCachedViewsValue){
+            Log.d(TAG, "$item")
+        }
+        Log.d(TAG, "=======================================================================================")
+    }
+
+    /**
+     * 打印一级缓存的信息
+     * @param mAttachedScrapValue ArrayList<ViewHolder>
+     */
+    private fun printAttachedScrapValue(mAttachedScrapValue: ArrayListWrapper<RecyclerView.ViewHolder>) {
+        Log.d(TAG, "一级缓存容量：${mAttachedScrapValue.maxSize}")
+        Log.d(TAG, "一级缓存ViewHolder:")
+        for (item in mAttachedScrapValue){
+            Log.d(TAG, "$item")
+        }
+        Log.d(TAG, "=======================================================================================")
     }
 
     private fun printPath() {
