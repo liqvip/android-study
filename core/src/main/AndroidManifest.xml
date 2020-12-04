@@ -74,16 +74,10 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/appwidget_provider_info" />
-        </receiver> <!-- 服务 -->
-        <service android:name=".service.MyService" />
-    </application> <!-- 读取手机联系人，危险权限，需要运行时申请 -->
-    <uses-permission android:name="android.permission.INTERNET" /> <!-- 访问网络的权限 -->
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.CALL_PHONE" /> <!-- 拨打电话的权限，危险权限，需要运行时申请 -->
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+        </receiver>
 
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
+        <!-- 服务 -->
+        <service android:name=".service.MyService" />
+    </application>
 
 </manifest>

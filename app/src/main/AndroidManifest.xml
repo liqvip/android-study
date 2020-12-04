@@ -2,6 +2,52 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cn.blogss.android_study">
 
+    <!--  Dangerous Permissions （危险权限），需要运行时申请，
+          当接受一个危险权限时，不单单接受的是界面上展示的这一个权限，而是它所在这个组里面的其他所有访问权限也将会被自动获取权限
+        SMS（短信）
+            SEND_SMS
+            RECEIVE_SMS
+            READ_SMS
+            RECEIVE_WAP_PUSH
+            RECEIVE_MMS
+        STORAGE（存储卡）
+            READ_EXTERNAL_STORAGE
+            WRITE_EXTERNAL_STORAGE
+        CONTACTS（联系人）
+            READ_CONTACTS
+            WRITE_CONTACTS
+            GET_ACCOUNTS
+        PHONE（手机）
+            READ_PHONE_STATE
+            CALL_PHONE
+            READ_CALL_LOG
+            WRITE_CALL_LOG
+            ADD_VOICEMAIL
+            USE_SIP
+            PROCESS_OUTGOING_CALLS
+        CALENDAR（日历）
+            READ_CALENDAR
+            WRITE_CALENDAR
+        CAMERA（相机）
+            CAMERA
+        LOCATION（位置）
+            ACCESS_FINE_LOCATION
+            ACCESS_COARSE_LOCATION
+        SENSORS（传感器）
+            BODY_SENSORS
+        MICROPHONE（麦克风）
+            RECORD_AUDIO
+    -->
+
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- 访问网络的权限 -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" /> <!-- 拨打电话的权限，危险权限，需要运行时申请 -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" /><!-- 读取手机联系人，危险权限，需要运行时申请 -->
+    <uses-permission android:name="android.permission.CAMERA" /><!-- 相机权限 -->
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"

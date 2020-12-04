@@ -4,8 +4,11 @@
 
     <application>
         <activity
-            android:name=".rxjava.RxJavaActivity"
+            android:name=".permissionx.PermissionXActivity"
             android:launchMode="singleTask"/>
+        <activity
+            android:name=".rxjava.RxJavaActivity"
+            android:launchMode="singleTask" />
     </application>
 
 </manifest>
