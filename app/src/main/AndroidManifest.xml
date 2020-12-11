@@ -37,6 +37,11 @@
             BODY_SENSORS
         MICROPHONE（麦克风）
             RECORD_AUDIO
+
+        特殊权限：
+        CHANGE_CONFIGURATION
+        WRITE_SETTINGS
+        SYSTEM_ALERT_WINDOW
     -->
 
     <uses-permission android:name="android.permission.INTERNET" /> <!-- 访问网络的权限 -->
