@@ -40,7 +40,7 @@
 
         特殊权限：
         CHANGE_CONFIGURATION
-        WRITE_SETTINGS
+        WRITE_SETTINGS  系统设置
         SYSTEM_ALERT_WINDOW
     -->
 
