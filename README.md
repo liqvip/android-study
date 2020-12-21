@@ -16,6 +16,10 @@
 ### 开源库
 #### [RxJava](./open_lib/src/main/java/cn/blogss/frame/rxjava/rxjava.md)
 #### [PermissionX](./open_lib/src/main/java/cn/blogss/frame/permissionx/permissionx.md)
+### JNI 与 NDK 编程
+#### [JNI 开发流程](./core/src/main/java/cn/blogss/core/jni/jni.md)
+#### [NDK 开发流程](./core/src/main/java/cn/blogss/core/jni/jni.md)
+
 
 ## 参与贡献
 如果你想和我一起参与该项目，请按照下述步骤提交代码
