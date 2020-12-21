@@ -42,6 +42,32 @@ JNIEXPORT void JNICALL Java_cn_blogss_core_jni_HelloJni_set
 ```
 函数名的格式遵循如下规则：Java_包名_类名_方法名。jstring 对应于 java 中的 String 数据类型，关于 java 和 JNI 
 的数据类型之间的对应关系，翻看目录 java 和 JNI 的数据类型之间的对应关系一小节。
+JNIEXPORT、JNICALL、JNIEnv、jobject 都是 JNI 标准中所定义的类型或者宏，它们的含义如下：
+1. JNIEXPORT 和 JNICALL 是 JNI 中所定义的宏，可以在 `jni_md.h` 这个头文件中查找到，内容如下
+```
+#ifndef _JAVASOFT_JNI_MD_H_
+#define _JAVASOFT_JNI_MD_H_
 
+#define JNIEXPORT __declspec(dllexport) // 表明（类、函数、数据）可以被外部函数使用，即把 DLL 中相关代码暴露出来为其他应用程序使用
+#define JNIIMPORT __declspec(dllimport)
+#define JNICALL __stdcall   // 函数调用约定
 
-### 
+typedef long jint;
+typedef __int64 jlong;
+typedef signed char jbyte;
+
+#endif /* !_JAVASOFT_JNI_MD_H_ */
+```
+2. JNIEnv *，表示一个指向 JNI 环境的指针，可以通过它来访问 JNI 提供的接口方法
+3. jobject，表示 Java 对象中的 this
+
+之后新建 `C\C++`文件实现头文件中的方法，然后编译 dll 库并在 Java 中调用，使用 g++ 命令
+```
+g++ -I $JAVA_HOME/include -fPIC -shared HelloJni.cpp -o libHelloJni.dll
+```
+之后使用 java 命令行来运行我们的主程序
+```
+D:\android_project\my\android_study\core\src\main\java>java -Djava.library.path=cn/blogss/core/jni/dll  cn.blogss.core.jni.HelloJni
+```
+
+### java 和 JNI 的数据类型之间的对应关系

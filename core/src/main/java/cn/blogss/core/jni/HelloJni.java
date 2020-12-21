@@ -8,9 +8,9 @@ package cn.blogss.core.jni;
 public class HelloJni {
 
     static {
-        System.loadLibrary("hello_jni");
+        System.out.println(System.getProperty("java.library.path"));
+        System.loadLibrary("libHelloJni");
     }
-
 
     public static void main(String[] args) {
         HelloJni helloJni = new HelloJni();
