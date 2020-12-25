@@ -2,7 +2,7 @@ package cn.blogss.core.kotlin.array_collections
 
 /**
  * @创建人 560266
- * @文件描述
+ * @文件描述 kotlin 集合
  * @创建时间 2020/7/28
  */
 class Collect {
