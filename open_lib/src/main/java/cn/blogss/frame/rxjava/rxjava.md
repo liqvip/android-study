@@ -1,6 +1,12 @@
 RxJava 项目地址：[https://github.com/ReactiveX/RxJava](https://github.com/ReactiveX/RxJava)
 
 RxAndroid 项目地址：[https://github.com/ReactiveX/RxAndroid](https://github.com/ReactiveX/RxAndroid)
+
+
+## 观察者
+onComplete 方法与 onError 是互斥的，只要其中一个方法被调用，那么另外一个方法就不会调用
+onError
+onNext，一旦 onComplete 或 onError被调用后，onNext 就不会被再次调用
  
  ## 线程控制——Scheduler（调度器）
  在不指定线程的情况下， RxJava 遵循的是线程不变的原则，即：在哪个线程调用 subscribe()，就在哪个线程生产事件；

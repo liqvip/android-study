@@ -1,5 +1,6 @@
 package cn.blogss.frame.rxjava
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import cn.blogss.core.base.BaseActivity
@@ -13,7 +14,9 @@ import io.reactivex.rxjava3.core.Observer
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.functions.Action
 import io.reactivex.rxjava3.functions.Consumer
+import io.reactivex.rxjava3.functions.Function
 import io.reactivex.rxjava3.internal.schedulers.IoScheduler
+import io.reactivex.rxjava3.schedulers.Schedulers
 import org.reactivestreams.Subscriber
 import org.reactivestreams.Subscription
 
@@ -162,6 +165,42 @@ class RxJavaActivity : BaseActivity() {
                     }
                 })
 
+        Observable.create(object: ObservableOnSubscribe<String>{
+            override fun subscribe(emitter: ObservableEmitter<String>?) {
+                emitter!!.onNext("aaa")
+                emitter.onComplete()
+            }
+        })
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(object: Observer<String>{
+            override fun onComplete() {
+            }
+
+            override fun onSubscribe(d: Disposable?) {
+            }
+
+            override fun onNext(t: String?) {
+            }
+
+            override fun onError(e: Throwable?) {
+            }
+        })
+
+        /**=====================变换=========================**/
+        Observable.just("aaa")
+                .map(object : Function<String,Bitmap> {
+                    override fun apply(t: String?): Bitmap {// 参数类型 String
+                        return getBitmapFromPath(t)// 返回类型 Bitmap
+                    }
+                })
+                .subscribe(object : Consumer<Bitmap> {
+                    override fun accept(t: Bitmap?) {// 参数类型 Bitmap
+                    }
+                })
+    }
+
+    private fun getBitmapFromPath(t: String?): Bitmap {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
