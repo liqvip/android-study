@@ -7,10 +7,7 @@ import cn.blogss.core.base.BaseActivity
 import cn.blogss.frame.R
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.annotations.NonNull
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.ObservableEmitter
-import io.reactivex.rxjava3.core.ObservableOnSubscribe
-import io.reactivex.rxjava3.core.Observer
+import io.reactivex.rxjava3.core.*
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.functions.Action
 import io.reactivex.rxjava3.functions.Consumer
@@ -188,23 +185,53 @@ class RxJavaActivity : BaseActivity() {
         })
 
         /**=====================变换=========================**/
+        // map 变换，一对一，数据类型转换
         Observable.just("aaa")
-                .map(object : Function<String,Bitmap> {
-                    override fun apply(t: String?): Bitmap {// 参数类型 String
-                        return getBitmapFromPath(t)// 返回类型 Bitmap
+                .map(object : Function<String,Int> {
+                    override fun apply(t: String?): Int {// 参数类型 String
+                        return t!!.toInt()// 返回类型 Int
                     }
                 })
-                .subscribe(object : Consumer<Bitmap> {
-                    override fun accept(t: Bitmap?) {// 参数类型 Bitmap
-                    }
-                })
-    }
+                .subscribe(object : Observer<Int> {
+                    override fun onComplete() {
 
-    private fun getBitmapFromPath(t: String?): Bitmap {
+                    }
+
+                    override fun onSubscribe(d: Disposable?) {
+
+                    }
+
+                    override fun onNext(t: Int?) {
+
+                    }
+
+                    override fun onError(e: Throwable?) {
+                        Log.d(TAG, "onError: cast error !")
+                    }
+
+                })
+
+        // flatMap 变换，一对多，将一个事件序列分为多个事件序列，然后将这些事件序列组合在一起发送给观察者
+        val students = arrayOf(Student("liq", mutableListOf(Course("java"), Course("C"))))
+        Observable.just(students[0])
+                .flatMap(object : Function<Student,ObservableSource<Course>> {
+                    override fun apply(t: Student?): Observable<Course> {
+                        return Observable.fromIterable(t!!.courses)
+                    }
+                })
+                .subscribe(object : Consumer<Course> {
+                    override fun accept(t: Course?) {
+                        Log.d(TAG, "accept: "+ t!!.name)
+                    }
+                })
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTag(TAG)
         super.onCreate(savedInstanceState)
     }
+
+    data class Student(var name:String, var courses:MutableList<Course>)
+
+    data class Course(var name:String)
 }
