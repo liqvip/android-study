@@ -4,7 +4,7 @@ apply from : "dependencies.gradle"
 buildscript {
     ext {
         /*kotlin 插件版本*/
-        kotlin_version = '1.3.72'
+        kotlin_version = '1.4.20'
     }
     repositories {
         maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/'}
@@ -14,8 +14,6 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        /*Kotlin团队开发的一个插件，目的是让我们在开发过程中更少的编写代码，目前包括了视图绑定的功能。*/
-        classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlin_version"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }

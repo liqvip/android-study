@@ -1,8 +1,9 @@
 package cn.blogss.frame.rxjava
 
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.Button
 import cn.blogss.core.base.BaseActivity
 import cn.blogss.frame.R
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -16,8 +17,12 @@ import io.reactivex.rxjava3.internal.schedulers.IoScheduler
 import io.reactivex.rxjava3.schedulers.Schedulers
 import org.reactivestreams.Subscriber
 import org.reactivestreams.Subscription
+import java.lang.Exception
+import java.lang.RuntimeException
 
-class RxJavaActivity : BaseActivity() {
+class RxJavaActivity : BaseActivity(), View.OnClickListener {
+    private lateinit var btException: Button
+
     companion object {
         private const val TAG = "RxJavaActivity"
     }
@@ -26,6 +31,8 @@ class RxJavaActivity : BaseActivity() {
     }
 
     override fun initView() {
+        btException = findViewById(R.id.bt_exception)
+        btException.setOnClickListener(this)
         /**
          * 创建 Observer（观察者）
          */
@@ -234,4 +241,12 @@ class RxJavaActivity : BaseActivity() {
     data class Student(var name:String, var courses:MutableList<Course>)
 
     data class Course(var name:String)
+
+    override fun onClick(v: View?) {
+        when(v!!.id){
+            R.id.bt_exception -> {
+                throw RuntimeException("测试用：这是一个自己主动抛出的异常")
+            }
+        }
+    }
 }

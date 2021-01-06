@@ -1,9 +1,8 @@
 package cn.blogss.android_study.main
 
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.util.Log
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import cn.blogss.android_study.R
@@ -12,6 +11,7 @@ import cn.blogss.android_study.home.view.HomeFragment
 import cn.blogss.android_study.profile.view.ProfileFragment
 import cn.blogss.core.base.BaseActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.permissionx.guolindev.PermissionX
 
 class MainActivity : BaseActivity() {
     private var bottomNavigationView: BottomNavigationView? = null
@@ -81,5 +81,22 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTag(TAG)
         super.onCreate(savedInstanceState)
+        // 一次性申请必要的运行时权限
+        PermissionX.init(this).permissions(mutableListOf(
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            android.Manifest.permission.ACCESS_COARSE_LOCATION,
+            android.Manifest.permission.READ_CONTACTS))
+            .onForwardToSettings { scope, deniedList ->
+                scope.showForwardToSettingsDialog(deniedList,"您需要去应用程序设置当中手动开启权限", "我已明白", "取消")
+            }
+            .onExplainRequestReason {scope, deniedList ->
+                scope.showRequestReasonDialog(deniedList,"即将重新申请的权限是程序必须依赖的权限","我已明白","取消")
+            }
+            .request { allGranted, grantedList, deniedList ->
+                if(allGranted)
+                    Toast.makeText(this,"所有申请的权限都已通过", Toast.LENGTH_SHORT).show()
+                else
+                    Toast.makeText(this,"您拒绝了如下权限：$deniedList", Toast.LENGTH_SHORT).show()
+            }
     }
 }

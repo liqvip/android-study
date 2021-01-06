@@ -9,20 +9,14 @@ import android.app.Application
  * @LastEditTime: 2021/1/5
  * @Descripttion: 对 Application 的一层封装
  */
-class BaseApplication private constructor() : Application() {
+open class BaseApplication : Application() {
 
     companion object {
         private const val TAG = "BaseApplication"
-        private lateinit var sInstance: BaseApplication
-
-        fun getInstance(): BaseApplication{
-            return sInstance
-        }
     }
 
     override fun onCreate() {
         super.onCreate()
-        sInstance = this
         CrashHandler.getInstance().init(this)
     }
 }

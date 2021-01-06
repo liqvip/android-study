@@ -4,6 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".rxjava.RxJavaActivity">
-
+    tools:context=".rxjava.RxJavaActivity"
+    tools:viewBindingIgnore="true">
+    <Button
+        android:id="@+id/bt_exception"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/AS_Open_Lib_Throw_Exception"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

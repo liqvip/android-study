@@ -44,16 +44,20 @@
         SYSTEM_ALERT_WINDOW
     -->
 
-    <uses-permission android:name="android.permission.INTERNET" /> <!-- 访问网络的权限 -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- 访问网络 -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.CALL_PHONE" /> <!-- 拨打电话的权限，危险权限，需要运行时申请 -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /><!--网络状态-->
+
+    <uses-permission android:name="android.permission.CAMERA" /><!-- 相机，危险权限，需要运行时申请 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/><!--存储空间，危险权限，需要运行时申请-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/><!--定位，危险权限，需要运行时申请-->
+    <uses-permission android:name="android.permission.CALL_PHONE" /> <!-- 拨打电话，危险权限，需要运行时申请 -->
     <uses-permission android:name="android.permission.READ_CONTACTS" /><!-- 读取手机联系人，危险权限，需要运行时申请 -->
-    <uses-permission android:name="android.permission.CAMERA" /><!-- 相机权限 -->
 
     <application
+        android:name="cn.blogss.core.base.BaseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"

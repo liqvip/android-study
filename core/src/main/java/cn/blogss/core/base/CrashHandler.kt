@@ -29,9 +29,9 @@ class CrashHandler private constructor() : Thread.UncaughtExceptionHandler {
     companion object {
         private const val TAG = "CrashHandler"
         private const val DEBUG = true
-        var PATH = Environment.getExternalStorageDirectory().path + "/crash/log/"
+        lateinit var PATH: String
         private const val FILE_NAME = "crash"
-        private const val FILE_NAME_SUFFIX = ".trace"
+        private const val FILE_NAME_SUFFIX = ".txt"
         private val mInstance = CrashHandler()
 
         fun getInstance(): CrashHandler{
@@ -41,6 +41,7 @@ class CrashHandler private constructor() : Thread.UncaughtExceptionHandler {
 
     fun init(context: Context){
         mContext = context.applicationContext
+        PATH = mContext.getExternalFilesDir(null)!!.path+"/crash/log/"
         mDefaultCrashHandler = Thread.getDefaultUncaughtExceptionHandler()
         Thread.setDefaultUncaughtExceptionHandler(this)
     }
