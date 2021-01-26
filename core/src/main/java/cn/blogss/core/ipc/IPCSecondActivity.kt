@@ -16,7 +16,7 @@ class IPCSecondActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun initView() {
-        Log.d(TAG, "sUserId: "+User.sUserID)
+        Log.d(TAG, "sUserId: "+User.sUserID)    // sUserId: 1
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
