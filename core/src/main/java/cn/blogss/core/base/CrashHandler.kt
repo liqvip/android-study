@@ -42,7 +42,7 @@ class CrashHandler private constructor() : Thread.UncaughtExceptionHandler {
     fun init(context: Context){
         mContext = context.applicationContext
         PATH = mContext.getExternalFilesDir(null)!!.path+"/crash/log/"
-        mDefaultCrashHandler = Thread.getDefaultUncaughtExceptionHandler()
+        mDefaultCrashHandler = Thread.getDefaultUncaughtExceptionHandler() as Thread.UncaughtExceptionHandler
         Thread.setDefaultUncaughtExceptionHandler(this)
     }
 

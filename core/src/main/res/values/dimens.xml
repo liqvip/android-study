@@ -249,4 +249,7 @@
     <dimen name="dp_640">640dp</dimen>
     <dimen name="dp_650">650dp</dimen>
     <dimen name="dp_660">660dp</dimen>
+
+    <!--字体大小-->
+    <dimen name="sp_30">30sp</dimen>
 </resources>

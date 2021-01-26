@@ -4,9 +4,19 @@
     package="cn.blogss.core">
 
     <application>
+        <!--不以 : 开头的进程属于全局进程，其他应用通过ShareUID方式可以和它跑在同一个进程中-->
+        <activity
+            android:process="cn.blogss.core.ipc.remote"
+            android:name=".ipc.IPCSecondActivity"
+            android:launchMode="singleTask"/>
+        <!--以 : 开头的进程属于当前应用的私有进程，其他应用的组件不可以和它跑在同一个进程中-->
+        <activity
+            android:process=":remote"
+            android:name=".ipc.IPCFirstActivity"
+            android:launchMode="singleTask"/>
         <activity
             android:name=".message.MessageActivity"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask" />
         <activity
             android:name=".cache.CacheActivity"
             android:launchMode="singleTask" />
@@ -74,9 +84,7 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/appwidget_provider_info" />
-        </receiver>
-
-        <!-- 服务 -->
+        </receiver> <!-- 服务 -->
         <service android:name=".service.MyService" />
     </application>
 

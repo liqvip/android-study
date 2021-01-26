@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="home_rv_item_data">
+        <item>IPC 通信机制</item>
         <item>Broadcast 广播</item>
         <item>Service 服务</item>
         <item>Content Provider 内容提供器</item>
@@ -16,6 +17,7 @@
     </string-array>
 
     <string-array name="home_rv_item_intent_act">
+        <item>cn.blogss.core.ipc.IPCFirstActivity</item>
         <item>cn.blogss.core.broadcast.MainActivity</item>
         <item>cn.blogss.core.service.ServiceActivity</item>
         <item>cn.blogss.core.contentprovider.MainActivity</item>
