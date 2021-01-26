@@ -21,6 +21,7 @@ class IPCFirstActivity : BaseActivity(), View.OnClickListener {
 
     override fun initView() {
         btGo = findViewById(R.id.bt_go_second)
+        btGo.setOnClickListener(this)
 
         Log.d(TAG, "sUserId: "+User.sUserID)
         User.sUserID++
