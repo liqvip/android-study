@@ -1,6 +1,7 @@
 package cn.blogss.core.base
 
 import android.app.Application
+import android.util.Log
 
 /**
  * @Author: Thatcher Li
@@ -17,6 +18,7 @@ open class BaseApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        Log.i(TAG, "onCreate")
         CrashHandler.getInstance().init(this)
     }
 }
