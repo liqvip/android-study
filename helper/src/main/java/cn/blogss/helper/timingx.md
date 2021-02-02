@@ -3,7 +3,7 @@
 用于计时的，它目前不支持倒计时，不过如果你有这个需求也可以很容易的实现。
 
 ## 项目地址
-Gitee：[Timingx](https://gitee.com/lishu1108/android_study/blob/master/helper/src/main/java/cn/blogss/helper/TimingX.java)
+Gitee：[Timingx](https://gitee.com/lishu1108/android_study/blob/master/helper/src/main/java/cn/blogss/helper/TimingX.java) <br>
 同样欢迎大家访问我的个人博客：[Thatcher Li](www.blogss.cn)，高质量原创技术文章分享。
 
 ## 基本用法
