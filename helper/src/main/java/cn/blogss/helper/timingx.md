@@ -1,9 +1,10 @@
-TimingX 是一个用于 Android 多组件同步计时的一个工具类，使用 Handler 实现。
+> TimingX 是一个用于 Android 多组件同步计时的一个工具类，使用 Handler 实现。
 在项目中我们经常有计时的需求，具体表现为从00:00开始计时，即分秒的格式。TimingX 是
 用于计时的，它目前不支持倒计时，不过如果你有这个需求也可以很容易的实现。
 
 ## 项目地址
-Gitee：[Timingx]()
+Gitee：[Timingx](https://gitee.com/lishu1108/android_study/blob/master/helper/src/main/java/cn/blogss/helper/TimingX.java)
+同样欢迎大家访问我的个人博客：[Thatcher Li](www.blogss.cn)，高质量原创技术文章分享。
 
 ## 基本用法
 1. TimingX 的使用非常简单，整个类的源码不到200行，当一个控件要显示计时，只需要下面一句代码即可添加到计时控件组
