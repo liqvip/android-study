@@ -15,11 +15,11 @@ import cn.blogss.core.base.BaseActivity
 import cn.blogss.core.ipc.aidl.Book
 import cn.blogss.core.ipc.aidl.BookManagerService
 import cn.blogss.core.ipc.aidl.IBookManager
+import cn.blogss.core.ipc.aidl.IBookObserver
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
-import java.util.*
 
 class IPCFirstActivity : BaseActivity(), View.OnClickListener {
     private lateinit var btGo: AppCompatButton
@@ -32,7 +32,7 @@ class IPCFirstActivity : BaseActivity(), View.OnClickListener {
 
     private val mConnection = object: ServiceConnection{
         override fun onServiceDisconnected(name: ComponentName?) {
-
+            // 服务端进程意外停止，导致 Binder 意外死亡，这里可以重新连接服务
         }
 
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
@@ -46,11 +46,19 @@ class IPCFirstActivity : BaseActivity(), View.OnClickListener {
                 iBookManager.addBook(Book(3,"Android 开发艺术探索"))
                 list = iBookManager.bookList
                 Log.i(TAG, "Query book list: "+ list[list.size-1].bookName)
+                // 订阅服务端的消息
+                iBookManager.registerBookObserver(mIBookObserver)
             } catch (e: RemoteException){
                 e.printStackTrace()
             }
         }
 
+    }
+
+    private val  mIBookObserver = object: IBookObserver.Stub() {
+        override fun onNewBookArrived(book: Book?) {
+            Log.i(TAG, "receive new book: "+book?.bookName)
+        }
     }
 
     override fun getLayoutId(): Int {
@@ -82,6 +90,13 @@ class IPCFirstActivity : BaseActivity(), View.OnClickListener {
 
     override fun onDestroy() {
         super.onDestroy()
+        /**
+         * 进行注册和解注册时，参数通过 Binder 传输到服务端后会产生两个全新的对象。
+         * 所以解除注册的时候，会失败。要使用 RemoteCallbacklist 类
+         */
+        if(iBookManager.asBinder().isBinderAlive){
+            iBookManager.removeBookObserver(mIBookObserver)
+        }
         unbindService(mConnection)
     }
 
