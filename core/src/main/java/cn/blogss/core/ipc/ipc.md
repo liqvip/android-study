@@ -29,9 +29,16 @@ serialVersionUID 不是必须的，不声明 serialVersionUID 同样可以实现
 1. Serializable 是 Java 中的序列化接口，使用起来简单但是开销大，序列化和反序列化过程需要大量I/O操作。
 2. Parcelable 是 Android 中的序列化方式，因此更适合用在 Android 平台上，效率很高，主要用在内存序列化上。
 
-## Binder
+### Binder
 直观来说，Binder 是 Android 中的一个类，它实现了 IBinder 接口；从 IPC 角度来说，
 Binder 是 Android 中的一种跨进程通信方式；Binder 还可以理解为一种虚拟的物理设备，它的设备驱动是 /dev/binder ，
 该通信方式在 linux 中没有；从 Android Framework 角度来说，Binder 是 ServiceManager 连接各种 Manager(
 ActivityManager、WindowManager，等等)和相应 ManagerService 的桥梁；从 Android 应用层来说，Binder 是客户端
 和服务端进行通信的媒介。
+
+
+## Android 中的 IPC 方式
+
+### 使用 AIDL
+
+### 使用 Socket
