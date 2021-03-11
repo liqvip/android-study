@@ -35,7 +35,7 @@ class IPCFirstActivity : BaseActivity(), View.OnClickListener {
             // 服务端进程意外停止，导致 Binder 意外死亡，这里可以重新连接服务
         }
 
-        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) { // service 参数是所绑定 Service onBind 方法返回的 Binder 对象
             iBookManager = IBookManager.Stub.asInterface(service)   // 获取 binder 代理类
             try {
                 // 查询服务端图书列表
@@ -55,7 +55,7 @@ class IPCFirstActivity : BaseActivity(), View.OnClickListener {
 
     }
 
-    private val  mIBookObserver = object: IBookObserver.Stub() {
+    private val  mIBookObserver = object: IBookObserver.Stub() {// 这是一个 Binder
         override fun onNewBookArrived(book: Book?) {
             Log.i(TAG, "receive new book: "+book?.bookName)
         }
@@ -91,8 +91,11 @@ class IPCFirstActivity : BaseActivity(), View.OnClickListener {
     override fun onDestroy() {
         super.onDestroy()
         /**
-         * 进行注册和解注册时，参数通过 Binder 传输到服务端后会产生两个全新的对象。
-         * 所以解除注册的时候，会失败。要使用 RemoteCallbacklist 类
+         * 进行注册和解注册时，虽然客户端传递的是同一个对象，
+         * 但是参数通过 Binder 传输到服务端后会产生全新的注册和解注册对象。
+         * 所以解除注册的时候，会失败。要使用 RemoteCallbacklist 类来删除跨进程 listener
+         * RemoteCallbackList 的原理很简单，虽然说多次跨进程传输客户端同一对象在服务端会生成不同对象，
+         * 但是这些在服务端新生成的对象，他们底层的 Binder 对象是同一个。
          */
         if(iBookManager.asBinder().isBinderAlive){
             iBookManager.removeBookObserver(mIBookObserver)

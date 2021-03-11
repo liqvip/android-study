@@ -38,7 +38,16 @@ ActivityManager、WindowManager，等等)和相应 ManagerService 的桥梁；�
 
 
 ## Android 中的 IPC 方式
+### 使用 Bundle
+
+### 使用文件共享
+
+### 使用 Messenger
 
 ### 使用 AIDL
 
+### 使用 ContentProvider
+
 ### 使用 Socket
+
+## Binder 连接池
