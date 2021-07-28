@@ -52,7 +52,7 @@
     <string name="AS_Create_Sub_Window">添加子 Window</string>
     <string name="AS_Create_Sys_Window">添加系统 Window</string>
     <string name="AS_Del_Window">删除 Window</string>
-    
+
     <!--IPC 部分-->
     <string name="AS_En_Go">Go</string>
     <string name="AS_En_This_Is_IPCSecondAct">Hello, This is IPCSecondActivity!</string>

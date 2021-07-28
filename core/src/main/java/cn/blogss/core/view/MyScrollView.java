@@ -30,20 +30,16 @@ public class MyScrollView extends LinearLayout {
         int deltaY = destY - scrollY;
         /*1000ms 内滑向destX，效果就是缓慢滑动*/
         mScroller.startScroll(scrollX,0,deltaX,deltaY,3000);
-        /*
-        * invalidate方法会导致View重绘，在View的draw方法中又会去调用computeScroll方法。接着调用postInvalidate方法来进行第二次重绘，如此反复，直到整个滑动过程结束。
-        * 1.注意draw方法会在ViewGroup.drawChild()中被调用，所以不要去继承View
-        * 2.不管是scrollTo()还是scrollBy()方法，滚动的都是该view内部的内容，所以继承一个LinearLayout总没错
-        * */
-        invalidate();
+        // invalidate方法会导致View重绘，在View的draw方法中又会去调用computeScroll方法。接着调用postInvalidate方法来进行第二次重绘，如此反复，直到整个滑动过程结束。
+        invalidate();   // 重绘
     }
 
     @Override
     public void computeScroll() {
-        if(mScroller.computeScrollOffset()){
+        if(mScroller.computeScrollOffset()){    // 滑动未结束
             /*scrollTo 基于所传递参数的绝对滑动*/
             scrollTo(mScroller.getCurrX(),mScroller.getCurrY());
-            postInvalidate();
+            postInvalidate();   // 二次重绘
         }
     }
 }

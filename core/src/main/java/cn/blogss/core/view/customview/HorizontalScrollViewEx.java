@@ -2,6 +2,7 @@ package cn.blogss.core.view.customview;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -12,8 +13,10 @@ import android.widget.Scroller;
  * 类似水平布局的 LinearLayout, 但其可以水平滑动
  */
 public class HorizontalScrollViewEx extends ViewGroup {
+    private static final String TAG = "HorizontalScrollViewEx";
     private int mChildrenSize;
     private int mChildWidth;
+    private int mChildIndex;
 
     // 上次滑动的坐标
     private int mLastX = 0;
@@ -133,7 +136,7 @@ public class HorizontalScrollViewEx extends ViewGroup {
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         boolean intercepted = false;
         int action = ev.getAction();
-        // 触摸点的坐标
+        // 点击点的坐标
         int x = (int)ev.getX();
         int y = (int)ev.getY();
 
@@ -149,8 +152,21 @@ public class HorizontalScrollViewEx extends ViewGroup {
         }else if(action == MotionEvent.ACTION_MOVE){
             int deltaX = x - mLastXIntercept;
             int deltaY = y - mLastYIntercept;
-
+            if(Math.abs(deltaX) > Math.abs(deltaY)){
+                intercepted = true;
+            }else{
+                intercepted = false;
+            }
+        }else if(action == MotionEvent.ACTION_UP){
+            intercepted = false;
         }
+
+        mLastX = x;
+        mLastY = y;
+        mLastXIntercept = x;
+        mLastYIntercept = y;
+        Log.i(TAG, "intercepted: " + intercepted + ", action: " + ev.getAction() + ", mLastXIntercept: " + mLastYIntercept + ", mLastYIntercept: " + mLastYIntercept);
+
         return intercepted;
     }
 
@@ -161,6 +177,68 @@ public class HorizontalScrollViewEx extends ViewGroup {
      */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        return super.onTouchEvent(event);
+        super.onTouchEvent(event);
+        mVelocityTracker.addMovement(event);
+        int x = (int)event.getX();
+        int y = (int)event.getY();
+        Log.i(TAG, "eventXY： "+"("+x+","+y+")");
+        Log.i(TAG, "scrollXY："+"("+getScrollX()+","+getScrollY()+")");
+
+        int action = event.getAction();
+        if(action == MotionEvent.ACTION_DOWN){
+            if(!mScroller.isFinished()){    // 滑动未结束
+                mScroller.abortAnimation();
+            }
+        }else if(action == MotionEvent.ACTION_MOVE){
+            int deltaX = x- mLastX;
+            int deltaY = y- mLastY;
+            scrollBy(-deltaX,0);    // 相对滑动(相对于当前位置)
+        }else if(action == MotionEvent.ACTION_UP){
+            int scrollX = getScrollX();
+            mVelocityTracker.computeCurrentVelocity(1000);  // 计算滑动速度 px/1s
+            float xVelocity = mVelocityTracker.getXVelocity();
+            float yVelocity = mVelocityTracker.getYVelocity();
+            Log.i(TAG, "xyVelocity: "+"("+xVelocity+","+yVelocity+")");
+            if(Math.abs(xVelocity) >= 50){
+                // xVelocity > 0，右滑
+                mChildIndex = xVelocity > 0 ? mChildIndex - 1 : mChildIndex + 1;
+            }else{
+                mChildIndex = (scrollX + mChildWidth / 2) / mChildWidth;
+            }
+            mChildIndex = Math.max(0, Math.min(mChildIndex,mChildrenSize - 1));
+            int dx = mChildIndex * mChildWidth - scrollX;
+            smoothScrollTo(dx,0);
+            mVelocityTracker.clear();
+        }
+        mLastX = x;
+        mLastY = y;
+        return true;
+    }
+
+    /**
+     * 开始滑动到指定位置
+     * @param dx 水平滑动的距离
+     * @param dy 垂直滑动的距离
+     */
+    private void smoothScrollTo(int dx, int dy){
+        mScroller.startScroll(getScrollX(),0,dx,0,500);
+        invalidate();   // 重绘，调用 computeScroll 实现滑动
+    }
+
+    /**
+     * 实现滑动
+     */
+    @Override
+    public void computeScroll() {
+        if(mScroller.computeScrollOffset()){    // 滑动未结束
+            scrollTo(mScroller.getCurrX(),mScroller.getCurrY());
+            postInvalidate();   // 二次重绘
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        mVelocityTracker.recycle();
+        super.onDetachedFromWindow();
     }
 }
