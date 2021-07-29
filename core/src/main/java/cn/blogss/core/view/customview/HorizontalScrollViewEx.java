@@ -181,6 +181,7 @@ public class HorizontalScrollViewEx extends ViewGroup {
         mVelocityTracker.addMovement(event);
         int x = (int)event.getX();
         int y = (int)event.getY();
+        Log.i(TAG, "action: " + event.getAction());
         Log.i(TAG, "eventXY： "+"("+x+","+y+")");
         Log.i(TAG, "scrollXY："+"("+getScrollX()+","+getScrollY()+")");
 

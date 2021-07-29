@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -62,6 +63,7 @@ public class SlideConflictActivity extends BaseActivity {
             }
         };
         rv.setAdapter(adapter);
+        rv.setLayoutManager(new LinearLayoutManager(this));
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(ViewGroup parent, View view, Object itemData, int position) {

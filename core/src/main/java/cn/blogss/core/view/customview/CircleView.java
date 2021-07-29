@@ -17,7 +17,7 @@ import cn.blogss.core.R;
  * @文件描述 自定义的一个圆形 View，继承自 View
  * @创建时间 2020/6/30
  */
-class CircleView extends View {
+public class CircleView extends View {
     private int mWidth = 100;
 
     private int mHeight = 100;
