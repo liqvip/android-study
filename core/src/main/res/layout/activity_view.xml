@@ -91,6 +91,6 @@
             android:text="@string/appbar_scrolling_view_behavior"
             app:cornerTv_background_color="@color/aquamarine"
             app:cornerTv_radius="@dimen/dp_10"
-            app:cornerTv_position="leftTop|rightBottom"/>
+            app:cornerTv_position="topLeft|bottomRight"/>
     </LinearLayout>
 </RelativeLayout>
