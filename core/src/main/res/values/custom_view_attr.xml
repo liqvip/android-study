@@ -48,4 +48,16 @@
             <enum name="LEFT_RIGHT" value="1" />
         </attr>
     </declare-styleable>
+
+    <!--CornerTextView-->
+    <declare-styleable name="CornerTextView">
+        <attr name="cornerTv_background_color" format="color"/>
+        <attr name="cornerTv_radius" format="dimension"/>
+        <attr name="cornerTv_position" format="flags">
+            <flag name="leftTop" value="1"/>
+            <flag name="leftBottom" value="2"/>
+            <flag name="rightTop" value="4"/>
+            <flag name="rightBottom" value="8"/>
+        </attr>
+    </declare-styleable>
 </resources>

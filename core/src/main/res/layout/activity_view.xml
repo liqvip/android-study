@@ -85,5 +85,12 @@
             app:circle_color="@color/pink"
             android:background="#000000"
             android:layout_marginTop="@dimen/dp_20"/>
+        <cn.blogss.core.view.customview.CornerTextView
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="wrap_content"
+            android:text="@string/appbar_scrolling_view_behavior"
+            app:cornerTv_background_color="@color/aquamarine"
+            app:cornerTv_radius="@dimen/dp_10"
+            app:cornerTv_position="leftTop|rightBottom"/>
     </LinearLayout>
 </RelativeLayout>

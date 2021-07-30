@@ -200,14 +200,14 @@ public class HorizontalScrollViewEx extends ViewGroup {
             float xVelocity = mVelocityTracker.getXVelocity();
             float yVelocity = mVelocityTracker.getYVelocity();
             Log.i(TAG, "xyVelocity: "+"("+xVelocity+","+yVelocity+")");
-            if(Math.abs(xVelocity) >= 50){
+            if(Math.abs(xVelocity) >= 50){  // 滑动速度大于 50px/s，左滑就到达下一个view，右滑就到达上一个view
                 // xVelocity > 0，右滑
                 mChildIndex = xVelocity > 0 ? mChildIndex - 1 : mChildIndex + 1;
-            }else{
+            }else{  // 滑动速度小于 50px/s
                 mChildIndex = (scrollX + mChildWidth / 2) / mChildWidth;
             }
-            mChildIndex = Math.max(0, Math.min(mChildIndex,mChildrenSize - 1));
-            int dx = mChildIndex * mChildWidth - scrollX;
+            mChildIndex = Math.max(0, Math.min(mChildIndex,mChildrenSize - 1)); //
+            int dx = mChildIndex * mChildWidth + (-scrollX);    // 手指松开屏幕后，定位某个子view靠屏幕左侧
             smoothScrollTo(dx,0);
             mVelocityTracker.clear();
         }
