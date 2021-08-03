@@ -39,7 +39,6 @@ public class TextViewGroup extends ViewGroup {
 
     public TextViewGroup(Context context, AttributeSet attrs) {
         this(context,attrs,0);
-        init(attrs);
     }
 
     public TextViewGroup(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -86,10 +85,14 @@ public class TextViewGroup extends ViewGroup {
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
 
+        Log.i(TAG, "width: " + width);
         if(textViewCount == 0){
             width = height = 0;
         }else{
-            widthMeasureSpec = MeasureSpec.makeMeasureSpec(width/3,MeasureSpec.EXACTLY);
+            for (int i=0;i<getChildCount();i++){
+                getChildAt(i).getLayoutParams().width = width/3;
+                getChildAt(i).getLayoutParams().height = height;
+            }
             measureChildren(widthMeasureSpec,heightMeasureSpec);
         }
 
@@ -101,11 +104,14 @@ public class TextViewGroup extends ViewGroup {
         int childCount = getChildCount();
         int childLeft = 0;
         int childWidth = getMeasuredWidth() / childCount;
+        Log.i(TAG, "childWidth: "+childWidth);
 
         for (int i=0;i<childCount;i++){
             View childView = getChildAt(i);
-            childView.layout(childLeft,0,childLeft+childWidth,getMeasuredHeight());
-            childLeft += childWidth;
+            if(childView.getVisibility() == VISIBLE){
+                childView.layout(childLeft,0,childLeft+childWidth,childView.getMeasuredHeight());
+                childLeft += childWidth;
+            }
         }
     }
 

@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 
 import cn.blogss.core.R;
 import cn.blogss.core.base.BaseActivity;
+import cn.blogss.core.view.customview.TextViewGroup;
 
 /**
  * @创建人 560266
@@ -24,6 +25,8 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
     private LinearLayout llAnimator;
 
     private LinearLayout llDelayed;
+
+    private TextViewGroup textViewGroup;
 
     private int mClickNum;
 
@@ -58,6 +61,9 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
         vScroller = findViewById(R.id.v_scroller);
         llAnimator = findViewById(R.id.ll_animator);
         llDelayed = findViewById(R.id.ll_delayed);
+        textViewGroup = findViewById(R.id.tv_group);
+        textViewGroup.setTextViewColor(new int[]{getColor(R.color.darkorchid),getColor(R.color.yellow),getColor(R.color.pink)});
+        textViewGroup.setInVisibleView(2);
 
         vScroller.setOnClickListener(this);
         /*动画弹性滑动*/

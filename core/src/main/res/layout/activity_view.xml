@@ -92,5 +92,12 @@
             app:cornerTv_background_color="@color/aquamarine"
             app:cornerTv_radius="@dimen/dp_10"
             app:cornerTv_position="topLeft|bottomRight"/>
+        <cn.blogss.core.view.customview.TextViewGroup
+            android:id="@+id/tv_group"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="@dimen/dp_50"
+            app:corner_radius="@dimen/dp_30"
+            app:corner_position="bottomLeft|topRight"
+            app:textView_count="3"/>
     </LinearLayout>
 </RelativeLayout>
