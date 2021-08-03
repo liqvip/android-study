@@ -15,6 +15,10 @@ import androidx.appcompat.widget.AppCompatTextView;
 
 import cn.blogss.core.R;
 
+
+/**
+ * xml 动态设置 TextView 背景颜色+圆角，避免写重复的 drawable 文件
+ */
 public class CornerTextView extends AppCompatTextView {
     private static final String TAG = "CornerTextView";
 
@@ -28,7 +32,7 @@ public class CornerTextView extends AppCompatTextView {
             0,0     // bottom-left
     };
 
-    private int mBackgroundColor = Color.BLACK;
+    private int mBackgroundColor = Color.WHITE;
     private int radius = 0;
     private int cornerPosition = -1;
     public static final int TOP_LEFT = 1;
@@ -63,7 +67,6 @@ public class CornerTextView extends AppCompatTextView {
         }
 
         typedArray.recycle();
-
         setColorAndRadius();
 
         Log.i(TAG, "backgroundColor: " + Integer.toHexString(mBackgroundColor));
@@ -107,5 +110,30 @@ public class CornerTextView extends AppCompatTextView {
 
     private boolean containPosition(int position) {
         return (position & cornerPosition) == position;
+    }
+
+    /**
+     * 动态设置圆角位置
+     * @param position
+     */
+    public void setCornerPosition(int position){
+        cornerPosition = position;
+        setColorAndRadius();
+    }
+
+
+    /**
+     * 动态设置背景颜色
+     * @param argb
+     */
+    public void setBackgroundColor(int argb){
+        mBackgroundColor = argb;
+        setColorAndRadius();
+    }
+
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
     }
 }

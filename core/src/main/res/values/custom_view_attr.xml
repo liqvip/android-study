@@ -60,4 +60,16 @@
             <flag name="bottomLeft" value="8"/>
         </attr>
     </declare-styleable>
+
+    <!--TextViewGroup-->
+    <declare-styleable name="TextViewGroup">
+        <attr name="textView_count" format="integer"/>
+        <attr name="corner_radius" format="dimension"/>
+        <attr name="corner_position" format="flags">
+            <flag name="topLeft" value="1"/>
+            <flag name="topRight" value="2"/>
+            <flag name="bottomRight" value="4"/>
+            <flag name="bottomLeft" value="8"/>
+        </attr>
+    </declare-styleable>
 </resources>
