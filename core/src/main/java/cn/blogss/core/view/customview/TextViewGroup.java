@@ -223,7 +223,10 @@ public class TextViewGroup extends ViewGroup {
      * @param childrenText child text.
      */
     public void setChildrenText(int[] childrenText){
-        for (int i=0;i<textViewCount;i++){
+        if(childrenText.length > textViewCount){
+            throw new IllegalArgumentException("TextViewCount is less than childrenText.length!");
+        }
+        for (int i=0;i<childrenText.length;i++){
             TextView view = (TextView) getChildAt(i);
             view.setText(childrenText[i]);
         }
@@ -234,7 +237,10 @@ public class TextViewGroup extends ViewGroup {
      * @param childrenTextColor Color resource ID array.
      */
     public void setChildrenTextColor(int[] childrenTextColor){
-        for (int i=0;i<textViewCount;i++){
+        if(childrenTextColor.length > textViewCount){
+            throw new IllegalArgumentException("TextViewCount is less than childrenTextColor.length!");
+        }
+        for (int i=0;i<childrenTextColor.length;i++){
             TextView view = (TextView) getChildAt(i);
             view.setTextColor(getContext().getColor(childrenTextColor[i]));
         }

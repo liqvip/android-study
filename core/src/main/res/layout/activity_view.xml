@@ -97,7 +97,7 @@
             android:layout_width="@dimen/dp_200"
             android:layout_height="@dimen/dp_50"
             app:corner_radius="@dimen/dp_30"
-            app:corner_position="bottomLeft|topRight"
+            app:corner_position="topLeft|bottomRight"
             app:textView_count="3"/>
     </LinearLayout>
 </RelativeLayout>
