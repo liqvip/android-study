@@ -3,10 +3,15 @@ package cn.blogss.core.view.customview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
+import android.graphics.Xfermode;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -24,7 +29,10 @@ public class TextViewGroup extends ViewGroup {
 
     private Paint mPaint;
     private Path mPath;
+    private Path mTempPath;
     private RectF rectF;
+
+    private Xfermode xfermode;
 
     // Four corners x and y radius.
     private final float[] radii = {
@@ -54,7 +62,9 @@ public class TextViewGroup extends ViewGroup {
     private void init(AttributeSet attrs) {
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPath = new Path();
+        mTempPath = new Path();
         rectF = new RectF();
+        xfermode = new PorterDuffXfermode(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PorterDuff.Mode.DST_OUT : PorterDuff.Mode.DST_IN);
 
         TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.TextViewGroup,0,0);
         int attrCount = typedArray.getIndexCount();
@@ -116,11 +126,12 @@ public class TextViewGroup extends ViewGroup {
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         int childCount = getChildCount();
         int childLeft = 0;
-        int childWidth = getMeasuredWidth() / childCount;
-        Log.i(TAG, "childWidth: "+childWidth);
+        int childWidth = 0;
 
         for (int i=0;i<childCount;i++){
             View childView = getChildAt(i);
+            childWidth = childView.getMeasuredWidth();
+            Log.i(TAG, i+" childWidth: "+childWidth);
             if(childView.getVisibility() == VISIBLE){
                 childView.layout(childLeft,0,childLeft+childWidth,childView.getMeasuredHeight());
                 childLeft += childWidth;
@@ -130,18 +141,24 @@ public class TextViewGroup extends ViewGroup {
 
     @Override
     protected void dispatchDraw(Canvas canvas) {
+        canvas.saveLayer(rectF,null);
+        super.dispatchDraw(canvas);
+        mPaint.setXfermode(xfermode);
+        mTempPath.addRect(rectF,Path.Direction.CCW);
         if(cornerPosition == -1){
             mPath.addRoundRect(rectF,radius,radius,Path.Direction.CCW);
         }else{
             mPath.addRoundRect(rectF,radii,Path.Direction.CCW);
         }
-        canvas.drawPath(mPath,mPaint);
-        super.dispatchDraw(canvas);
+        mTempPath.op(mPath,Path.Op.DIFFERENCE);
+        canvas.drawPath(mTempPath,mPaint);
+        mPaint.setXfermode(null);
+        canvas.restore();
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        Log.i(TAG, "onSizeChanged, w: " + w + "h: " + h);
+        Log.i(TAG, "onSizeChanged, w: " + w + ", h: " + h);
         rectF.set(0,0,w,h);
     }
 
