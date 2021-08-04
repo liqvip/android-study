@@ -11,11 +11,15 @@ import android.graphics.RectF;
 import android.graphics.Xfermode;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
+import android.text.Layout;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import java.util.Arrays;
 
 import cn.blogss.core.R;
 
@@ -121,7 +125,7 @@ public class TextViewGroup extends ViewGroup {
                 if(getChildAt(i).getVisibility() == VISIBLE){
                     visibleChildCount++;
                 }
-                getChildAt(i).getLayoutParams().width = width/3;
+                getChildAt(i).getLayoutParams().width = width/getChildCount();
                 getChildAt(i).getLayoutParams().height = height;
             }
             measureChildren(widthMeasureSpec,heightMeasureSpec);
@@ -210,7 +214,10 @@ public class TextViewGroup extends ViewGroup {
      * @param textViewColor Color resource ID array.
      */
     public void setChildrenBackgroundColor(int[] textViewColor) {
-        for (int i=0;i<textViewCount;i++){
+        if(textViewColor.length > textViewCount){
+            throw new IllegalArgumentException("Max textViewColor.length is " + textViewCount + ", now is " + textViewColor.length);
+        }
+        for (int i=0;i<textViewColor.length;i++){
             View view = getChildAt(i);
             GradientDrawable drawable = new GradientDrawable();
             drawable.setColor(getContext().getColor(textViewColor[i]));
@@ -224,11 +231,24 @@ public class TextViewGroup extends ViewGroup {
      */
     public void setChildrenText(int[] childrenText){
         if(childrenText.length > textViewCount){
-            throw new IllegalArgumentException("TextViewCount is less than childrenText.length!");
+            throw new IllegalArgumentException("Max childrenText.length is " + textViewCount + ", now is " + childrenText.length);
         }
         for (int i=0;i<childrenText.length;i++){
             TextView view = (TextView) getChildAt(i);
+            view.setTextAlignment(TEXT_ALIGNMENT_CENTER);
+            view.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL);
             view.setText(childrenText[i]);
+        }
+    }
+
+    /**
+     * 设置文字大小
+     * @param sp size unit
+     */
+    public void setChildrenTextSize(int sp){
+        for (int i=0;i<textViewCount;i++){
+            TextView view = (TextView) getChildAt(i);
+            view.setTextSize(sp);
         }
     }
 
@@ -252,14 +272,15 @@ public class TextViewGroup extends ViewGroup {
      */
     public void setInVisibleView(int[] index){
         if(index.length > textViewCount){
-            throw new IllegalArgumentException("TextViewCount is less than index.length!");
+            throw new IllegalArgumentException("Max index.length is " + textViewCount + ", now is " + index.length);
         }
+
         for (int i=0;i<textViewCount;i++){
-            if(i == index[i]){
-                getChildAt(i).setVisibility(GONE);
-            }else{
-                getChildAt(i).setVisibility(VISIBLE);
-            }
+            getChildAt(i).setVisibility(VISIBLE);
+        }
+
+        for (int i=0;i<index.length&&index[i]<textViewCount;i++){
+            getChildAt(index[i]).setVisibility(GONE);
         }
     }
 }
