@@ -2,7 +2,10 @@ package cn.blogss.core.view.customview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.RectF;
 import android.graphics.drawable.GradientDrawable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -19,8 +22,10 @@ import cn.blogss.core.R;
 public class TextViewGroup extends ViewGroup {
     private static final String TAG = "TextViewGroup";
 
-    private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private final GradientDrawable gradientDrawable = new GradientDrawable();
+    private Paint mPaint;
+    private Path mPath;
+    private RectF rectF;
+
     // Four corners x and y radius.
     private final float[] radii = {
             0,0,    // top-left
@@ -47,6 +52,10 @@ public class TextViewGroup extends ViewGroup {
     }
 
     private void init(AttributeSet attrs) {
+        mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mPath = new Path();
+        rectF = new RectF();
+
         TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.TextViewGroup,0,0);
         int attrCount = typedArray.getIndexCount();
         Log.i(TAG, "attrCount: " + attrCount);
@@ -68,7 +77,7 @@ public class TextViewGroup extends ViewGroup {
             addView(view);
         }
 
-        setCornerRadius();
+        setRadii();
         typedArray.recycle();
 
         Log.i(TAG, "textViewCount: " + textViewCount);
@@ -84,19 +93,23 @@ public class TextViewGroup extends ViewGroup {
         int height = MeasureSpec.getSize(heightMeasureSpec);
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+        int visibleChildCount = 0;
 
         Log.i(TAG, "width: " + width);
         if(textViewCount == 0){
             width = height = 0;
         }else{
             for (int i=0;i<getChildCount();i++){
+                if(getChildAt(i).getVisibility() == VISIBLE){
+                    visibleChildCount++;
+                }
                 getChildAt(i).getLayoutParams().width = width/3;
                 getChildAt(i).getLayoutParams().height = height;
             }
             measureChildren(widthMeasureSpec,heightMeasureSpec);
         }
 
-        setMeasuredDimension(width,height);
+        setMeasuredDimension(width*visibleChildCount/getChildCount(),height);
     }
 
     @Override
@@ -115,17 +128,21 @@ public class TextViewGroup extends ViewGroup {
         }
     }
 
-    private void setCornerRadius() {
-        if(radius > 0){
-            if(cornerPosition == -1){
-                gradientDrawable.setCornerRadius(radius);
-            }else{
-                setRadii();
-                gradientDrawable.setCornerRadii(radii);
-            }
+    @Override
+    protected void dispatchDraw(Canvas canvas) {
+        if(cornerPosition == -1){
+            mPath.addRoundRect(rectF,radius,radius,Path.Direction.CCW);
+        }else{
+            mPath.addRoundRect(rectF,radii,Path.Direction.CCW);
         }
+        canvas.drawPath(mPath,mPaint);
+        super.dispatchDraw(canvas);
+    }
 
-        setBackground(gradientDrawable);
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        Log.i(TAG, "onSizeChanged, w: " + w + "h: " + h);
+        rectF.set(0,0,w,h);
     }
 
     private void setRadii() {
