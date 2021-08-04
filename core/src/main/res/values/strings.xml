@@ -19,6 +19,9 @@
     <string name="AS_Slide_Use_Animator">弹性滑动(使用动画)</string>
     <string name="AS_Slide_Use_Delayed">弹性滑动(使用延时策略)</string>
     <string name="AS_Custom_View_Circle_View">自定的一个圆形View</string>
+    <string name="As_Tem_Control">温控</string>
+    <string name="As_Already_Collected">已收藏</string>
+    <string name="As_Already_Auth">已授权</string>
 
     <!--broadcast 部分-->
     <string name="AS_Broadcast_Send_One_Static_Standard_Broadcast_Unused">发送一条静态注册的标准广播</string>

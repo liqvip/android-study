@@ -3,7 +3,6 @@ package cn.blogss.core.view.customview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
@@ -59,6 +58,10 @@ public class TextViewGroup extends ViewGroup {
         init(attrs);
     }
 
+    /**
+     * 获取自定义属性
+     * @param attrs
+     */
     private void init(AttributeSet attrs) {
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPath = new Path();
@@ -95,6 +98,11 @@ public class TextViewGroup extends ViewGroup {
         Log.i(TAG, "cornerPosition: " + cornerPosition);
     }
 
+    /**
+     * 测试自身的宽高
+     * @param widthMeasureSpec
+     * @param heightMeasureSpec
+     */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -122,6 +130,14 @@ public class TextViewGroup extends ViewGroup {
         setMeasuredDimension(width*visibleChildCount/getChildCount(),height);
     }
 
+    /**
+     * 合理摆放子 View 的位置
+     * @param changed
+     * @param l
+     * @param t
+     * @param r
+     * @param b
+     */
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         int childCount = getChildCount();
@@ -139,18 +155,22 @@ public class TextViewGroup extends ViewGroup {
         }
     }
 
+    /**
+     * 绘制圆角
+     * @param canvas
+     */
     @Override
     protected void dispatchDraw(Canvas canvas) {
         canvas.saveLayer(rectF,null);
         super.dispatchDraw(canvas);
-        mPaint.setXfermode(xfermode);
+        mPaint.setXfermode(xfermode);   // 图像混合，去除黑色
         mTempPath.addRect(rectF,Path.Direction.CCW);
         if(cornerPosition == -1){
             mPath.addRoundRect(rectF,radius,radius,Path.Direction.CCW);
         }else{
             mPath.addRoundRect(rectF,radii,Path.Direction.CCW);
         }
-        mTempPath.op(mPath,Path.Op.DIFFERENCE);
+        mTempPath.op(mPath,Path.Op.DIFFERENCE); //区域处理，保留mTempPath-mPath的区域
         canvas.drawPath(mTempPath,mPaint);
         mPaint.setXfermode(null);
         canvas.restore();
@@ -185,18 +205,51 @@ public class TextViewGroup extends ViewGroup {
         return (position & cornerPosition) == position;
     }
 
-    public void setTextViewColor(int[] textViewColor) {
+    /**
+     * 设置子 View 背景颜色
+     * @param textViewColor Color resource ID array.
+     */
+    public void setChildrenBackgroundColor(int[] textViewColor) {
         for (int i=0;i<textViewCount;i++){
             View view = getChildAt(i);
             GradientDrawable drawable = new GradientDrawable();
-            drawable.setColor(textViewColor[i]);
+            drawable.setColor(getContext().getColor(textViewColor[i]));
             view.setBackground(drawable);
         }
     }
 
-    public void setInVisibleView(int index){
+    /**
+     * 设置子 View 文本显示
+     * @param childrenText child text.
+     */
+    public void setChildrenText(int[] childrenText){
         for (int i=0;i<textViewCount;i++){
-            if(i == index){
+            TextView view = (TextView) getChildAt(i);
+            view.setText(childrenText[i]);
+        }
+    }
+
+    /**
+     * 设置子 View 文本颜色
+     * @param childrenTextColor Color resource ID array.
+     */
+    public void setChildrenTextColor(int[] childrenTextColor){
+        for (int i=0;i<textViewCount;i++){
+            TextView view = (TextView) getChildAt(i);
+            view.setTextColor(getContext().getColor(childrenTextColor[i]));
+        }
+    }
+
+    /**
+     * 批量隐藏子 view
+     * @param index 子 view 索引(0,1,2...)
+     */
+    public void setInVisibleView(int[] index){
+        if(index.length > textViewCount){
+            throw new IllegalArgumentException("TextViewCount is less than index.length!");
+        }
+        for (int i=0;i<textViewCount;i++){
+            if(i == index[i]){
                 getChildAt(i).setVisibility(GONE);
             }else{
                 getChildAt(i).setVisibility(VISIBLE);
