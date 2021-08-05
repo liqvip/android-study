@@ -30,7 +30,7 @@ import cn.blogss.core.R;
 public class TextViewGroup extends ViewGroup {
     private static final String TAG = "TextViewGroup";
 
-    private Paint mPaint;
+    private Paint mZonePaint,mMaskPaint;
     private Path mPath;
     private Path mTempPath;
     private RectF rectF;
@@ -71,11 +71,14 @@ public class TextViewGroup extends ViewGroup {
      * @param attrs
      */
     private void init(AttributeSet attrs) {
-        mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        xfermode = new PorterDuffXfermode(PorterDuff.Mode.SRC_IN);
+        mZonePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mMaskPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mMaskPaint.setXfermode(xfermode);
+
         mPath = new Path();
         mTempPath = new Path();
         rectF = new RectF();
-        xfermode = new PorterDuffXfermode(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PorterDuff.Mode.DST_OUT : PorterDuff.Mode.DST_IN);
 
         TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.TextViewGroup,0,0);
         int attrCount = typedArray.getIndexCount();
@@ -137,7 +140,9 @@ public class TextViewGroup extends ViewGroup {
                 if(getChildAt(i).getVisibility() == VISIBLE){
                     visibleChildCount++;
                 }
-                getChildAt(i).getLayoutParams().width = width/getChildCount();
+            }
+            for (int i=0;i<getChildCount()&&visibleChildCount!=0;i++){
+                getChildAt(i).getLayoutParams().width = width/visibleChildCount;
                 getChildAt(i).getLayoutParams().height = height;
             }
             measureChildren(widthMeasureSpec,heightMeasureSpec);
@@ -177,15 +182,23 @@ public class TextViewGroup extends ViewGroup {
      */
     @Override
     protected void dispatchDraw(Canvas canvas) {
-        canvas.saveLayer(rectF,null);
+        canvasSetLayer(canvas);
         super.dispatchDraw(canvas);
-        mPaint.setXfermode(xfermode);   // 图像混合，去除黑色
-        mTempPath.addRect(rectF,Path.Direction.CCW);
-        mPath.addRoundRect(rectF,radii,Path.Direction.CCW);
-        mTempPath.op(mPath,Path.Op.DIFFERENCE); //区域处理，保留mTempPath-mPath的区域
-        canvas.drawPath(mTempPath,mPaint);
-        mPaint.setXfermode(null);
         canvas.restore();
+    }
+
+    /**
+     * 画布区域裁剪
+     * @param canvas
+     */
+    private void canvasSetLayer(Canvas canvas) {
+        canvas.saveLayer(rectF, mZonePaint, Canvas.ALL_SAVE_FLAG);
+        mPath.addRoundRect(rectF, radii, Path.Direction.CCW);
+        //mTempPath.addRect(rectF, Path.Direction.CCW);
+        //mTempPath.op(mPath, Path.Op.DIFFERENCE); //区域处理，保留mTempPath-mPath的区域
+        canvas.drawPath(mPath, mZonePaint);
+
+        canvas.saveLayer(rectF, mMaskPaint, Canvas.ALL_SAVE_FLAG);
     }
 
     @Override
@@ -296,7 +309,6 @@ public class TextViewGroup extends ViewGroup {
             getChildAt(index[i]).setVisibility(GONE);
         }
     }
-
 
     public void setVisible(int index){
         if(index >= textViewCount){
