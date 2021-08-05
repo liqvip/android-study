@@ -85,19 +85,19 @@ public class TextViewGroup extends ViewGroup {
             int index = typedArray.getIndex(i);
             Log.i(TAG, "index: " + index);
             if(index == R.styleable.TextViewGroup_textView_count){
-                textViewCount = typedArray.getInt(i,textViewCount);
+                textViewCount = typedArray.getInt(index,textViewCount);
             } else if(index == R.styleable.TextViewGroup_corner_radius){
-                radius = typedArray.getDimensionPixelSize(i,radius);
+                radius = typedArray.getDimensionPixelSize(index,radius);
             } else if(index == R.styleable.TextViewGroup_topLeft_radius){
-                topLeftRadius = typedArray.getDimensionPixelSize(i,topLeftRadius);
+                topLeftRadius = typedArray.getDimensionPixelSize(index,topLeftRadius);
             } else if(index == R.styleable.TextViewGroup_topRight_radius){
-                topRightRadius = typedArray.getDimensionPixelSize(i,topRightRadius);
+                topRightRadius = typedArray.getDimensionPixelSize(index,topRightRadius);
             } else if(index == R.styleable.TextViewGroup_bottomRight_radius){
-                bottomRightRadius = typedArray.getDimensionPixelSize(i,bottomRightRadius);
+                bottomRightRadius = typedArray.getDimensionPixelSize(index,bottomRightRadius);
             } else if(index == R.styleable.TextViewGroup_bottomLeft_radius){
-                bottomLeftRadius = typedArray.getDimensionPixelSize(i,bottomLeftRadius);
+                bottomLeftRadius = typedArray.getDimensionPixelSize(index,bottomLeftRadius);
             } else if(index == R.styleable.TextViewGroup_corner_position){
-                cornerPosition = typedArray.getInt(i,cornerPosition);
+                cornerPosition = typedArray.getInt(index,cornerPosition);
             }
         }
 

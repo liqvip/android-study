@@ -96,7 +96,8 @@
             android:id="@+id/tv_group"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_50"
-            app:corner_radius="@dimen/dp_20"
+            app:topLeft_radius="@dimen/dp_8"
+            app:bottomRight_radius="@dimen/dp_22"
             app:corner_position="topLeft|bottomRight"
             app:textView_count="5"/>
     </LinearLayout>
