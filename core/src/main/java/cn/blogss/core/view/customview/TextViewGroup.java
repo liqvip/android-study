@@ -47,6 +47,10 @@ public class TextViewGroup extends ViewGroup {
 
     private int textViewCount = 0;
     private int radius = 0;
+    private int topLeftRadius = 0;
+    private int topRightRadius = 0;
+    private int bottomRightRadius = 0;
+    private int bottomLeftRadius = 0;
     private int cornerPosition = -1;
     public static final int TOP_LEFT = 1;
     public static final int TOP_RIGHT = 2;
@@ -84,6 +88,14 @@ public class TextViewGroup extends ViewGroup {
                 textViewCount = typedArray.getInt(i,textViewCount);
             } else if(index == R.styleable.TextViewGroup_corner_radius){
                 radius = typedArray.getDimensionPixelSize(i,radius);
+            } else if(index == R.styleable.TextViewGroup_topLeft_radius){
+                topLeftRadius = typedArray.getDimensionPixelSize(i,topLeftRadius);
+            } else if(index == R.styleable.TextViewGroup_topRight_radius){
+                topRightRadius = typedArray.getDimensionPixelSize(i,topRightRadius);
+            } else if(index == R.styleable.TextViewGroup_bottomRight_radius){
+                bottomRightRadius = typedArray.getDimensionPixelSize(i,bottomRightRadius);
+            } else if(index == R.styleable.TextViewGroup_bottomLeft_radius){
+                bottomLeftRadius = typedArray.getDimensionPixelSize(i,bottomLeftRadius);
             } else if(index == R.styleable.TextViewGroup_corner_position){
                 cornerPosition = typedArray.getInt(i,cornerPosition);
             }
@@ -169,11 +181,7 @@ public class TextViewGroup extends ViewGroup {
         super.dispatchDraw(canvas);
         mPaint.setXfermode(xfermode);   // 图像混合，去除黑色
         mTempPath.addRect(rectF,Path.Direction.CCW);
-        if(cornerPosition == -1){
-            mPath.addRoundRect(rectF,radius,radius,Path.Direction.CCW);
-        }else{
-            mPath.addRoundRect(rectF,radii,Path.Direction.CCW);
-        }
+        mPath.addRoundRect(rectF,radii,Path.Direction.CCW);
         mTempPath.op(mPath,Path.Op.DIFFERENCE); //区域处理，保留mTempPath-mPath的区域
         canvas.drawPath(mTempPath,mPaint);
         mPaint.setXfermode(null);
@@ -187,21 +195,26 @@ public class TextViewGroup extends ViewGroup {
     }
 
     private void setRadii() {
+        if(radius != 0){
+            Arrays.fill(radii, radius);
+            return;
+        }
+
         if(containPosition(TOP_LEFT)){  // top-left
-            radii[0] = radius;
-            radii[1] = radius;
+            radii[0] = topLeftRadius;
+            radii[1] = topLeftRadius;
         }
         if(containPosition(TOP_RIGHT)){  // top-right
-            radii[2] = radius;
-            radii[3] = radius;
+            radii[2] = topRightRadius;
+            radii[3] = topRightRadius;
         }
         if(containPosition(BOTTOM_RIGHT)){  // bottom-right
-            radii[4] = radius;
-            radii[5] = radius;
+            radii[4] = bottomRightRadius;
+            radii[5] = bottomRightRadius;
         }
         if(containPosition(BOTTOM_LEFT)){  // bottom-left
-            radii[6] = radius;
-            radii[7] = radius;
+            radii[6] = bottomLeftRadius;
+            radii[7] = bottomLeftRadius;
         }
     }
 
@@ -220,7 +233,7 @@ public class TextViewGroup extends ViewGroup {
         for (int i=0;i<textViewColor.length;i++){
             View view = getChildAt(i);
             GradientDrawable drawable = new GradientDrawable();
-            drawable.setColor(getContext().getColor(textViewColor[i]));
+            drawable.setColor(getContext().getResources().getColor(textViewColor[i]));
             view.setBackground(drawable);
         }
     }
@@ -262,7 +275,7 @@ public class TextViewGroup extends ViewGroup {
         }
         for (int i=0;i<childrenTextColor.length;i++){
             TextView view = (TextView) getChildAt(i);
-            view.setTextColor(getContext().getColor(childrenTextColor[i]));
+            view.setTextColor(getContext().getResources().getColor(childrenTextColor[i]));
         }
     }
 
@@ -282,5 +295,20 @@ public class TextViewGroup extends ViewGroup {
         for (int i=0;i<index.length&&index[i]<textViewCount;i++){
             getChildAt(index[i]).setVisibility(GONE);
         }
+    }
+
+
+    public void setVisible(int index){
+        if(index >= textViewCount){
+            throw new IllegalArgumentException("Max index is " + (textViewCount-1) + ", now is " + index);
+        }
+        getChildAt(index).setVisibility(VISIBLE);
+    }
+
+    public void setInvisible(int index){
+        if(index >= textViewCount){
+            throw new IllegalArgumentException("Max index is " + (textViewCount-1) + ", now is " + index);
+        }
+        getChildAt(index).setVisibility(GONE);
     }
 }

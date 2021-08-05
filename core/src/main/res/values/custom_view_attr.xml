@@ -65,6 +65,10 @@
     <declare-styleable name="TextViewGroup">
         <attr name="textView_count" format="integer"/>
         <attr name="corner_radius" format="dimension"/>
+        <attr name="topLeft_radius" format="dimension"/>
+        <attr name="topRight_radius" format="dimension"/>
+        <attr name="bottomRight_radius" format="dimension"/>
+        <attr name="bottomLeft_radius" format="dimension"/>
         <attr name="corner_position" format="flags">
             <flag name="topLeft" value="1"/>
             <flag name="topRight" value="2"/>
