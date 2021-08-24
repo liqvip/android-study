@@ -1,4 +1,4 @@
-package cn.blogss.core.listeners;
+package cn.blogss.core.base.recyclerview;
 
 import android.view.View;
 import android.view.ViewGroup;

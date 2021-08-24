@@ -1,4 +1,4 @@
-package cn.blogss.core.base;
+package cn.blogss.core.base.recyclerview;
 
 import android.content.Context;
 import android.util.Log;
@@ -10,8 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
-
-import cn.blogss.core.listeners.OnItemClickListener;
 
 /**
  * @创建人 560266

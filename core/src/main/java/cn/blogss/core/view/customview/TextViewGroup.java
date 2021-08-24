@@ -10,8 +10,6 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.graphics.Xfermode;
 import android.graphics.drawable.GradientDrawable;
-import android.os.Build;
-import android.text.Layout;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -22,6 +20,7 @@ import android.widget.TextView;
 import java.util.Arrays;
 
 import cn.blogss.core.R;
+
 
 /**
  * 多个 TextView 组合控件
@@ -34,6 +33,7 @@ public class TextViewGroup extends ViewGroup {
     private Path mPath;
     private Path mTempPath;
     private RectF rectF;
+    private int visibleChildCount = 0;
 
     private Xfermode xfermode;
 
@@ -130,25 +130,25 @@ public class TextViewGroup extends ViewGroup {
         int height = MeasureSpec.getSize(heightMeasureSpec);
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-        int visibleChildCount = 0;
 
         Log.i(TAG, "width: " + width);
         if(textViewCount == 0){
             width = height = 0;
         }else{
+            visibleChildCount = 0;
             for (int i=0;i<getChildCount();i++){
                 if(getChildAt(i).getVisibility() == VISIBLE){
                     visibleChildCount++;
                 }
             }
-            for (int i=0;i<getChildCount()&&visibleChildCount!=0;i++){
-                getChildAt(i).getLayoutParams().width = width/visibleChildCount;
+            for (int i=0;i<getChildCount();i++){
+                getChildAt(i).getLayoutParams().width = width/getChildCount();
                 getChildAt(i).getLayoutParams().height = height;
             }
             measureChildren(widthMeasureSpec,heightMeasureSpec);
         }
 
-        setMeasuredDimension(width*visibleChildCount/getChildCount(),height);
+        setMeasuredDimension(width,height);
     }
 
     /**
@@ -182,8 +182,8 @@ public class TextViewGroup extends ViewGroup {
      */
     @Override
     protected void dispatchDraw(Canvas canvas) {
-        canvasSetLayer(canvas);
         super.dispatchDraw(canvas);
+        canvasSetLayer(canvas);
         canvas.restore();
     }
 
@@ -192,6 +192,7 @@ public class TextViewGroup extends ViewGroup {
      * @param canvas
      */
     private void canvasSetLayer(Canvas canvas) {
+        rectF.set(0,0,getMeasuredWidth()*visibleChildCount*1.0f/getChildCount(),getMeasuredHeight());
         canvas.saveLayer(rectF, mZonePaint, Canvas.ALL_SAVE_FLAG);
         mPath.addRoundRect(rectF, radii, Path.Direction.CCW);
         //mTempPath.addRect(rectF, Path.Direction.CCW);
@@ -204,7 +205,6 @@ public class TextViewGroup extends ViewGroup {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         Log.i(TAG, "onSizeChanged, w: " + w + ", h: " + h);
-        rectF.set(0,0,w,h);
     }
 
     private void setRadii() {
@@ -262,7 +262,7 @@ public class TextViewGroup extends ViewGroup {
         for (int i=0;i<childrenText.length;i++){
             TextView view = (TextView) getChildAt(i);
             view.setTextAlignment(TEXT_ALIGNMENT_CENTER);
-            view.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL);
+            view.setGravity(Gravity.CENTER_HORIZONTAL| Gravity.CENTER_VERTICAL);
             view.setText(childrenText[i]);
         }
     }

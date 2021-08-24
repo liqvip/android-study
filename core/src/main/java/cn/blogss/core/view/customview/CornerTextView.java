@@ -34,7 +34,7 @@ public class CornerTextView extends AppCompatTextView {
 
     private int mBackgroundColor = Color.WHITE;
     private int radius = 0;
-    private int cornerPosition = -1;
+    private int cornerPosition = 0;
     public static final int TOP_LEFT = 1;
     public static final int TOP_RIGHT = 2;
     public static final int BOTTOM_RIGHT = 4;
@@ -58,11 +58,11 @@ public class CornerTextView extends AppCompatTextView {
             int index = typedArray.getIndex(i);
             Log.i(TAG, "index: " + index);
             if(index == R.styleable.CornerTextView_cornerTv_background_color){
-                mBackgroundColor = typedArray.getColor(i,mBackgroundColor);
+                mBackgroundColor = typedArray.getColor(index,mBackgroundColor);
             } else if(index == R.styleable.CornerTextView_cornerTv_radius){
-                radius = typedArray.getDimensionPixelSize(i,radius);
+                radius = typedArray.getDimensionPixelSize(index,radius);
             } else if(index == R.styleable.CornerTextView_cornerTv_position){
-                cornerPosition = typedArray.getInt(i,cornerPosition);
+                cornerPosition = typedArray.getInt(index,cornerPosition);
             }
         }
 
@@ -77,13 +77,10 @@ public class CornerTextView extends AppCompatTextView {
     private void setColorAndRadius() {
         gradientDrawable.setColor(mBackgroundColor);
 
-        if(radius > 0){
-            if(cornerPosition == -1){
-                gradientDrawable.setCornerRadius(radius);
-            }else{
-                setRadii();
-                gradientDrawable.setCornerRadii(radii);
-            }
+        if(cornerPosition == 0){   // 没有指定圆角位置，默认四个圆角
+            gradientDrawable.setCornerRadius(radius);
+        }else{
+            gradientDrawable.setCornerRadii(radii);
         }
 
         setBackground(gradientDrawable);
@@ -113,22 +110,59 @@ public class CornerTextView extends AppCompatTextView {
     }
 
     /**
-     * 动态设置圆角位置
-     * @param position
-     */
-    public void setCornerPosition(int position){
-        cornerPosition = position;
-        setColorAndRadius();
-    }
-
-
-    /**
      * 动态设置背景颜色
      * @param argb
      */
     public void setBackgroundColor(int argb){
         mBackgroundColor = argb;
         setColorAndRadius();
+    }
+
+    /**
+     * 动态设置圆角半径
+     * @param dp
+     */
+    public void setRadius(int dp){
+        cornerPosition = 0;
+        radius = dp2px(getContext(),dp);
+        setColorAndRadius();
+    }
+
+    public void setTopLeftRadius(int dp){
+        cornerPosition = cornerPosition | TOP_LEFT;
+        dp = dp2px(getContext(),dp);
+        radii[0] = dp;
+        radii[1] = dp;
+        setColorAndRadius();
+    }
+
+    public void setTopRightRadius(int dp){
+        cornerPosition = cornerPosition | TOP_RIGHT;
+        dp = dp2px(getContext(),dp);
+        radii[2] = dp;
+        radii[3] = dp;
+        setColorAndRadius();
+    }
+
+    public void setBottomRightRadius(int dp){
+        cornerPosition = cornerPosition | BOTTOM_RIGHT;
+        dp = dp2px(getContext(),dp);
+        radii[4] = dp;
+        radii[5] = dp;
+        setColorAndRadius();
+    }
+
+    public void setBottomLeftRadius(int dp){
+        cornerPosition = cornerPosition | BOTTOM_LEFT;
+        dp = dp2px(getContext(),dp);
+        radii[6] = dp;
+        radii[7] = dp;
+        setColorAndRadius();
+    }
+
+    public static int dp2px(Context context, float dipValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dipValue * scale + 0.5f);
     }
 
 

@@ -11,9 +11,9 @@ import cn.blogss.android_study.R
 import cn.blogss.android_study.home.bean.HomeRvItemBean
 import cn.blogss.android_study.home.presenter.HomePresenter
 import cn.blogss.core.base.BaseFragment
-import cn.blogss.core.base.BaseRVAdapter
-import cn.blogss.core.base.BaseRvHolder
-import cn.blogss.core.listeners.OnItemClickListener
+import cn.blogss.core.base.recyclerview.BaseRVAdapter
+import cn.blogss.core.base.recyclerview.BaseRvHolder
+import cn.blogss.core.base.recyclerview.OnItemClickListener
 import cn.blogss.helper.dp2px
 
 open class HomeFragment : BaseFragment() {

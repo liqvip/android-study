@@ -18,8 +18,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import cn.blogss.core.R
 import cn.blogss.core.base.BaseActivity
-import cn.blogss.core.base.BaseRVAdapter
-import cn.blogss.core.base.BaseRvHolder
+import cn.blogss.core.base.recyclerview.BaseRVAdapter
+import cn.blogss.core.base.recyclerview.BaseRvHolder
 import cn.blogss.core.base.CommonBaseAdapter
 import cn.blogss.core.view.customview.SquareImageView
 import cn.blogss.helper.dp2px

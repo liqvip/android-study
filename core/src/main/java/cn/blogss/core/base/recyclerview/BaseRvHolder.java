@@ -1,4 +1,4 @@
-package cn.blogss.core.base;
+package cn.blogss.core.base.recyclerview;
 
 import android.content.Context;
 import android.util.SparseArray;

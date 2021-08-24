@@ -22,8 +22,8 @@ import java.util.List;
 
 import cn.blogss.core.R;
 import cn.blogss.core.base.BaseActivity;
-import cn.blogss.core.base.BaseRVAdapter;
-import cn.blogss.core.base.BaseRvHolder;
+import cn.blogss.core.base.recyclerview.BaseRVAdapter;
+import cn.blogss.core.base.recyclerview.BaseRvHolder;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
     private Button btCallPhone;

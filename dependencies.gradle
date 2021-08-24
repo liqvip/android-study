@@ -14,7 +14,7 @@ project.ext {
             "androidx.appcompat:appcompat:1.2.0",
             "androidx.constraintlayout:constraintlayout:2.0.4",
             "androidx.recyclerview:recyclerview:1.1.0",
-            "com.google.android.material:material:1.1.0",
+            "com.google.android.material:material:1.2.0",
             "com.rengwuxian.materialedittext:library:2.1.4",
             "io.reactivex.rxjava3:rxjava:3.0.7",
             "io.reactivex.rxjava3:rxandroid:3.0.0",

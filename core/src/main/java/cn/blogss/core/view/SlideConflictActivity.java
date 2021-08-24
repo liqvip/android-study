@@ -13,9 +13,9 @@ import java.util.ArrayList;
 
 import cn.blogss.core.R;
 import cn.blogss.core.base.BaseActivity;
-import cn.blogss.core.base.BaseRVAdapter;
-import cn.blogss.core.base.BaseRvHolder;
-import cn.blogss.core.listeners.OnItemClickListener;
+import cn.blogss.core.base.recyclerview.BaseRVAdapter;
+import cn.blogss.core.base.recyclerview.BaseRvHolder;
+import cn.blogss.core.base.recyclerview.OnItemClickListener;
 import cn.blogss.core.view.customview.HorizontalScrollViewEx;
 import cn.blogss.helper.DensityUtilKt;
 
