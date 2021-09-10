@@ -9,9 +9,7 @@ import android.view.View;
 import androidx.annotation.Nullable;
 
 /**
- * @创建人 560266
- * @文件描述 自定义可全屏拖动的View，使用属性动画完成
- * @创建时间 2020/5/14
+ * 可全屏拖动的View，使用属性动画完成
  */
 public class MyDraggedView extends View {
     private static final String TAG = "MyDraggedView";
