@@ -18,6 +18,7 @@ project.ext {
             "com.rengwuxian.materialedittext:library:2.1.4",
             "io.reactivex.rxjava3:rxjava:3.0.7",
             "io.reactivex.rxjava3:rxandroid:3.0.0",
+            "com.squareup.okhttp3:okhttp:3.14.9",
             "org.jetbrains.kotlin:kotlin-stdlib:1.4.20",
             "com.permissionx.guolindev:permissionx:1.4.0"
     ]

@@ -3,9 +3,7 @@ package cn.blogss.core.kotlin
 import android.view.View
 
 /**
- * @创建人 560266
- * @文件描述
- * @创建时间 2020/7/23
+ * Kotlin 基础
  */
 class Base {
     /*

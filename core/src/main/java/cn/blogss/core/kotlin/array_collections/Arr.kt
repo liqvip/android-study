@@ -1,9 +1,7 @@
 package cn.blogss.core.kotlin.array_collections
 
 /**
- * @创建人 560266
- * @文件描述 kotlin 数组
- * @创建时间 2020/7/28
+ * kotlin 数组
  */
 class Arr {
     /*声明一个整形数组*/
