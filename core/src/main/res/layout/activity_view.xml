@@ -44,21 +44,6 @@
             android:gravity="center_horizontal"
             android:text="@string/AS_Slide_Use_Scroller"/>
         <LinearLayout
-            android:id="@+id/ll_animator"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_100"
-            android:layout_marginTop="@dimen/dp_20"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center_vertical"
-            android:background="@color/blanchedalmond"
-            android:orientation="vertical">
-        </LinearLayout>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="@string/AS_Slide_Use_Animator"/>
-        <LinearLayout
             android:id="@+id/ll_delayed"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_100"
@@ -77,6 +62,21 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="@string/AS_Slide_Use_Delayed"/>
+        <LinearLayout
+            android:id="@+id/ll_animator"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_100"
+            android:layout_marginTop="@dimen/dp_20"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_vertical"
+            android:background="@color/blanchedalmond"
+            android:orientation="vertical">
+        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/AS_Slide_Use_Animator"/>
         <cn.blogss.core.view.customview.CircleView
             android:id="@+id/circleView1"
             android:layout_width="wrap_content"

@@ -72,7 +72,7 @@ public class ViewActivity extends BaseActivity<ActivityViewBinding, ViewModel> i
         viewBinding.tvGroup.setChildrenTextColor(new int[]{R.color.black});
         viewBinding.tvGroup.setChildrenTextSize(20);
 
-        /*动画弹性滑动*/
+        /*属性动画、弹性滑动*/
         ObjectAnimator.ofFloat(viewBinding.llAnimator,"translationX",0,400).setDuration(2000).start();
 
         /*延时策略弹性滑动*/
