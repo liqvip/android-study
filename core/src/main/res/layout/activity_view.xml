@@ -4,34 +4,31 @@
     在这个声明中，app是自定义属性的前缀，当然也可以换其他名字，
     但是CircleView中的自定义属性的前缀必须和这里的一致。
 -->
-<RelativeLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingTop="@dimen/dp_24">
+    android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="@string/AS_Dragged_View"/>
         <cn.blogss.core.view.MyDraggedView
+            android:id="@+id/v_drag"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_100"
             android:background="@color/powderblue"/>
         <TextView
+            android:id="@+id/tv_drag"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="@string/AS_Slide_Use_Scroller"/>
+            android:text="@string/AS_Dragged_View"/>
         <cn.blogss.core.view.MyScrollView
             android:id="@+id/v_scroller"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_100"
+            android:layout_marginTop="@dimen/dp_20"
             android:layout_gravity="center_horizontal"
             android:gravity="center_vertical"
             android:background="@color/gray"
@@ -45,11 +42,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="@string/AS_Slide_Use_Animator"/>
+            android:text="@string/AS_Slide_Use_Scroller"/>
         <LinearLayout
             android:id="@+id/ll_animator"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_100"
+            android:layout_marginTop="@dimen/dp_20"
             android:layout_gravity="center_horizontal"
             android:gravity="center_vertical"
             android:background="@color/blanchedalmond"
@@ -59,11 +57,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="@string/AS_Slide_Use_Delayed"/>
+            android:text="@string/AS_Slide_Use_Animator"/>
         <LinearLayout
             android:id="@+id/ll_delayed"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_100"
+            android:layout_marginTop="@dimen/dp_20"
             android:layout_gravity="center_horizontal"
             android:gravity="center_vertical"
             android:background="@color/gainsboro"
@@ -77,21 +76,30 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="@string/AS_Custom_View_Circle_View"/>
+            android:text="@string/AS_Slide_Use_Delayed"/>
         <cn.blogss.core.view.customview.CircleView
             android:id="@+id/circleView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             app:circle_color="@color/pink"
             android:background="#000000"
             android:layout_marginTop="@dimen/dp_20"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/AS_Custom_View_Circle_View"/>
         <cn.blogss.core.view.customview.CornerTextView
             android:layout_width="@dimen/dp_200"
             android:layout_height="wrap_content"
-            android:text="@string/appbar_scrolling_view_behavior"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dp_20"
+            android:gravity="center"
+            android:padding="@dimen/dp_10"
+            android:text="@string/As_Custom_Corner_View"
             app:cornerTv_background_color="@color/aquamarine"
-            app:cornerTv_radius="@dimen/dp_10"
-            app:cornerTv_position="topLeft|bottomRight"/>
+            app:cornerTv_radius="@dimen/dp_10"/>
         <cn.blogss.core.view.customview.TextViewGroup
             android:id="@+id/tv_group"
             android:layout_width="match_parent"
@@ -101,4 +109,4 @@
             app:corner_position="topLeft|bottomRight"
             app:textView_count="5"/>
     </LinearLayout>
-</RelativeLayout>
+</ScrollView>

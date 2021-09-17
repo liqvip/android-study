@@ -43,7 +43,7 @@
             android:launchMode="singleTask" />
         <activity
             android:name=".view.ViewActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"/>
         <activity
             android:name=".network.NetworkActivity"
             android:launchMode="singleTask" />

@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -17,7 +18,8 @@ import cn.blogss.core.databinding.ActivityViewBinding;
 /**
  * 自定义 View
  */
-public class ViewActivity extends BaseActivity<ActivityViewBinding, ViewModel> implements View.OnClickListener {
+public class ViewActivity extends BaseActivity<ActivityViewBinding, ViewModel> implements
+        View.OnClickListener, View.OnTouchListener {
 
     private int mClickNum;
 
@@ -55,6 +57,7 @@ public class ViewActivity extends BaseActivity<ActivityViewBinding, ViewModel> i
     @Override
     protected void initView() {
         viewBinding.vScroller.setOnClickListener(this);
+        viewBinding.vDrag.setOnTouchListener(this);
     }
 
     @Override
@@ -87,5 +90,33 @@ public class ViewActivity extends BaseActivity<ActivityViewBinding, ViewModel> i
                 viewBinding.vScroller.smoothScrollTo(-500,0);
             }
         }
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        if(v == viewBinding.vDrag){
+            // 原始坐标
+            int left  = v.getLeft();
+            int top = v.getTop();
+            int right = v.getRight();
+            int bottom = v.getBottom();
+
+            // 平移坐标
+            float x = (int)v.getX();
+            float y = (int)v.getY();
+            float translationX = (int)v.getTranslationX();
+            float translationY = (int)v.getTranslationY();
+
+            // 触摸坐标
+            float rawX = (int)event.getRawX();
+            float rawY = (int)event.getRawY();
+            float eventX = (int)event.getX();
+            float eventY = (int)event.getY();
+
+            viewBinding.tvDrag.setText("原始坐标：(left,top,right,bottom)=("+left+","+top+","+right+","+bottom+")\n" +
+                    "平移坐标：(x,y,translationX,translationX)=("+x+","+y+","+translationX+","+translationY+")\n" +
+                    "触摸坐标：(rawX,rawY,eventX,eventY)=("+rawX+","+rawY+","+eventX+","+eventY+")");
+        }
+        return false;
     }
 }

@@ -22,6 +22,7 @@
     <string name="As_Tem_Control">温控</string>
     <string name="As_Already_Collected">已收藏</string>
     <string name="As_Already_Auth">已授权</string>
+    <string name="As_Custom_Corner_View">自定义圆角View</string>
 
     <!--broadcast 部分-->
     <string name="AS_Broadcast_Send_One_Static_Standard_Broadcast_Unused">发送一条静态注册的标准广播</string>
