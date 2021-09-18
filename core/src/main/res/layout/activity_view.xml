@@ -62,8 +62,10 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="@string/AS_Slide_Use_Delayed"/>
+
+        <!--平移-->
         <LinearLayout
-            android:id="@+id/ll_animator"
+            android:id="@+id/ll_translation_animator"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_100"
             android:layout_marginTop="@dimen/dp_20"
@@ -73,10 +75,47 @@
             android:orientation="vertical">
         </LinearLayout>
         <TextView
+            android:id="@+id/tv_translation_animator"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="@string/AS_Slide_Use_Animator"/>
+            android:text="@string/AS_Translation_Animator"/>
+
+        <!--缩放-->
+        <LinearLayout
+            android:id="@+id/ll_scale_animator"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_100"
+            android:layout_marginTop="@dimen/dp_20"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_vertical"
+            android:background="@color/blanchedalmond"
+            android:orientation="vertical">
+        </LinearLayout>
+        <TextView
+            android:id="@+id/tv_scale_animator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/AS_Scale_Animator"/>
+
+        <!--旋转-->
+        <LinearLayout
+            android:id="@+id/ll_rotate_animator"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_100"
+            android:layout_marginTop="@dimen/dp_20"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_vertical"
+            android:background="@color/blanchedalmond"
+            android:orientation="vertical">
+        </LinearLayout>
+        <TextView
+            android:id="@+id/tv_rotate_animator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/AS_Rotate_Animator"/>
         <cn.blogss.core.view.customview.CircleView
             android:id="@+id/circleView1"
             android:layout_width="wrap_content"
@@ -89,7 +128,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="@string/AS_Custom_View_Circle_View"/>
+            android:text="@string/AS_Custom_Circle_View"/>
         <cn.blogss.core.view.customview.CornerTextView
             android:layout_width="@dimen/dp_200"
             android:layout_height="wrap_content"
@@ -108,5 +147,18 @@
             app:bottomRight_radius="@dimen/dp_22"
             app:corner_position="topLeft|bottomRight"
             app:textView_count="5"/>
+
+        <cn.blogss.core.view.customview.RotateImageView
+            android:id="@+id/riv"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="@dimen/dp_50"
+            android:layout_gravity="center"
+            android:src="@drawable/image_load_default"
+            android:layout_marginTop="@dimen/dp_20"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/AS_Custom_Rotate_ImageView"/>
     </LinearLayout>
 </ScrollView>

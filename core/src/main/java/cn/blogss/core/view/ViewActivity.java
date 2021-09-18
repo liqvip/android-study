@@ -1,6 +1,8 @@
 package cn.blogss.core.view;
 
+import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.os.Handler;
 import android.os.Message;
@@ -72,11 +74,47 @@ public class ViewActivity extends BaseActivity<ActivityViewBinding, ViewModel> i
         viewBinding.tvGroup.setChildrenTextColor(new int[]{R.color.black});
         viewBinding.tvGroup.setChildrenTextSize(20);
 
-        /*属性动画、弹性滑动*/
-        ObjectAnimator.ofFloat(viewBinding.llAnimator,"translationX",0,400).setDuration(2000).start();
-
         /*延时策略弹性滑动*/
         mHandler.sendEmptyMessageDelayed(MESSAGE_SCROLL_TO,DELAYED_TIME);
+
+        /*属性动画、平移*/
+        ObjectAnimator translationAnimator = ObjectAnimator.ofFloat(viewBinding.llTranslationAnimator,"translationX",500,0).setDuration(20*1000);
+        translationAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float fraction = animation.getAnimatedFraction();
+                float translationX = (float)animation.getAnimatedValue("translationX");
+                viewBinding.tvTranslationAnimator.setText("属性动画，平移\n动画完成度: " + fraction + "\n动画值: "+translationX);
+            }
+        });
+        translationAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        translationAnimator.start();
+
+        /*属性动画、缩放*/
+        ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(viewBinding.llScaleAnimator,"scaleX",1.0f,0.5f).setDuration(20*1000);
+        scaleXAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float fraction = animation.getAnimatedFraction();
+                float scaleX = (float)animation.getAnimatedValue("scaleX");
+                viewBinding.tvScaleAnimator.setText("属性动画，缩放\n动画完成度: " + fraction + "\n动画值: "+scaleX);
+            }
+        });
+        scaleXAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        scaleXAnimator.start();
+
+        /*属性动画、旋转*/
+        ObjectAnimator rotationAnimator = ObjectAnimator.ofFloat(viewBinding.llRotateAnimator,"rotation",0.0f,360.0f).setDuration(20*1000);
+        rotationAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float fraction = animation.getAnimatedFraction();
+                float rotation = (float)animation.getAnimatedValue("rotation");
+                viewBinding.tvRotateAnimator.setText("属性动画，旋转\n动画完成度: " + fraction + "\n动画值: "+rotation);
+            }
+        });
+        rotationAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        rotationAnimator.start();
     }
 
     @Override

@@ -4,6 +4,7 @@
         <attr name="circle_color" format="color"/>
     </declare-styleable>
 
+    <!--CommonShapeButton-->
     <declare-styleable name="CommonShapeButton">
         <!--shape模式-->
         <attr name="csb_shapeMode" format="enum">
@@ -74,6 +75,18 @@
             <flag name="topRight" value="2"/>
             <flag name="bottomRight" value="4"/>
             <flag name="bottomLeft" value="8"/>
+        </attr>
+    </declare-styleable>
+
+    <!--RotateImageView-->
+    <declare-styleable name="RotateImageView">
+        <attr name="duration" format="integer"/>
+        <attr name="repeatCount" format="integer">
+            <enum name="infinite" value="-1" />
+        </attr>
+        <attr name="repeatMode">
+            <enum name="restart" value="1" />
+            <enum name="reverse" value="2" />
         </attr>
     </declare-styleable>
 </resources>
