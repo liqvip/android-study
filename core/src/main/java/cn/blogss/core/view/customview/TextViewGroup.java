@@ -33,7 +33,6 @@ public class TextViewGroup extends ViewGroup {
     private Path mPath;
     private Path mTempPath;
     private RectF rectF;
-    private int visibleChildCount = 0;
 
     private Xfermode xfermode;
 
@@ -132,22 +131,13 @@ public class TextViewGroup extends ViewGroup {
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
 
         Log.i(TAG, "width: " + width);
-        if(textViewCount == 0){
-            width = height = 0;
-        }else{
-            visibleChildCount = 0;
-            for (int i=0;i<getChildCount();i++){
-                if(getChildAt(i).getVisibility() == VISIBLE){
-                    visibleChildCount++;
-                }
-            }
-            for (int i=0;i<getChildCount();i++){
-                getChildAt(i).getLayoutParams().width = width/getChildCount();
-                getChildAt(i).getLayoutParams().height = height;
-            }
-            measureChildren(widthMeasureSpec,heightMeasureSpec);
+
+        for (int i=0;i<getChildCount();i++){
+            getChildAt(i).getLayoutParams().width = width/getChildCount();
+            getChildAt(i).getLayoutParams().height = height;
         }
 
+        measureChildren(widthMeasureSpec,heightMeasureSpec);
         setMeasuredDimension(width,height);
     }
 
@@ -192,7 +182,7 @@ public class TextViewGroup extends ViewGroup {
      * @param canvas
      */
     private void canvasSetLayer(Canvas canvas) {
-        rectF.set(0,0,getMeasuredWidth()*visibleChildCount*1.0f/getChildCount(),getMeasuredHeight());
+        rectF.set(0,0,getMeasuredWidth(),getMeasuredHeight());
         canvas.saveLayer(rectF, mZonePaint, Canvas.ALL_SAVE_FLAG);
         mPath.addRoundRect(rectF, radii, Path.Direction.CCW);
         //mTempPath.addRect(rectF, Path.Direction.CCW);

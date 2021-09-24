@@ -4,7 +4,16 @@
     package="cn.blogss.core">
 
     <application>
-        <activity android:name=".view.SlideConflictActivity"></activity>
+        <activity
+            android:name=".view.CanvasActivity"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|screenSize|keyboard|keyboardHidden|navigation"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"/>
+        <activity
+            android:name=".view.SlideConflictActivity"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|screenSize|keyboard|keyboardHidden|navigation"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"/>
         <!-- 不以 : 开头的进程属于全局进程，其他应用通过ShareUID方式可以和它跑在同一个进程中 -->
         <activity
             android:name=".ipc.IPCSecondActivity"

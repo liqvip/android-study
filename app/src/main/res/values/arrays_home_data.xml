@@ -7,6 +7,7 @@
         <item>Content Provider 内容提供器</item>
         <item>View 事件体系</item>
         <item>View 滑动冲突</item>
+        <item>View Canvas绘图</item>
         <item>Network 网络</item>
         <item>屏幕适配</item>
         <item>RemoteViews</item>
@@ -24,6 +25,7 @@
         <item>cn.blogss.core.contentprovider.MainActivity</item>
         <item>cn.blogss.core.view.ViewActivity</item>
         <item>cn.blogss.core.view.SlideConflictActivity</item>
+        <item>cn.blogss.core.view.CanvasActivity</item>
         <item>cn.blogss.core.network.NetworkActivity</item>
         <item>cn.blogss.core.screen_adaptation.ScreenAdaptationActivity</item>
         <item>cn.blogss.core.remoteviews.MainActivity</item>

@@ -141,8 +141,9 @@
             app:cornerTv_radius="@dimen/dp_10"/>
         <cn.blogss.core.view.customview.TextViewGroup
             android:id="@+id/tv_group"
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/dp_200"
             android:layout_height="@dimen/dp_50"
+            android:layout_gravity="center"
             app:topLeft_radius="@dimen/dp_8"
             app:bottomRight_radius="@dimen/dp_22"
             app:corner_position="topLeft|bottomRight"
