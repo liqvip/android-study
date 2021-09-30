@@ -162,7 +162,7 @@ class RxJavaActivity : BaseActivity(), View.OnClickListener {
          */
         Observable.just(1,2,3,4)
                 .subscribeOn(IoScheduler()) // 指定 subscribe() 发生在 IO 线程
-                .observeOn(AndroidSchedulers.mainThread())  // 指定 Subscriber 的回调发生在主线程
+                .observeOn(AndroidSchedulers.mainThread())  // 指定观察者的回调发生在主线程
                 .subscribe(object: Consumer<Int>{
                     override fun accept(t: Int?) {
                         Log.i(TAG, "accept: $t")

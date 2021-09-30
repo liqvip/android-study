@@ -1,14 +1,22 @@
 package cn.blogss.core.view.customview;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.RadialGradient;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.Shader;
 import android.util.AttributeSet;
 import android.view.View;
+
+import cn.blogss.core.R;
 
 /**
  * Canvas 绘图
@@ -17,6 +25,10 @@ public class CanvasView extends View {
     private Paint mPaint;
     private RectF rectF;
     private Path path;
+    private Shader linearGradientShader;
+    private Shader radialGradientShader;
+    private Shader bitmapShader;
+    Bitmap bitmap;
 
     public CanvasView(Context context) {
         super(context);
@@ -40,6 +52,7 @@ public class CanvasView extends View {
 
         rectF = new RectF();
         path = new Path();
+        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.dog);
     }
 
 
@@ -120,8 +133,8 @@ public class CanvasView extends View {
 
         // 画自定义图形(path)
         //1. 画子图形
-        path.addCircle(center,top,50, Path.Direction.CW);
-        path.addCircle(center+50,top,50, Path.Direction.CW);
+        path.addCircle(center,top+50,50, Path.Direction.CW);
+        path.addCircle(center+50,top+50,50, Path.Direction.CW);
         canvas.drawPath(path,mPaint);
         top += height;
 
@@ -132,6 +145,30 @@ public class CanvasView extends View {
         path.close();
         canvas.drawPath(path,mPaint);
         top += height;
+
+        /**
+         * Paint 画笔部分
+         */
+
+        mPaint.setStyle(Paint.Style.FILL);
+        // Shader 着色器
+        linearGradientShader = new LinearGradient(center-50,top+50,center+50,top+50,
+                Color.parseColor("#E91E63"),Color.parseColor("#2196F3"),Shader.TileMode.CLAMP);
+        mPaint.setShader(linearGradientShader);
+        canvas.drawCircle(center,top+50,50,mPaint);
+        top += height;
+
+        radialGradientShader = new RadialGradient(center,top+50,50,
+                Color.parseColor("#E91E63"),Color.parseColor("#2196F3"),Shader.TileMode.CLAMP);
+        mPaint.setShader(radialGradientShader);
+        canvas.drawCircle(center,top+50,50,mPaint);
+        top += height;
+
+        bitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP,Shader.TileMode.CLAMP);
+        mPaint.setShader(bitmapShader);
+        canvas.drawCircle(center,top+50,50,mPaint);
+        top += height;
+
 
 
     }

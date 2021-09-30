@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -18,13 +19,15 @@ import cn.blogss.core.R;
  * @创建时间 2020/6/30
  */
 public class CircleView extends View {
+    private static final String TAG = "CircleView";
+
     private int mWidth = 100;
 
     private int mHeight = 100;
 
     private int mColor = Color.RED;
 
-    private Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     public CircleView(Context context) {
         super(context);
@@ -46,6 +49,7 @@ public class CircleView extends View {
 
     private void init() {
         mPaint.setColor(mColor);
+        mPaint.setStyle(Paint.Style.FILL);
     }
 
     /**
@@ -60,6 +64,7 @@ public class CircleView extends View {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int widthSpecMode = MeasureSpec.getMode(widthMeasureSpec);
         int widthSpecSize = MeasureSpec.getSize(widthMeasureSpec);
+
         int heightSpecMode = MeasureSpec.getMode(heightMeasureSpec);
         int heightSpecSize = MeasureSpec.getSize(heightMeasureSpec);
         if(widthSpecMode == MeasureSpec.AT_MOST && heightSpecMode == MeasureSpec.AT_MOST){
@@ -85,5 +90,6 @@ public class CircleView extends View {
         int height = getHeight() - paddingTop - paddingBottom;
         int radius = Math.min(width, height) / 2;/*求得圆的半径*/
         canvas.drawCircle(paddingLeft + width / 2, paddingTop + height / 2, radius, mPaint);
+        Log.i(TAG, "width: "+getWidth() + ", height: " + getHeight());
     }
 }

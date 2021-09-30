@@ -119,7 +119,7 @@
         <cn.blogss.core.view.customview.CircleView
             android:id="@+id/circleView1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dp_50"
             android:layout_gravity="center"
             app:circle_color="@color/pink"
             android:background="#000000"
@@ -129,6 +129,8 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="@string/AS_Custom_Circle_View"/>
+
+        <!--圆角 TextView-->
         <cn.blogss.core.view.customview.CornerTextView
             android:layout_width="@dimen/dp_200"
             android:layout_height="wrap_content"
@@ -136,19 +138,34 @@
             android:layout_marginTop="@dimen/dp_20"
             android:gravity="center"
             android:padding="@dimen/dp_10"
-            android:text="@string/As_Custom_Corner_View"
             app:cornerTv_background_color="@color/aquamarine"
             app:cornerTv_radius="@dimen/dp_10"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/As_Custom_Corner_View"/>
+
+        <!--TextView组合控件-->
         <cn.blogss.core.view.customview.TextViewGroup
             android:id="@+id/tv_group"
             android:layout_width="@dimen/dp_200"
             android:layout_height="@dimen/dp_50"
+            android:layout_marginTop="@dimen/dp_20"
             android:layout_gravity="center"
             app:topLeft_radius="@dimen/dp_8"
+            app:topRight_radius="@dimen/dp_15"
+            app:bottomLeft_radius="@dimen/dp_40"
             app:bottomRight_radius="@dimen/dp_22"
-            app:corner_position="topLeft|bottomRight"
+            app:corner_position="topLeft|topRight|bottomLeft|bottomRight"
             app:textView_count="5"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/As_Custom_TextViewGroup_View"/>
 
+        <!--旋转View-->
         <cn.blogss.core.view.customview.RotateImageView
             android:id="@+id/riv"
             android:layout_width="@dimen/dp_50"

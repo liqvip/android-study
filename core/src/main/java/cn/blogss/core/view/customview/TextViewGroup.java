@@ -29,7 +29,7 @@ import cn.blogss.core.R;
 public class TextViewGroup extends ViewGroup {
     private static final String TAG = "TextViewGroup";
 
-    private Paint mZonePaint,mMaskPaint;
+    private Paint mPaint;
     private Path mPath;
     private Path mTempPath;
     private RectF rectF;
@@ -70,10 +70,10 @@ public class TextViewGroup extends ViewGroup {
      * @param attrs
      */
     private void init(AttributeSet attrs) {
-        xfermode = new PorterDuffXfermode(PorterDuff.Mode.SRC_IN);
-        mZonePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mMaskPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mMaskPaint.setXfermode(xfermode);
+        xfermode = new PorterDuffXfermode(PorterDuff.Mode.DST_OUT);
+        mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mPaint.setStyle(Paint.Style.FILL);
+        mPaint.setXfermode(xfermode);
 
         mPath = new Path();
         mTempPath = new Path();
@@ -167,29 +167,35 @@ public class TextViewGroup extends ViewGroup {
     }
 
     /**
-     * 绘制圆角
+     * 离屏缓冲
      * @param canvas
      */
     @Override
     protected void dispatchDraw(Canvas canvas) {
+        int saved = canvas.saveLayer(null, null, Canvas.ALL_SAVE_FLAG);
         super.dispatchDraw(canvas);
-        canvasSetLayer(canvas);
-        canvas.restore();
+        drawCorner(canvas);
+        canvas.restoreToCount(saved);
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        // 此方法不被系统调用
+        super.onDraw(canvas);
+        Log.i(TAG, "onDraw: ");
     }
 
     /**
-     * 画布区域裁剪
+     * 绘制圆角
      * @param canvas
      */
-    private void canvasSetLayer(Canvas canvas) {
-        rectF.set(0,0,getMeasuredWidth(),getMeasuredHeight());
-        canvas.saveLayer(rectF, mZonePaint, Canvas.ALL_SAVE_FLAG);
+    private void drawCorner(Canvas canvas) {
+        rectF.set(0,0,getWidth(),getHeight());
+        mTempPath.addRect(rectF, Path.Direction.CCW);
         mPath.addRoundRect(rectF, radii, Path.Direction.CCW);
-        //mTempPath.addRect(rectF, Path.Direction.CCW);
-        //mTempPath.op(mPath, Path.Op.DIFFERENCE); //区域处理，保留mTempPath-mPath的区域
-        canvas.drawPath(mPath, mZonePaint);
-
-        canvas.saveLayer(rectF, mMaskPaint, Canvas.ALL_SAVE_FLAG);
+        mPath.op(mTempPath, mPath, Path.Op.DIFFERENCE);
+        canvas.drawPath(mPath, mPaint);
+        mPaint.setXfermode(null);
     }
 
     @Override
