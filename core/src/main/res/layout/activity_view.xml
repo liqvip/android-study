@@ -178,5 +178,30 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="@string/AS_Custom_Rotate_ImageView"/>
+
+        <!--角度逐渐增加的弧形View-->
+        <cn.blogss.core.view.customview.ArcView
+            android:layout_width="@dimen/dp_100"
+            android:layout_height="@dimen/dp_100"
+            android:layout_marginTop="@dimen/dp_20"
+            android:layout_gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/AS_Custom_ArcView"/>
+
+        <!--折线图-->
+        <cn.blogss.core.view.customview.LineChartView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_200"
+            android:layout_marginTop="@dimen/dp_20"
+            android:layout_gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/AS_Custom_LineChartView"/>
+
     </LinearLayout>
 </ScrollView>

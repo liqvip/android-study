@@ -22,6 +22,8 @@
     <string name="AS_Rotate_Animator">属性动画，旋转效果</string>
     <string name="AS_Custom_Circle_View">自定义的一个圆形View</string>
     <string name="AS_Custom_Rotate_ImageView">自定义的一个旋转View</string>
+    <string name="AS_Custom_ArcView">角度逐渐增加的弧形</string>
+    <string name="AS_Custom_LineChartView">折线图</string>
     <string name="As_Tem_Control">温控</string>
     <string name="As_Already_Collected">已收藏</string>
     <string name="As_Already_Auth">已授权</string>
