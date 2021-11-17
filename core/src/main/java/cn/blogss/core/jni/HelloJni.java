@@ -9,7 +9,7 @@ public class HelloJni {
 
     static {
         System.out.println(System.getProperty("java.library.path"));
-        System.loadLibrary("libHelloJni");
+        System.loadLibrary("libHelloJni");  // 从 System lib 路径下加载
     }
 
     public static void main(String[] args) {

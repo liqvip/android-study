@@ -74,4 +74,5 @@ dependencies {
     implementation project(path: ':core')
     implementation project(path: ':helper')
     implementation project(path: ':open_lib')
+    implementation project(path: ':jni')
 }

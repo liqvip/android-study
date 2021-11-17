@@ -10,6 +10,7 @@ import cn.blogss.android_study.discovery.view.DiscoveryFragment
 import cn.blogss.android_study.home.view.HomeFragment
 import cn.blogss.android_study.profile.view.ProfileFragment
 import cn.blogss.core.base.BaseActivity
+import cn.blogss.jni.NativeTest
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.permissionx.guolindev.PermissionX
 
@@ -98,5 +99,9 @@ class MainActivity : BaseActivity() {
                 else
                     Toast.makeText(this,"您拒绝了如下权限：$deniedList", Toast.LENGTH_SHORT).show()
             }
+
+        // ndk 测试
+        val nt = NativeTest()
+        nt.print99()
     }
 }
