@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import cn.blogss.android_study.R
 import cn.blogss.android_study.home.bean.HomeRvItemBean
 import cn.blogss.android_study.home.presenter.HomePresenter
-import cn.blogss.core.base.BaseFragment
-import cn.blogss.core.base.recyclerview.BaseRVAdapter
-import cn.blogss.core.base.recyclerview.BaseRvHolder
-import cn.blogss.core.base.recyclerview.OnItemClickListener
+import cn.blogss.helper.base.BaseFragment
+import cn.blogss.helper.base.recyclerview.BaseRVAdapter
+import cn.blogss.helper.base.recyclerview.BaseRvHolder
+import cn.blogss.helper.base.recyclerview.OnItemClickListener
 import cn.blogss.helper.dp2px
 
 open class HomeFragment : BaseFragment() {

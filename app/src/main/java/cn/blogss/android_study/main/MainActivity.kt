@@ -9,7 +9,7 @@ import cn.blogss.android_study.R
 import cn.blogss.android_study.discovery.view.DiscoveryFragment
 import cn.blogss.android_study.home.view.HomeFragment
 import cn.blogss.android_study.profile.view.ProfileFragment
-import cn.blogss.core.base.BaseActivity
+import cn.blogss.helper.base.BaseActivity
 import cn.blogss.jni.NativeTest
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.permissionx.guolindev.PermissionX

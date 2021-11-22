@@ -38,5 +38,9 @@ dependencies {
     for (int i = 0; i < rootProject.ext.testDependencies.size(); i++) {
         testImplementation rootProject.ext.testDependencies[i]
     }
-    implementation project(path: ':core')
+    implementation 'com.permissionx.guolindev:permissionx:1.4.0'
+    implementation "io.reactivex.rxjava3:rxjava:3.0.7"
+    implementation "io.reactivex.rxjava3:rxandroid:3.0.0"
+    implementation "com.squareup.okhttp3:okhttp:3.14.9"
+    implementation project(path: ':helper')
 }

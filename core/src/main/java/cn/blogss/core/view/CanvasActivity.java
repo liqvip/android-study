@@ -4,8 +4,8 @@ import android.view.LayoutInflater;
 
 import androidx.lifecycle.ViewModel;
 
-import cn.blogss.core.base.jetpack.BaseActivity;
 import cn.blogss.core.databinding.ActivityCanvasBinding;
+import cn.blogss.helper.base.jetpack.BaseActivity;
 
 /**
  * Canvas

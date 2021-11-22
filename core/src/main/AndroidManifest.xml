@@ -36,9 +36,6 @@
             android:name=".remoteviews.MainActivity"
             android:launchMode="singleTask" />
         <activity
-            android:name=".kotlin.MainActivity"
-            android:launchMode="singleTask" />
-        <activity
             android:name=".screen_adaptation.ScreenAdaptationActivity"
             android:launchMode="singleTask" /> <!-- 活动 -->
         <activity

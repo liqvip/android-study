@@ -6,7 +6,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.RemoteViews
 import cn.blogss.core.R
-import cn.blogss.core.base.BaseActivity
+import cn.blogss.helper.base.BaseActivity
 import cn.blogss.helper.notificationutil.ChannelName
 import cn.blogss.helper.notificationutil.getCustomNotification
 import cn.blogss.helper.notificationutil.getNotification

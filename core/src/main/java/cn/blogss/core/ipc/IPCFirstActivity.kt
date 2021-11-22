@@ -11,11 +11,11 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.AppCompatButton
 import cn.blogss.core.R
-import cn.blogss.core.base.BaseActivity
 import cn.blogss.core.ipc.aidl.Book
 import cn.blogss.core.ipc.aidl.BookManagerService
 import cn.blogss.core.ipc.aidl.IBookManager
 import cn.blogss.core.ipc.aidl.IBookObserver
+import cn.blogss.helper.base.BaseActivity
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.ObjectInputStream

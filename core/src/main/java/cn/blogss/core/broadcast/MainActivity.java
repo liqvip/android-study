@@ -9,14 +9,13 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import cn.blogss.core.R;
-import cn.blogss.core.base.BaseActivity;
+import cn.blogss.helper.base.BaseActivity;
 
 /**
  * 广播接收器，动态注册与静态注册,接收系统广播

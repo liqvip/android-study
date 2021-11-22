@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 
 import cn.blogss.core.R;
-import cn.blogss.core.base.BaseActivity;
+import cn.blogss.helper.base.BaseActivity;
 
 /**
  *  类关系:Activity->Binder<->Service

@@ -1,6 +1,5 @@
 package cn.blogss.core.view;
 
-import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
@@ -14,8 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 
 import cn.blogss.core.R;
-import cn.blogss.core.base.jetpack.BaseActivity;
 import cn.blogss.core.databinding.ActivityViewBinding;
+import cn.blogss.helper.base.jetpack.BaseActivity;
 
 /**
  * 自定义 View

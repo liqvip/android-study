@@ -12,12 +12,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import cn.blogss.core.R;
-import cn.blogss.core.base.BaseActivity;
-import cn.blogss.core.base.recyclerview.BaseRVAdapter;
-import cn.blogss.core.base.recyclerview.BaseRvHolder;
-import cn.blogss.core.base.recyclerview.OnItemClickListener;
 import cn.blogss.core.view.customview.HorizontalScrollViewEx;
 import cn.blogss.helper.DensityUtilKt;
+import cn.blogss.helper.base.BaseActivity;
+import cn.blogss.helper.base.recyclerview.BaseRVAdapter;
+import cn.blogss.helper.base.recyclerview.BaseRvHolder;
+import cn.blogss.helper.base.recyclerview.OnItemClickListener;
 
 /**
  * View 滑动冲突测试

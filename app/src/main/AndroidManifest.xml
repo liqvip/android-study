@@ -65,7 +65,8 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".main.MainActivity"
+        <activity
+            android:name=".main.MainActivity"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

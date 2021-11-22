@@ -5,7 +5,7 @@ import android.os.Handler
 import android.os.Message
 import android.util.Log
 import cn.blogss.core.R
-import cn.blogss.core.base.BaseActivity
+import cn.blogss.helper.base.BaseActivity
 
 class MessageActivity : BaseActivity() {
     private val runTask = Runnable {

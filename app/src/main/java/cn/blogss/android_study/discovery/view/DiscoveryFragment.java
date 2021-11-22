@@ -3,7 +3,7 @@ package cn.blogss.android_study.discovery.view;
 import android.view.View;
 
 import cn.blogss.android_study.R;
-import cn.blogss.core.base.BaseFragment;
+import cn.blogss.helper.base.BaseFragment;
 
 public class DiscoveryFragment extends BaseFragment {
 

@@ -1,0 +1,44 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+}
+
+android {
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    for (int i = 0; i < rootProject.ext.dependencies.size(); i++) {
+        implementation rootProject.ext.dependencies[i]
+    }
+    for (int i = 0; i < rootProject.ext.testDependencies.size(); i++) {
+        testImplementation rootProject.ext.testDependencies[i]
+    }
+
+    implementation "io.reactivex.rxjava3:rxjava:3.0.7"
+    implementation "io.reactivex.rxjava3:rxandroid:3.0.0"
+    implementation "com.squareup.okhttp3:okhttp:3.14.9"
+    implementation 'com.google.code.gson:gson:2.8.9'
+
+}

@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
-import cn.blogss.core.base.BaseActivity
 import cn.blogss.frame.R
+import cn.blogss.helper.base.BaseActivity
 import com.permissionx.guolindev.PermissionX
 
 /**

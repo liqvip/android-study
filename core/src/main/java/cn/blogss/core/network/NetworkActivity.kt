@@ -7,7 +7,7 @@ import android.webkit.WebViewClient
 import android.widget.Button
 import android.widget.TextView
 import cn.blogss.core.R
-import cn.blogss.core.base.BaseActivity
+import cn.blogss.helper.base.BaseActivity
 import cn.blogss.helper.originhttprequest.OnRequestListener
 import cn.blogss.helper.originhttprequest.asyncGetReq
 

@@ -6,7 +6,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Button
 import cn.blogss.core.R
-import cn.blogss.core.base.BaseActivity
+import cn.blogss.helper.base.BaseActivity
 import cn.blogss.helper.createWindow
 import cn.blogss.helper.delWindow
 import cn.blogss.helper.getWindowLayoutParamsInstance

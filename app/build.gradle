@@ -1,5 +1,7 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+}
 
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
@@ -71,6 +73,7 @@ dependencies {
     for (int i = 0; i < rootProject.ext.dependencies.size(); i++) {
         implementation rootProject.ext.dependencies[i]
     }
+    implementation 'com.permissionx.guolindev:permissionx:1.4.0'
     implementation project(path: ':core')
     implementation project(path: ':helper')
     implementation project(path: ':open_lib')

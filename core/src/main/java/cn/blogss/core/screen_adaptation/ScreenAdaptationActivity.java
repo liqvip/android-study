@@ -6,7 +6,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import cn.blogss.core.R;
-import cn.blogss.core.base.BaseActivity;
+import cn.blogss.helper.base.BaseActivity;
 
 public class ScreenAdaptationActivity extends BaseActivity implements View.OnClickListener {
     private Button btPrint, btHide;

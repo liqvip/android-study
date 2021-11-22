@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import cn.blogss.core.R
-import cn.blogss.core.base.BaseActivity
+import cn.blogss.helper.base.BaseActivity
 
 class IPCSecondActivity : BaseActivity(), View.OnClickListener {
     companion object {
