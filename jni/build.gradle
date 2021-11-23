@@ -42,10 +42,13 @@ android {
 }
 
 dependencies {
-
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'com.google.android.material:material:1.1.0'
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    for (int i = 0; i < rootProject.ext.dependencies.size(); i++) {
+        implementation rootProject.ext.dependencies[i]
+    }
+    for (int i = 0; i < rootProject.ext.testDependencies.size(); i++) {
+        testImplementation rootProject.ext.testDependencies[i]
+    }
+    for (int i = 0; i< rootProject.ext.androidTestDependencies.size(); i++) {
+        androidTestImplementation rootProject.ext.androidTestDependencies[i]
+    }
 }
