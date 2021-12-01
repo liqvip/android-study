@@ -31,4 +31,13 @@ public class StatusBarCompatUtil {
                     View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
     }
+
+    /**
+     * 隐藏状态栏
+     * @param activity
+     */
+    public static void hide(Activity activity){
+        Window window = activity.getWindow();
+        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
+    }
 }

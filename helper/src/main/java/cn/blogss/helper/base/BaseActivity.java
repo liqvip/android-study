@@ -35,7 +35,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(layoutId);
         hideActionBar();
         setStatusBarColor(Color.TRANSPARENT);
-        contentNotOverlayStatusBar();
+        //contentNotOverlayStatusBar();
         initView();
     }
 

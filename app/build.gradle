@@ -30,6 +30,10 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    buildFeatures {
+        viewBinding = true
+    }
+
     /*构建类型配置*/
     buildTypes {
         /*测试版本*/
