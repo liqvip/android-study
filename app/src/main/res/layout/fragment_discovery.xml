@@ -1,24 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <TextView
-        android:id="@+id/tv_scroll"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_100"
-        android:layout_marginStart="@dimen/dp_50"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <cn.blogss.android_study.discovery.view.XferView
+        android:id="@+id/xf_view"
+        android:background="@color/red"
         android:layout_marginTop="@dimen/dp_50"
-        android:background="@color/aquamarine"
-        android:textAlignment="center"
-        android:textSize="@dimen/sp_20"
-        android:gravity="center"
-        android:text="触摸我"/>
-    <TextView
-        android:id="@+id/tv_des"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_scroll"
-        android:gravity="center"
+        android:layout_height="@dimen/dp_200"/>
+
+    <cn.blogss.core.view.customview.RoundTextView
+        android:layout_width="@dimen/dp_200"
+        android:layout_height="@dimen/dp_100"
+        android:layout_gravity="center"
         android:layout_marginTop="@dimen/dp_20"
-        android:textSize="@dimen/sp_20"/>
-</RelativeLayout>
+        android:background="@color/blueviolet"
+        android:text="自定义原价 View"/>
+</LinearLayout>

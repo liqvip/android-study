@@ -152,6 +152,7 @@
             android:layout_width="@dimen/dp_200"
             android:layout_height="@dimen/dp_50"
             android:layout_marginTop="@dimen/dp_20"
+            android:background="@color/cadetblue"
             android:layout_gravity="center"
             app:topLeft_radius="@dimen/dp_8"
             app:topRight_radius="@dimen/dp_15"
@@ -202,6 +203,14 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="@string/AS_Custom_LineChartView"/>
+
+        <cn.blogss.core.view.customview.RoundTextView
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="@dimen/dp_200"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dp_20"
+            android:background="@color/brown"
+            android:text="圆角TextView"/>
 
     </LinearLayout>
 </ScrollView>

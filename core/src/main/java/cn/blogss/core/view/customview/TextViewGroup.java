@@ -30,8 +30,8 @@ public class TextViewGroup extends ViewGroup {
     private static final String TAG = "TextViewGroup";
 
     private Paint mPaint;
-    private Path mPath;
-    private Path mTempPath;
+    private Path innerPath;
+    private Path outerPath;
     private RectF rectF;
 
     private Xfermode xfermode;
@@ -73,10 +73,8 @@ public class TextViewGroup extends ViewGroup {
         xfermode = new PorterDuffXfermode(PorterDuff.Mode.DST_OUT);
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setStyle(Paint.Style.FILL);
-        mPaint.setXfermode(xfermode);
-
-        mPath = new Path();
-        mTempPath = new Path();
+        innerPath = new Path();
+        outerPath = new Path();
         rectF = new RectF();
 
         TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.TextViewGroup,0,0);
@@ -130,8 +128,6 @@ public class TextViewGroup extends ViewGroup {
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
 
-        Log.i(TAG, "width: " + width);
-
         for (int i=0;i<getChildCount();i++){
             getChildAt(i).getLayoutParams().width = width/getChildCount();
             getChildAt(i).getLayoutParams().height = height;
@@ -171,18 +167,11 @@ public class TextViewGroup extends ViewGroup {
      * @param canvas
      */
     @Override
-    protected void dispatchDraw(Canvas canvas) {
-        int saved = canvas.saveLayer(null, null, Canvas.ALL_SAVE_FLAG);
-        super.dispatchDraw(canvas);
+    public void draw(Canvas canvas) {
+        int saved = canvas.saveLayer(0, 0, getWidth(), getHeight(), null, Canvas.ALL_SAVE_FLAG);
+        super.draw(canvas);
         drawCorner(canvas);
         canvas.restoreToCount(saved);
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        // 此方法不被系统调用
-        super.onDraw(canvas);
-        Log.i(TAG, "onDraw: ");
     }
 
     /**
@@ -190,17 +179,18 @@ public class TextViewGroup extends ViewGroup {
      * @param canvas
      */
     private void drawCorner(Canvas canvas) {
-        rectF.set(0,0,getWidth(),getHeight());
-        mTempPath.addRect(rectF, Path.Direction.CCW);
-        mPath.addRoundRect(rectF, radii, Path.Direction.CCW);
-        mPath.op(mTempPath, mPath, Path.Op.DIFFERENCE);
-        canvas.drawPath(mPath, mPaint);
+        mPaint.setXfermode(xfermode);
+        rectF.set(0,0,getWidth(), getHeight());
+        outerPath.addRect(rectF, Path.Direction.CCW);
+        innerPath.addRoundRect(rectF, radii, Path.Direction.CCW);
+        outerPath.op(innerPath, Path.Op.DIFFERENCE);
+        canvas.drawPath(outerPath, mPaint);
         mPaint.setXfermode(null);
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        Log.i(TAG, "onSizeChanged, w: " + w + ", h: " + h);
+        Log.i(TAG, "w = " + w + ", height = " + h + ", oldw = " + oldw + ", oldh = " + oldh);
     }
 
     private void setRadii() {

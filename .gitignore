@@ -1,7 +1,4 @@
 /build/
 /.gradle/
 /.idea/
-/gradle/
-gradlew
-gradlew.bat
 local.properties
