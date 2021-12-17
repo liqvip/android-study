@@ -35,8 +35,7 @@ public class RoundTextView extends AppCompatTextView {
 
     private void init() {
         xfermode = new PorterDuffXfermode(PorterDuff.Mode.DST_OUT);
-        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setStyle(Paint.Style.FILL);
+        paint = new Paint();
         innerPath = new Path();
         outerPath = new Path();
         rectF = new RectF();
@@ -50,12 +49,18 @@ public class RoundTextView extends AppCompatTextView {
     }
 
     private void drawCorner(Canvas canvas) {
+        paint.reset();
         paint.setXfermode(xfermode);
         paint.setColor(Color.parseColor("blue"));
+        paint.setFlags(Paint.ANTI_ALIAS_FLAG);
+
+        outerPath.reset();
+        innerPath.reset();
         rectF.set(0,0, getWidth(), getHeight());
         outerPath.addRect(rectF, Path.Direction.CCW);
         innerPath.addRoundRect(rectF, radii, Path.Direction.CCW);
         outerPath.op(innerPath, Path.Op.DIFFERENCE);
+
         canvas.drawPath(outerPath, paint);
         canvas.restore();
         paint.setXfermode(null);
