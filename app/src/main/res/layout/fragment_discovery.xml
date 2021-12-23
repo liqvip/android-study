@@ -9,12 +9,4 @@
         android:layout_marginTop="@dimen/dp_50"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_200"/>
-
-    <cn.blogss.core.view.customview.RoundTextView
-        android:layout_width="@dimen/dp_200"
-        android:layout_height="@dimen/dp_100"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/dp_20"
-        android:background="@color/blueviolet"
-        android:text="自定义原价 View"/>
 </LinearLayout>

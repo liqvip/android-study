@@ -17,7 +17,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import cn.blogss.core.R;
 
@@ -29,12 +31,16 @@ import cn.blogss.core.R;
 public class TextViewGroup extends ViewGroup {
     private static final String TAG = "TextViewGroup";
 
-    private Paint mPaint;
+    private Paint paint;
     private Path innerPath;
     private Path outerPath;
     private RectF rectF;
 
     private Xfermode xfermode;
+
+    private int childWidth;
+    private int childHeight;
+    private int childCount;
 
     // Four corners x and y radius.
     private final float[] radii = {
@@ -65,14 +71,10 @@ public class TextViewGroup extends ViewGroup {
         init(attrs);
     }
 
-    /**
-     * 获取自定义属性
-     * @param attrs
-     */
+
     private void init(AttributeSet attrs) {
         xfermode = new PorterDuffXfermode(PorterDuff.Mode.DST_OUT);
-        mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mPaint.setStyle(Paint.Style.FILL);
+        paint = new Paint();
         innerPath = new Path();
         outerPath = new Path();
         rectF = new RectF();
@@ -104,6 +106,7 @@ public class TextViewGroup extends ViewGroup {
         for (int i=0;i<textViewCount;i++){
             TextView view = new TextView(getContext());
             addView(view);
+            childCount++;
         }
 
         setRadii();
@@ -114,58 +117,39 @@ public class TextViewGroup extends ViewGroup {
         Log.i(TAG, "cornerPosition: " + cornerPosition);
     }
 
-    /**
-     * 测试自身的宽高
-     * @param widthMeasureSpec
-     * @param heightMeasureSpec
-     */
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        int width = MeasureSpec.getSize(widthMeasureSpec);
-        int height = MeasureSpec.getSize(heightMeasureSpec);
+        int measureWidth = MeasureSpec.getSize(widthMeasureSpec);
+        int measureHeight = MeasureSpec.getSize(heightMeasureSpec);
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
 
-        for (int i=0;i<getChildCount();i++){
-            getChildAt(i).getLayoutParams().width = width/getChildCount();
-            getChildAt(i).getLayoutParams().height = height;
+        childWidth = measureWidth / childCount;
+        childHeight = measureHeight;
+        for (int i=0; i<childCount; i++){
+            getChildAt(i).getLayoutParams().width = childWidth;
+            getChildAt(i).getLayoutParams().height = childHeight;
         }
 
         measureChildren(widthMeasureSpec,heightMeasureSpec);
-        setMeasuredDimension(width,height);
     }
 
-    /**
-     * 合理摆放子 View 的位置
-     * @param changed
-     * @param l
-     * @param t
-     * @param r
-     * @param b
-     */
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        int childCount = getChildCount();
         int childLeft = 0;
-        int childWidth = 0;
-
-        for (int i=0;i<childCount;i++){
+        for (int i=0; i<childCount; i++){
             View childView = getChildAt(i);
-            childWidth = childView.getMeasuredWidth();
-            Log.i(TAG, i+" childWidth: "+childWidth);
             if(childView.getVisibility() == VISIBLE){
-                childView.layout(childLeft,0,childLeft+childWidth,childView.getMeasuredHeight());
+                childView.layout(childLeft,0,childLeft+childWidth, getMeasuredHeight());
                 childLeft += childWidth;
             }
         }
     }
 
-    /**
-     * 离屏缓冲
-     * @param canvas
-     */
+
     @Override
     public void draw(Canvas canvas) {
         int saved = canvas.saveLayer(0, 0, getWidth(), getHeight(), null, Canvas.ALL_SAVE_FLAG);
@@ -174,18 +158,21 @@ public class TextViewGroup extends ViewGroup {
         canvas.restoreToCount(saved);
     }
 
-    /**
-     * 绘制圆角
-     * @param canvas
-     */
+
     private void drawCorner(Canvas canvas) {
-        mPaint.setXfermode(xfermode);
+        paint.reset();
+        paint.setStyle(Paint.Style.FILL);
+        paint.setFlags(Paint.ANTI_ALIAS_FLAG);
+        paint.setXfermode(xfermode);
         rectF.set(0,0,getWidth(), getHeight());
+
+        outerPath.reset();
+        innerPath.reset();
         outerPath.addRect(rectF, Path.Direction.CCW);
         innerPath.addRoundRect(rectF, radii, Path.Direction.CCW);
         outerPath.op(innerPath, Path.Op.DIFFERENCE);
-        canvas.drawPath(outerPath, mPaint);
-        mPaint.setXfermode(null);
+        canvas.drawPath(outerPath, paint);
+        paint.setXfermode(null);
     }
 
     @Override
@@ -226,10 +213,10 @@ public class TextViewGroup extends ViewGroup {
      * @param textViewColor Color resource ID array.
      */
     public void setChildrenBackgroundColor(int[] textViewColor) {
-        if(textViewColor.length > textViewCount){
-            throw new IllegalArgumentException("Max textViewColor.length is " + textViewCount + ", now is " + textViewColor.length);
+        if(textViewColor.length > childCount){
+            throw new IllegalArgumentException("Max textViewColor.length is " + childCount + ", now is " + textViewColor.length);
         }
-        for (int i=0;i<textViewColor.length;i++){
+        for (int i=0; i<childCount; i++){
             View view = getChildAt(i);
             GradientDrawable drawable = new GradientDrawable();
             drawable.setColor(getContext().getResources().getColor(textViewColor[i]));
@@ -242,10 +229,10 @@ public class TextViewGroup extends ViewGroup {
      * @param childrenText child text.
      */
     public void setChildrenText(int[] childrenText){
-        if(childrenText.length > textViewCount){
-            throw new IllegalArgumentException("Max childrenText.length is " + textViewCount + ", now is " + childrenText.length);
+        if(childrenText.length > childCount){
+            throw new IllegalArgumentException("Max childrenText.length is " + childCount + ", now is " + childrenText.length);
         }
-        for (int i=0;i<childrenText.length;i++){
+        for (int i=0; i<childCount; i++){
             TextView view = (TextView) getChildAt(i);
             view.setTextAlignment(TEXT_ALIGNMENT_CENTER);
             view.setGravity(Gravity.CENTER_HORIZONTAL| Gravity.CENTER_VERTICAL);
@@ -258,7 +245,7 @@ public class TextViewGroup extends ViewGroup {
      * @param sp size unit
      */
     public void setChildrenTextSize(int sp){
-        for (int i=0;i<textViewCount;i++){
+        for (int i=0; i<childCount; i++){
             TextView view = (TextView) getChildAt(i);
             view.setTextSize(sp);
         }
@@ -269,44 +256,35 @@ public class TextViewGroup extends ViewGroup {
      * @param childrenTextColor Color resource ID array.
      */
     public void setChildrenTextColor(int[] childrenTextColor){
-        if(childrenTextColor.length > textViewCount){
+        if(childrenTextColor.length > childCount){
             throw new IllegalArgumentException("TextViewCount is less than childrenTextColor.length!");
         }
-        for (int i=0;i<childrenTextColor.length;i++){
+        for (int i=0; i<childrenTextColor.length; i++){
             TextView view = (TextView) getChildAt(i);
             view.setTextColor(getContext().getResources().getColor(childrenTextColor[i]));
         }
     }
 
-    /**
-     * 批量隐藏子 view
-     * @param index 子 view 索引(0,1,2...)
-     */
-    public void setInVisibleView(int[] index){
-        if(index.length > textViewCount){
-            throw new IllegalArgumentException("Max index.length is " + textViewCount + ", now is " + index.length);
-        }
-
-        for (int i=0;i<textViewCount;i++){
-            getChildAt(i).setVisibility(VISIBLE);
-        }
-
-        for (int i=0;i<index.length&&index[i]<textViewCount;i++){
-            getChildAt(index[i]).setVisibility(GONE);
-        }
-    }
 
     public void setVisible(int index){
-        if(index >= textViewCount){
-            throw new IllegalArgumentException("Max index is " + (textViewCount-1) + ", now is " + index);
+        if(index >= childCount){
+            throw new IllegalArgumentException("Max index is " + (childCount-1) + ", now is " + index);
         }
-        getChildAt(index).setVisibility(VISIBLE);
+        View view = getChildAt(index);
+        if(view.getVisibility() == GONE){
+            getChildAt(index).setVisibility(VISIBLE);
+            requestLayout();
+        }
     }
 
     public void setInvisible(int index){
-        if(index >= textViewCount){
-            throw new IllegalArgumentException("Max index is " + (textViewCount-1) + ", now is " + index);
+        if(index >= childCount){
+            throw new IllegalArgumentException("Max index is " + (childCount-1) + ", now is " + index);
         }
-        getChildAt(index).setVisibility(GONE);
+        View view = getChildAt(index);
+        if(view.getVisibility() == VISIBLE){
+            getChildAt(index).setVisibility(GONE);
+            requestLayout();
+        }
     }
 }
