@@ -68,7 +68,7 @@ public class ViewActivity extends BaseActivity<ActivityViewBinding, ViewModel> i
 
     @Override
     protected void initData() {
-        viewBinding.tvGroup.setChildrenBackgroundColor(new int[]{R.color.darkorchid,R.color.yellow,R.color.pink,R.color.blue,R.color.sienna});
+        viewBinding.tvGroup.setChildrenBgColor(new int[]{R.color.darkorchid,R.color.yellow,R.color.pink,R.color.blue,R.color.sienna});
         viewBinding.tvGroup.setChildrenText(new int[]{R.string.As_Already_Auth,R.string.As_Tem_Control,R.string.As_Already_Collected,R.string.As_Already_Collected});
         viewBinding.tvGroup.setChildrenTextColor(new int[]{R.color.black});
         viewBinding.tvGroup.setChildrenTextSize(20);

@@ -1,8 +1,12 @@
 package cn.blogss.helper.base.jetpack;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModel;
@@ -21,6 +25,11 @@ public abstract class BaseActivity<VB extends ViewBinding,VM extends ViewModel> 
         viewModel = getViewModel();
         viewBinding = getViewBinding(getLayoutInflater());
         setContentView(viewBinding.getRoot());
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
         initView();
         bindObserver();

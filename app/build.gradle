@@ -78,6 +78,7 @@ dependencies {
         implementation rootProject.ext.dependencies[i]
     }
     implementation 'com.permissionx.guolindev:permissionx:1.4.0'
+    implementation 'com.github.liqvip:EasyView:1.0.1'
     implementation project(path: ':core')
     implementation project(path: ':helper')
     implementation project(path: ':open_lib')
