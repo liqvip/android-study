@@ -33,8 +33,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         ActivityCollector.addAct(this);
         int layoutId = getLayoutId();
         setContentView(layoutId);
-        hideActionBar();
-        setStatusBarColor(Color.TRANSPARENT);
+        //hideActionBar();
+        //setStatusBarColor(Color.TRANSPARENT);
         //contentNotOverlayStatusBar();
         initView();
     }

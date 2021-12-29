@@ -53,7 +53,7 @@ public abstract class BaseTitleActivity extends BaseActivity<BaseTitleActivityBi
      * @return R.layout.xxx
      */
     @NonNull
-    abstract int getActivityView();
+    protected abstract int getActivityView();
 
     @Override
     public void onClick(View v) {

@@ -9,58 +9,44 @@
     android:gravity="center"
     app:ev_radius="@dimen/dp_30"
     android:background="@color/blueviolet">
-    <cn.blogss.core.view.customview.TextViewGroup
-        android:id="@+id/tv_group"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_80"
-        app:textView_count="3"
-        app:topLeft_radius="@dimen/dp_50"
-        app:bottomRight_radius="@dimen/dp_50"/>
-
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_50"
-        android:layout_marginTop="@dimen/dp_30"
-        android:gravity="center">
-        <Button
-            android:id="@+id/bt_hide1"
-            android:layout_width="@dimen/dp_80"
-            android:layout_height="match_parent"
-            android:text="隐藏1"/>
-        <Button
-            android:id="@+id/bt_hide2"
-            android:layout_width="@dimen/dp_80"
-            android:layout_height="match_parent"
-            android:text="隐藏2"/>
-        <Button
-            android:id="@+id/bt_hide3"
-            android:layout_width="@dimen/dp_80"
-            android:layout_height="match_parent"
-            android:text="隐藏3"/>
-    </LinearLayout>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_50"
-        android:layout_marginTop="@dimen/dp_10"
-        android:gravity="center">
-        <Button
-            android:id="@+id/bt_show1"
-            android:layout_width="@dimen/dp_80"
-            android:layout_height="match_parent"
-            android:text="显示1"/>
-        <Button
-            android:id="@+id/bt_show2"
-            android:layout_width="@dimen/dp_80"
-            android:layout_height="match_parent"
-            android:text="显示2"/>
-        <Button
-            android:id="@+id/bt_show3"
-            android:layout_width="@dimen/dp_80"
-            android:layout_height="match_parent"
-            android:text="显示3"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/drawable_btn_selector"
+            android:focusable="true"
+            android:paddingStart="10dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="5dp"
+            android:text="Hello"
+            android:textColor="@color/drawable_text_selector"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:background="@drawable/drawable_btn_selector"
+            android:focusable="true"
+            android:paddingStart="10dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="5dp"
+            android:text="World!"
+            android:textColor="@color/drawable_text_selector"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </LinearLayout>
 
 </com.github.easyview.EasyLinearLayout>
