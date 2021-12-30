@@ -17,7 +17,7 @@ import cn.blogss.helper.databinding.BaseTitleFragmentBinding;
  */
 public abstract class BaseTitleFragment extends BaseFragment<BaseTitleFragmentBinding, ViewModel> implements View.OnClickListener{
     private View titleView;
-    private View activityView;
+    private View fragmentView;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -26,15 +26,21 @@ public abstract class BaseTitleFragment extends BaseFragment<BaseTitleFragmentBi
         // Add default or custom title
         LayoutInflater inflater = LayoutInflater.from(getContext());
         titleView = inflater.inflate(getTitleView(), null);
-        activityView = inflater.inflate(getActivityView(), null);
+        fragmentView = inflater.inflate(getFragmentView(), null);
 
         if(titleView != null){
             viewBinding.getRoot().addView(titleView);
         }
 
-        if(activityView != null){
-            viewBinding.getRoot().addView(activityView);
+        if(fragmentView != null){
+            viewBinding.getRoot().addView(fragmentView,new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT));
         }
+
+        initTitleView();
+    }
+
+    protected void initTitleView() {
     }
 
     @Override
@@ -53,7 +59,7 @@ public abstract class BaseTitleFragment extends BaseFragment<BaseTitleFragmentBi
      * @return R.layout.xxx
      */
     @NonNull
-    protected abstract int getActivityView();
+    protected abstract int getFragmentView();
 
     @Override
     public void onClick(View v) {

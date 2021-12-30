@@ -3,6 +3,7 @@ package cn.blogss.helper.base.jetpack;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,8 +34,15 @@ public abstract class BaseTitleActivity extends BaseActivity<BaseTitleActivityBi
         }
 
         if(activityView != null){
-            viewBinding.getRoot().addView(activityView);
+            viewBinding.getRoot().addView(activityView,new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT));
         }
+
+        initTitleView();
+
+    }
+
+    protected void initTitleView() {
     }
 
     @Override
