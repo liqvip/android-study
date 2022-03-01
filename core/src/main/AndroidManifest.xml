@@ -5,6 +5,9 @@
 
     <application>
         <activity
+            android:name=".test.TestActivity"
+            android:launchMode="singleTask"/>
+        <activity
             android:name=".view.CanvasActivity"
             android:launchMode="singleTask"
             android:configChanges="orientation|screenSize|keyboard|keyboardHidden|navigation"

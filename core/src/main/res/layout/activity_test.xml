@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cn.blogss.core.test.OuterViewGroup
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/green">
+    <cn.blogss.core.test.InnerViewGroup
+        android:layout_width="@dimen/dp_300"
+        android:layout_height="@dimen/dp_400"
+        android:background="@color/gray">
+        <cn.blogss.core.test.MyView
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="@dimen/dp_200"
+            android:background="@color/burlywood"/>
+    </cn.blogss.core.test.InnerViewGroup>
+</cn.blogss.core.test.OuterViewGroup>

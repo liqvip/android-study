@@ -39,7 +39,9 @@ public abstract class BaseTitleActivity extends BaseActivity<BaseTitleActivityBi
         }
 
         initTitleView();
-
+        initActivityView();
+        bindActivityObserver();
+        initActivityData();
     }
 
     protected void initTitleView() {
@@ -62,6 +64,27 @@ public abstract class BaseTitleActivity extends BaseActivity<BaseTitleActivityBi
      */
     @NonNull
     protected abstract int getActivityView();
+
+    protected abstract void initActivityView();
+
+    protected abstract void bindActivityObserver();
+
+    protected abstract void initActivityData();
+
+    @Override
+    protected void initView() {
+
+    }
+
+    @Override
+    protected void bindObserver() {
+
+    }
+
+    @Override
+    protected void initData() {
+
+    }
 
     @Override
     public void onClick(View v) {

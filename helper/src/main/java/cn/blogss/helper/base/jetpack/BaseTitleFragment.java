@@ -38,6 +38,9 @@ public abstract class BaseTitleFragment extends BaseFragment<BaseTitleFragmentBi
         }
 
         initTitleView();
+        initFragmentView();
+        bindFragmentObserver();
+        initFragmentData();
     }
 
     protected void initTitleView() {
@@ -60,6 +63,27 @@ public abstract class BaseTitleFragment extends BaseFragment<BaseTitleFragmentBi
      */
     @NonNull
     protected abstract int getFragmentView();
+
+    protected abstract void initFragmentView();
+
+    protected abstract void bindFragmentObserver();
+
+    protected abstract void initFragmentData();
+
+    @Override
+    protected void initView() {
+
+    }
+
+    @Override
+    protected void bindObserver() {
+
+    }
+
+    @Override
+    protected void initData() {
+
+    }
 
     @Override
     public void onClick(View v) {
