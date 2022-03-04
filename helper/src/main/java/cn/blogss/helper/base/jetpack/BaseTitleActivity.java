@@ -16,7 +16,7 @@ import cn.blogss.helper.databinding.BaseTitleActivityBinding;
  * 带标题栏的 Activity 基类
  */
 
-public abstract class BaseTitleActivity extends BaseActivity<BaseTitleActivityBinding, ViewModel> implements View.OnClickListener {
+public abstract class BaseTitleActivity extends BaseActivity<BaseTitleActivityBinding, BaseViewModel> implements View.OnClickListener {
     private View titleView;
     private View activityView;
 

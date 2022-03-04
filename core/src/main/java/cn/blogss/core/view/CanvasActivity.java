@@ -6,13 +6,14 @@ import androidx.lifecycle.ViewModel;
 
 import cn.blogss.core.databinding.ActivityCanvasBinding;
 import cn.blogss.helper.base.jetpack.BaseActivity;
+import cn.blogss.helper.base.jetpack.BaseViewModel;
 
 /**
  * Canvas
  */
-public class CanvasActivity extends BaseActivity<ActivityCanvasBinding, ViewModel> {
+public class CanvasActivity extends BaseActivity<ActivityCanvasBinding, BaseViewModel> {
     @Override
-    protected ViewModel getViewModel() {
+    protected BaseViewModel getViewModel() {
         return null;
     }
 

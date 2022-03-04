@@ -11,7 +11,7 @@ import androidx.viewbinding.ViewBinding;
 /**
  * 封装 Activity 的基类
  */
-public abstract class BaseActivity<VB extends ViewBinding,VM extends ViewModel> extends AppCompatActivity {
+public abstract class BaseActivity<VB extends ViewBinding,VM extends BaseViewModel> extends AppCompatActivity {
     protected VB viewBinding;
     protected VM viewModel;
 

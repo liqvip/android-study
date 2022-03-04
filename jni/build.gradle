@@ -17,6 +17,7 @@ android {
                 cppFlags ""
             }
         }
+        ndkVersion = "21.0.6113669"
     }
 
     buildTypes {

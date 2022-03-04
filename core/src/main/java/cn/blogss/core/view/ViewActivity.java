@@ -15,11 +15,12 @@ import androidx.lifecycle.ViewModel;
 import cn.blogss.core.R;
 import cn.blogss.core.databinding.ActivityViewBinding;
 import cn.blogss.helper.base.jetpack.BaseActivity;
+import cn.blogss.helper.base.jetpack.BaseViewModel;
 
 /**
  * 自定义 View
  */
-public class ViewActivity extends BaseActivity<ActivityViewBinding, ViewModel> implements
+public class ViewActivity extends BaseActivity<ActivityViewBinding, BaseViewModel> implements
         View.OnClickListener, View.OnTouchListener {
 
     private int mClickNum;
@@ -46,7 +47,7 @@ public class ViewActivity extends BaseActivity<ActivityViewBinding, ViewModel> i
     };
 
     @Override
-    protected ViewModel getViewModel() {
+    protected BaseViewModel getViewModel() {
         return null;
     }
 
