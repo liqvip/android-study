@@ -6,18 +6,19 @@ import android.view.MotionEvent
 import androidx.lifecycle.ViewModel
 import cn.blogss.core.databinding.ActivityTestBinding
 import cn.blogss.helper.base.jetpack.BaseActivity
+import cn.blogss.helper.base.jetpack.BaseViewModel
 
 /**
  * @author: Little Bei
  * @Date: 2022/2/16
  */
-class TestActivity: BaseActivity<ActivityTestBinding,ViewModel>() {
+class TestActivity: BaseActivity<ActivityTestBinding, BaseViewModel>() {
 
     companion object {
         private const val TAG = "TestActivity"
     }
 
-    override fun getViewModel(): ViewModel? {
+    override fun getViewModel(): BaseViewModel? {
         return null
     }
 
