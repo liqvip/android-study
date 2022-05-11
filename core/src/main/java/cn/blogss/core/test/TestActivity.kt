@@ -1,5 +1,7 @@
 package cn.blogss.core.test
 
+import android.os.Bundle
+import android.os.PersistableBundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -23,7 +25,7 @@ class TestActivity: BaseActivity<ActivityTestBinding, BaseViewModel>() {
     }
 
     override fun getViewBinding(inflater: LayoutInflater): ActivityTestBinding {
-        return ActivityTestBinding.inflate(layoutInflater)
+        return ActivityTestBinding.inflate(inflater)
     }
 
     override fun initView() {
@@ -35,48 +37,59 @@ class TestActivity: BaseActivity<ActivityTestBinding, BaseViewModel>() {
     override fun initData() {
     }
 
-    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
-        var action = ""
-        when(ev.action) {
-            MotionEvent.ACTION_DOWN -> {
-                action = "ACTION_DOWN"
-            }
-            MotionEvent.ACTION_MOVE -> {
-                action = "ACTION_MOVE"
-            }
-            MotionEvent.ACTION_UP -> {
-                action = "ACTION_UP"
-            }
-            MotionEvent.ACTION_CANCEL -> {
-                action = "ACTION_CANCEL"
-            }
-        }
-        Log.d(TAG, "dispatchTouchEvent: action = $action")
-        val consume =  if (super.dispatchTouchEvent(ev)) "true" else "false"
-//        Log.d(TAG, "dispatchTouchEvent: intercept = $consume")
-        return consume == "true"
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.i(TAG, "onCreate: one params, savedInstanceState = $savedInstanceState")
     }
 
-    override fun onTouchEvent(event: MotionEvent): Boolean {
-        var action = ""
-        when(event.action) {
-            MotionEvent.ACTION_DOWN -> {
-                action = "ACTION_DOWN"
-            }
-            MotionEvent.ACTION_MOVE -> {
-                action = "ACTION_MOVE"
-            }
-            MotionEvent.ACTION_UP -> {
-                action = "ACTION_UP"
-            }
-            MotionEvent.ACTION_CANCEL -> {
-                action = "ACTION_CANCEL"
-            }
-        }
-        Log.d(TAG, "onTouchEvent: action = $action")
-        val consume = if (super.onTouchEvent(event)) "true" else "false"
-//        Log.d(TAG, "onTouchEvent: intercept = $consume")
-        return consume == "true"
+    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
+        super.onCreate(savedInstanceState, persistentState)
+        Log.i(TAG, "onCreate: savedInstanceState = $savedInstanceState, persistentState = $persistentState")
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.i(TAG, "onStart: ")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.i(TAG, "onResume: ")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.i(TAG, "onPause: ")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.i(TAG, "onStop: ")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.i(TAG, "onDestroy: ")
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        Log.i(TAG, "onSaveInstanceState: outState = $outState")
+    }
+
+    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
+        super.onSaveInstanceState(outState, outPersistentState)
+        Log.i(TAG, "onSaveInstanceState: outState = $outState, outPersistentState = $outPersistentState")
+    }
+
+    override fun onStateNotSaved() {
+        super.onStateNotSaved()
+        Log.i(TAG, "onStateNotSaved: ")
+    }
+
+    override fun onRetainCustomNonConfigurationInstance(): Any? {
+        return super.onRetainCustomNonConfigurationInstance()
+        Log.i(TAG, "onRetainCustomNonConfigurationInstance: ")
     }
 
 }
