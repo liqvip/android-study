@@ -1,11 +1,10 @@
 package cn.blogss.core.test
 
-import android.os.Bundle
-import android.os.PersistableBundle
-import android.util.Log
+import android.content.Context
 import android.view.LayoutInflater
-import android.view.MotionEvent
-import androidx.lifecycle.ViewModel
+import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import cn.blogss.core.databinding.ActivityTestBinding
 import cn.blogss.helper.base.jetpack.BaseActivity
 import cn.blogss.helper.base.jetpack.BaseViewModel
@@ -14,11 +13,47 @@ import cn.blogss.helper.base.jetpack.BaseViewModel
  * @author: Little Bei
  * @Date: 2022/2/16
  */
+
+class MyViewHolder1(itemView: View) : RecyclerView.ViewHolder(itemView) {
+}
+
+class MyViewHolder2(itemView: View) : RecyclerView.ViewHolder(itemView) {
+}
+
+
+abstract class MyAdapter<T>(val data: ArrayList<T>, val context: Context): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder1 {
+        val itemView = LayoutInflater.from(context).inflate(android.R.layout.simple_list_item_1, parent, false)
+        return MyViewHolder1(itemView)
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        convert(holder, position, data[position])
+    }
+
+    override fun getItemCount(): Int {
+        return data.size
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if(position % 2 == 0){
+            android.R.layout.simple_list_item_1
+        }else{
+            android.R.layout.simple_list_item_2
+        }
+    }
+
+    abstract fun convert(holder: RecyclerView.ViewHolder, position: Int, itemData: T)
+
+}
+
 class TestActivity: BaseActivity<ActivityTestBinding, BaseViewModel>() {
 
     companion object {
         private const val TAG = "TestActivity"
     }
+
+    val myData = arrayListOf("0", "1", "2", "3", "4", "5")
 
     override fun getViewModel(): BaseViewModel? {
         return null
@@ -37,7 +72,7 @@ class TestActivity: BaseActivity<ActivityTestBinding, BaseViewModel>() {
     override fun initData() {
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+/*    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.i(TAG, "onCreate: one params, savedInstanceState = $savedInstanceState")
     }
@@ -90,6 +125,7 @@ class TestActivity: BaseActivity<ActivityTestBinding, BaseViewModel>() {
     override fun onRetainCustomNonConfigurationInstance(): Any? {
         return super.onRetainCustomNonConfigurationInstance()
         Log.i(TAG, "onRetainCustomNonConfigurationInstance: ")
-    }
+    }*/
 
 }
+

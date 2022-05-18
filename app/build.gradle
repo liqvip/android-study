@@ -55,12 +55,7 @@ android {
         variant.outputs.all { output ->
             def outputFile = output.outputFile
             if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                def fileName
-                if (variant.buildType.name == "release") {
-                    fileName = "AndroidStudy_${variant.versionName}_release.apk"
-                } else {
-                    fileName = "AndroidStudy_${variant.versionName}_debug.apk"
-                }
+                def fileName = "AndroidStudy_${variant.versionName}_${variant.buildType.name}"
                 outputFileName = fileName
             }
         }
