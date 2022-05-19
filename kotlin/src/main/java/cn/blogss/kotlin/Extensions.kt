@@ -16,6 +16,28 @@ fun <T> T.easyPrintLink(): T {
     return this
 }
 
+//4. 可空类扩展
+infix fun String?.printWithDefault(default: String) = println(this ?: default)
+
+fun frame(name: String, padding: Int, formatChar: String = "*"): String{
+    val greeting = "$name!"
+    val middle = formatChar.padEnd(padding)
+        .plus(greeting)
+        .plus(formatChar.padStart(padding))
+    val end = (middle.indices).joinToString("") { formatChar }
+    return "$end\n$middle\n$end"
+}
+
+fun String.frame(padding: Int): String {
+    val formatChar = "*"
+    val greeting = "$this!"
+    val middle = formatChar.padEnd(padding)
+        .plus(greeting)
+        .plus(formatChar.padStart(padding))
+    val end = (middle.indices).joinToString("") { formatChar }
+    return "$end\n$middle\n$end"
+}
+
 
 /**
  * 扩展属性

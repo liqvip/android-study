@@ -39,4 +39,21 @@ class ExtensionsKtTest {
     fun getNumVowels() {
         "How many vowels ?".numVowels.easyPrint()
     }
+
+    @Test
+    fun printWithDefault() {
+        val nullableString: String? = null
+        nullableString.printWithDefault("Default string.")
+        nullableString printWithDefault "Default string."
+    }
+
+    @Test
+    fun frame() {
+        cn.blogss.kotlin.frame("Welcome, Madrigal", 5).easyPrint()
+    }
+
+    @Test
+    fun testFrame() {
+        "Welcome, Madrigal".frame(5).easyPrint()
+    }
 }
