@@ -4,7 +4,7 @@ project.ext {
             buildToolsVersion: "29.0.3",
             minSdkVersion: 21,
             targetSdkVersion: 29,
-            applicationId: "cn.blogss.android_study",
+            applicationId: "cn.blogss.androidstudy",
             versionCode: 1,
             versionName: "1.0",
     ]

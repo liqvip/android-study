@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="cn.blogss.android_study">
+    package="cn.blogss.androidstudy">
 
     <!--  Dangerous Permissions （危险权限），需要运行时申请，
           当接受一个危险权限时，不单单接受的是界面上展示的这一个权限，而是它所在这个组里面的其他所有访问权限也将会被自动获取权限
@@ -57,7 +57,7 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" /><!-- 读取手机联系人，危险权限，需要运行时申请 -->
 
     <application
-        android:name="cn.blogss.core.base.BaseApplication"
+        android:name="cn.blogss.helper.base.BaseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -66,7 +66,7 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.AndroidStudy">
         <activity
-            android:name=".main.MainActivity"
+            android:name="cn.blogss.androidstudy.main.MainActivity"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

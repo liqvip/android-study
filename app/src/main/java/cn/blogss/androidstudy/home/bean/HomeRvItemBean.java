@@ -1,4 +1,4 @@
-package cn.blogss.android_study.home.bean;
+package cn.blogss.androidstudy.home.bean;
 
 /**
  * @创建人 560266

@@ -1,11 +1,10 @@
-package cn.blogss.android_study.discovery.view;
+package cn.blogss.androidstudy.discovery.view;
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModel
-import cn.blogss.android_study.R
-import cn.blogss.android_study.databinding.FragmentDiscoveryBinding
+import cn.blogss.androidstudy.databinding.FragmentDiscoveryBinding
 import cn.blogss.helper.base.jetpack.BaseFragment
 
 /**

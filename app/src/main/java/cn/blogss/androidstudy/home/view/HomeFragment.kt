@@ -1,34 +1,30 @@
-package cn.blogss.android_study.home.view
+package cn.blogss.androidstudy.home.view
 
 import android.content.Intent
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import cn.blogss.android_study.R
-import cn.blogss.android_study.home.bean.HomeRvItemBean
-import cn.blogss.android_study.home.presenter.HomePresenter
-import cn.blogss.helper.base.BaseFragment
+import cn.blogss.androidstudy.R
+import cn.blogss.androidstudy.databinding.FragmentHomeBinding
+import cn.blogss.androidstudy.home.bean.HomeRvItemBean
+import cn.blogss.androidstudy.home.vm.HomeViewModel
+import cn.blogss.helper.base.jetpack.BaseFragment
 import cn.blogss.helper.base.recyclerview.BaseRVAdapter
 import cn.blogss.helper.base.recyclerview.BaseRvHolder
 import cn.blogss.helper.base.recyclerview.OnItemClickListener
 import cn.blogss.helper.dp2px
 
-open class HomeFragment : BaseFragment() {
-    private var homePresenter: HomePresenter? = null
-    private var rvItems: RecyclerView? = null
+open class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     private var homeRvItemAdapter: BaseRVAdapter<HomeRvItemBean?>? = null
-    override fun initView(rootView: View) {
-        rvItems = findView(R.id.rv_items)
-    }
 
     override fun initData() {
-        homePresenter = HomePresenter(activity)
-        homeRvItemAdapter = object : BaseRVAdapter<HomeRvItemBean?>(context, R.layout.home_rv_item, homePresenter!!.homeRvData) {
-            override fun convert(holder: BaseRvHolder?, itemData: HomeRvItemBean?, position: Int) {
-                val tvName = holder!!.getView<TextView>(R.id.tv_name)
+        homeRvItemAdapter = object : BaseRVAdapter<HomeRvItemBean?>(context, R.layout.home_rv_item, viewModel.homeRvData) {
+            override fun convert(holder: BaseRvHolder, itemData: HomeRvItemBean?, position: Int) {
+                val tvName = holder.getView<TextView>(R.id.tv_name)
                 val ivImage = holder.getView<ImageView>(R.id.iv_image)
                 val layoutParams = ivImage.layoutParams
                 if ((position and 1) == 0)
@@ -53,12 +49,24 @@ open class HomeFragment : BaseFragment() {
                 return false
             }
         })
-        rvItems!!.adapter = homeRvItemAdapter
+
         val layoutManager = StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
-        rvItems!!.layoutManager = layoutManager
+        viewBinding.rvItems.adapter = homeRvItemAdapter
+        viewBinding.rvItems.layoutManager = layoutManager
     }
 
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_home
+
+    override fun getViewModel(): HomeViewModel {
+        return ViewModelProvider(this).get(HomeViewModel::class.java)
+    }
+
+    override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentHomeBinding {
+        return FragmentHomeBinding.inflate(inflater, container, false)
+    }
+
+    override fun initView() {
+    }
+
+    override fun bindObserver() {
     }
 }

@@ -1,8 +1,8 @@
-package cn.blogss.android_study.profile.view;
+package cn.blogss.androidstudy.profile.view;
 
 import android.view.View;
 
-import cn.blogss.android_study.R;
+import cn.blogss.androidstudy.R;
 import cn.blogss.helper.base.BaseFragment;
 
 public class ProfileFragment extends BaseFragment {

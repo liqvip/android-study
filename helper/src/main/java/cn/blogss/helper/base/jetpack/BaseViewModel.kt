@@ -5,11 +5,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 
-/**
- * @author: Little Bei
- * @Date: 2022/3/4
- */
-class BaseViewModel: ViewModel() {
+open class BaseViewModel: ViewModel() {
     private val viewModelJob = SupervisorJob()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 

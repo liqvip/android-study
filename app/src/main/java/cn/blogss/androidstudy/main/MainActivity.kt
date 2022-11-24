@@ -1,22 +1,22 @@
-package cn.blogss.android_study.main
+package cn.blogss.androidstudy.main
 
 import android.os.Bundle
-import android.widget.FrameLayout
+import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import cn.blogss.android_study.R
-import cn.blogss.android_study.discovery.view.DiscoveryFragment
-import cn.blogss.android_study.home.view.HomeFragment
-import cn.blogss.android_study.profile.view.ProfileFragment
-import cn.blogss.helper.base.BaseActivity
+import cn.blogss.androidstudy.R
+import cn.blogss.androidstudy.databinding.ActivityMainBinding
+import cn.blogss.androidstudy.discovery.view.DiscoveryFragment
+import cn.blogss.androidstudy.home.view.HomeFragment
+import cn.blogss.androidstudy.profile.view.ProfileFragment
+import cn.blogss.helper.base.jetpack.BaseActivity
+import cn.blogss.helper.base.jetpack.BaseViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.permissionx.guolindev.PermissionX
 
-class MainActivity : BaseActivity() {
-    private var bottomNavigationView: BottomNavigationView? = null
-    private var homeContainer: FrameLayout? = null
-    private var fm: FragmentManager? = null
+class MainActivity : BaseActivity<ActivityMainBinding, BaseViewModel>() {
+    private lateinit var fm: FragmentManager
     private var homeFragment: HomeFragment? = null
     private var discoveryFragment: DiscoveryFragment? = null
     private var profileFragment: ProfileFragment? = null
@@ -30,24 +30,33 @@ class MainActivity : BaseActivity() {
         private const val TAG = "MainActivity"
     }
 
-    override fun getLayoutId(): Int {
-        return R.layout.activity_main
-    }
-
     override fun initView() {
         fm = supportFragmentManager
-        bottomNavigationView = findViewById(R.id.bottom_navigation)
-        homeContainer = findViewById(R.id.home_container)
-        bottomNavigationView!!.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { item ->
+        viewBinding.bottomNavigation.setOnNavigationItemSelectedListener { item ->
             onTabItemSelected(item.itemId)
             true
-        })
+        }
         onTabItemSelected(R.id.tab_menu_home)
+    }
+
+
+    override fun getViewModel(): BaseViewModel? {
+        return null
+    }
+
+    override fun getViewBinding(inflater: LayoutInflater): ActivityMainBinding {
+        return ActivityMainBinding.inflate(inflater)
+    }
+
+    override fun bindObserver() {
+    }
+
+    override fun initData() {
     }
 
     private fun onTabItemSelected(itemId: Int) {
         /*每个事务只能提交一次*/
-        val ft = fm!!.beginTransaction()
+        val ft = fm.beginTransaction()
         when (itemId) {
             R.id.tab_menu_home -> {
                 if (homeFragment == null) {
@@ -72,14 +81,13 @@ class MainActivity : BaseActivity() {
             }
         }
         if (preFragment != null && curFragment != null) {
-            ft.detach(preFragment!!).attach(curFragment!!)
+            ft.hide(preFragment!!).show(curFragment!!)
         }
         preFragment = curFragment
         ft.commit()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTag(TAG)
         super.onCreate(savedInstanceState)
         // 一次性申请必要的运行时权限
         PermissionX.init(this).permissions(mutableListOf(
@@ -92,7 +100,7 @@ class MainActivity : BaseActivity() {
             .onExplainRequestReason {scope, deniedList ->
                 scope.showRequestReasonDialog(deniedList,"即将重新申请的权限是程序必须依赖的权限","我已明白","取消")
             }
-            .request { allGranted, grantedList, deniedList ->
+            .request { allGranted, _, deniedList ->
                 if(allGranted)
                     Toast.makeText(this,"所有申请的权限都已通过", Toast.LENGTH_SHORT).show()
                 else
@@ -100,4 +108,5 @@ class MainActivity : BaseActivity() {
             }
 
     }
+
 }
