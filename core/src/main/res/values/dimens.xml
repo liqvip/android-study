@@ -252,6 +252,7 @@
     <dimen name="dp_660">660dp</dimen>
 
     <!--字体大小-->
+    <dimen name="sp_14.33">14.33sp</dimen>
     <dimen name="sp_15">15sp</dimen>
     <dimen name="sp_20">20sp</dimen>
     <dimen name="sp_30">30sp</dimen>

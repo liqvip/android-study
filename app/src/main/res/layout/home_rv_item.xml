@@ -1,40 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginTop="@dimen/dp_10"
     android:layout_marginStart="@dimen/dp_5"
-    android:layout_marginEnd="@dimen/dp_5"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <androidx.cardview.widget.CardView
+    android:layout_marginEnd="@dimen/dp_5">
+    <com.github.easyview.EasyButton
+        android:id="@+id/tv_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/dp_3"
-        app:cardCornerRadius="@dimen/dp_5"
-        app:cardElevation="@dimen/dp_0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:id="@+id/iv_image"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_150"
-                android:scaleType="centerCrop"/>
-            <TextView
-                android:id="@+id/tv_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/iv_image"
-                android:textSize="@dimen/dp_14.33"
-                android:textColor="@color/black"
-                android:gravity="center_horizontal|center_vertical"
-                android:padding="@dimen/dp_5"
-                android:singleLine="true"
-                android:ellipsize="end"/>
-        </RelativeLayout>
-    </androidx.cardview.widget.CardView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:textSize="@dimen/sp_14.33"
+        android:background="@color/colorPrimary"
+        app:ev_radius="@dimen/dp_10"
+        android:gravity="center_horizontal|center_vertical"
+        android:padding="@dimen/dp_5"
+        android:singleLine="true"
+        android:ellipsize="end"/>
+</LinearLayout>

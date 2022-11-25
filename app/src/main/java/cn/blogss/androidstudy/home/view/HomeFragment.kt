@@ -17,6 +17,7 @@ import cn.blogss.helper.base.recyclerview.BaseRVAdapter
 import cn.blogss.helper.base.recyclerview.BaseRvHolder
 import cn.blogss.helper.base.recyclerview.OnItemClickListener
 import cn.blogss.helper.dp2px
+import com.github.easyview.EasyButton
 
 open class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     private var homeRvItemAdapter: BaseRVAdapter<HomeRvItemBean?>? = null
@@ -24,16 +25,8 @@ open class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     override fun initData() {
         homeRvItemAdapter = object : BaseRVAdapter<HomeRvItemBean?>(context, R.layout.home_rv_item, viewModel.homeRvData) {
             override fun convert(holder: BaseRvHolder, itemData: HomeRvItemBean?, position: Int) {
-                val tvName = holder.getView<TextView>(R.id.tv_name)
-                val ivImage = holder.getView<ImageView>(R.id.iv_image)
-                val layoutParams = ivImage.layoutParams
-                if ((position and 1) == 0)
-                    layoutParams.height = dp2px(context!!, 200f)
-                else
-                    layoutParams.height = dp2px(context!!, 150f)
-                ivImage.layoutParams = layoutParams
-                tvName.text = itemData!!.name
-                ivImage.setImageResource(itemData.itemIcon)
+                val btName = holder.getView<EasyButton>(R.id.tv_name)
+                btName.text = itemData!!.name
             }
         }
 
@@ -50,7 +43,7 @@ open class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             }
         })
 
-        val layoutManager = StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
+        val layoutManager = StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL)
         viewBinding.rvItems.adapter = homeRvItemAdapter
         viewBinding.rvItems.layoutManager = layoutManager
     }
