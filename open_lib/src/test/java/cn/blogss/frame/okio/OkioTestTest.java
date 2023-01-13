@@ -32,4 +32,18 @@ public class OkioTestTest {
     public void getPath() {
         okioTest.getPath();
     }
+
+    @Test
+    public void deadline() {
+    }
+
+    @Test
+    public void deadlineForThread() {
+        okioTest.deadlineForThread();
+    }
+
+    @Test
+    public void timeout() {
+        okioTest.timeout();
+    }
 }

@@ -18,13 +18,16 @@ import java.nio.charset.StandardCharsets;
 /**
  * Note:
  * 1. 文件流可以很清楚的知道流的结尾，但是 socket 流不一样，你无法知道它什么时候到达流的结尾，所以 socket 流的
- * read 系列方法会一直保持阻塞，并不会返回 -1 或者 null ，除非这个 socket 流被关闭了
+ * read 系列方法会一直保持阻塞，并不会返回 -1 或者 null ，除非这个 socket 流被关闭了(shutdownOutput, shutdownInput)
  *
  * 2. 基于以上的原因，在读取数据时，最好一次性使用字节流或字符流读取完整的数据
  *
  * 3. 如果不想 socket 流的 read 系列方法一直阻塞，可以使用 setSoTimeout() 方法设置读取的超时时间
  * 如果 read 系列方法在设置时间内没有读取到数据，就会抛出一个java.net.SocketTimeoutException异常
  * 注意这个方法必须在阻塞发生之前设置，否则无效
+ *
+ * // Socket 阻塞问题
+ * https://www.cnblogs.com/gaoqiri/p/10055610.html
 */
 public class TcpClient {
 
