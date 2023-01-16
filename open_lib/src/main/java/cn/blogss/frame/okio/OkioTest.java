@@ -96,9 +96,10 @@ public class OkioTest {
     public void timeout(){
         try {
             Dice dice = new Dice();
-            dice.rollAtFixedRate(3000, TimeUnit.MILLISECONDS);
+            dice.rollAtFixedRate(3, TimeUnit.SECONDS);
             Timeout timeout = new Timeout();
-            timeout.timeout(5, TimeUnit.SECONDS);
+//            timeout.timeout(5, TimeUnit.SECONDS);
+            timeout.deadline(6, TimeUnit.SECONDS);
             dice.awaitTotal(timeout, 20);
         } catch (Exception e) {
             e.printStackTrace();
