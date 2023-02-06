@@ -31,4 +31,22 @@ public class OkHttpRecipeTestTest {
     public void asynchronousGet() {
         okHttpRecipeTest.asynchronousGet();
     }
+
+    @Test
+    public void accessHeaders() {
+        try {
+            okHttpRecipeTest.accessHeaders();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void postString() {
+        try {
+            okHttpRecipeTest.postString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

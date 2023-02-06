@@ -5,10 +5,13 @@ import java.io.IOException;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Headers;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import okio.BufferedSink;
 
 /**
  * OkHttp official recipes
@@ -17,6 +20,8 @@ import okhttp3.ResponseBody;
  */
 public class OkHttpRecipeTest {
     private final OkHttpClient okHttpClient = new OkHttpClient();
+    public static final MediaType MEDIA_TYPE_MARKDOWN = MediaType.parse("text/x-markdown; charset=utf-8");
+
     /**
      * 1. 同步 Get 请求
      */
@@ -90,16 +95,93 @@ public class OkHttpRecipeTest {
 
 
     /**
-     * 3. 访问头字段
+     * 3. 为一个头字段设置多个值
      */
+    public void accessHeaders() throws Exception {
+        Request request = new Request.Builder()
+                .url("https://api.github.com/repos/square/okhttp/issues")
+                .header("User-Agent", "OkHttp Headers.java")
+                // OkHttp 支持一个头字段设置多个值
+                .addHeader("Accept", "application/json; q=0.5")
+                .addHeader("Accept", "application/vnd.github.v3+json")
+                .build();
+
+        try (Response response = okHttpClient.newCall(request).execute()) {
+            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+            /**
+             * Server: GitHub.com
+             * Date: Mon, 06 Feb 2023 07:16:13 GMT
+             * Vary: [Accept, Accept-Encoding, Accept, X-Requested-With]
+             */
+            System.out.println("Server: " + response.header("Server"));
+            System.out.println("Date: " + response.header("Date"));
+            System.out.println("Vary: " + response.headers("Vary"));
+        }
+    }
 
     /**
      * 4. Post 方式提交 String
      */
+    public void postString() throws Exception {
+        String postBody = ""
+                + "Releases\n"
+                + "--------\n"
+                + "\n"
+                + " * _1.0_ May 6, 2013\n"
+                + " * _1.1_ June 15, 2013\n"
+                + " * _1.2_ August 11, 2013\n";
+
+        Request request = new Request.Builder()
+                .url("https://api.github.com/markdown/raw")
+                .post(RequestBody.create(MEDIA_TYPE_MARKDOWN, postBody))
+                .build();
+
+        try (Response response = okHttpClient.newCall(request).execute()) {
+            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+            System.out.println(response.body().string());
+        }
+    }
 
     /**
      * 5. Post 方式提交流
      */
+    public void postStreaming() throws Exception {
+        // 自己重写 contentType 和 writeTo 方法
+        RequestBody requestBody = new RequestBody() {
+            @Override public MediaType contentType() {
+                return MEDIA_TYPE_MARKDOWN;
+            }
+
+            @Override public void writeTo(BufferedSink sink) throws IOException {
+                sink.writeUtf8("Numbers\n");
+                sink.writeUtf8("-------\n");
+                for (int i = 2; i <= 997; i++) {
+                    sink.writeUtf8(String.format(" * %s = %s\n", i, factor(i)));
+                }
+            }
+
+            private String factor(int n) {
+                for (int i = 2; i < n; i++) {
+                    int x = n / i;
+                    if (x * i == n) return factor(x) + " × " + i;
+                }
+                return Integer.toString(n);
+            }
+        };
+
+        Request request = new Request.Builder()
+                .url("https://api.github.com/markdown/raw")
+                .post(requestBody)
+                .build();
+
+        try (Response response = okHttpClient.newCall(request).execute()) {
+            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+            System.out.println(response.body().string());
+        }
+    }
 
     /**
      * 6. Post 方式提交文件
