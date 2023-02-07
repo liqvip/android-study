@@ -1,0 +1,14 @@
+http://httpbin.org/delay/2
+GET
+0
+HTTP/1.1 200 OK
+9
+Date: Tue, 07 Feb 2023 08:48:27 GMT
+Content-Type: application/json
+Content-Length: 316
+Connection: keep-alive
+Server: gunicorn/19.9.0
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Credentials: true
+OkHttp-Sent-Millis: 1675759705251
+OkHttp-Received-Millis: 1675759707658
