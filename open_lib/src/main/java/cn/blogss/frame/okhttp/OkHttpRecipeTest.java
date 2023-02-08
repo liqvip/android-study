@@ -49,7 +49,7 @@ public class OkHttpRecipeTest {
 
     // client
     private final OkHttpClient okHttpClient = new OkHttpClient.Builder()
-            .cache(cache)
+//            .cache(cache)
             .connectTimeout(10, TimeUnit.SECONDS)
             .writeTimeout(10, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
@@ -471,6 +471,11 @@ public class OkHttpRecipeTest {
                 .url("http://httpbin.org/delay/1") // This URL is served with a 1 second delay.
                 .build();
 
+        /**
+         * Response 1 failed: java.net.SocketTimeoutException: Read timed out
+         * Response 2 succeeded: Response{protocol=http/1.1, code=200, message=OK, url=http://httpbin.org/delay/1}
+         */
+
         // Copy to customize OkHttp for this request.
         OkHttpClient client1 = okHttpClient.newBuilder()
                 .readTimeout(500, TimeUnit.MILLISECONDS)
@@ -494,6 +499,9 @@ public class OkHttpRecipeTest {
 
     /**
      * 14. 处理身份验证
+     * OkHttp 可以自动重试未经身份验证的请求。当响应为 401 未授权时，要求验证者提供凭据。实现应该构建一个包含缺失凭据的新请求。
+     * 如果没有可用的凭据，则返回 null 以跳过重试。
+     * 使用 Response.challenges() 获取服务器告知的身份验证方案和受保护的资源范围。当实现一个 Basic 认证时，使用 Credentials.Basic(用户名、密码) 对请求头进行编码。
      */
     public void authenticate() throws Exception {
         OkHttpClient okHttpClient1 = okHttpClient.newBuilder()
@@ -505,6 +513,10 @@ public class OkHttpRecipeTest {
                             return null; // Give up, we've already attempted to authenticate.
                         }
 
+                        /**
+                         * Authenticating for response: Response{protocol=http/1.1, code=401, message=Unauthorized, url=https://publicobject.com/secrets/hellosecret.txt}
+                         * Challenges: [Basic authParams={realm=OkHttp Secrets}]
+                         */
                         System.out.println("Authenticating for response: " + response);
                         System.out.println("Challenges: " + response.challenges());
                         String credential = Credentials.basic("jesse", "password1");
