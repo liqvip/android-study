@@ -15,6 +15,7 @@ public class ChatGPT {
     public static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json; charset=utf-8");
     // Moshi
     private final Moshi moshi = new Moshi.Builder().build();
+    private static String API_KEY = "";
 
     private final OkHttpClient okHttpClient = new OkHttpClient.Builder()
             .connectTimeout(10, TimeUnit.SECONDS)
@@ -31,7 +32,25 @@ public class ChatGPT {
         System.out.println("reqJson: " + reqJson);
         Request request = new Request.Builder()
                 .url("https://api.openai.com/v1/completions")
-                .header("Authorization", "Bearer your api key")
+                .header("Authorization", "Bearer " + API_KEY)
+                .post(RequestBody.create(MEDIA_TYPE_JSON, reqJson))
+                .build();
+
+        try (Response response = okHttpClient.newCall(request).execute()) {
+            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+            System.out.println(response.body().string());
+        }
+    }
+
+    public void imageGeneration(String prompt) throws IOException {
+        ImageGenerations imageGenerations = new ImageGenerations();
+        imageGenerations.setPrompt(prompt);
+
+        String reqJson = moshi.adapter(ImageGenerations.class).toJson(imageGenerations);
+        System.out.println("reqJson: " + reqJson);
+        Request request = new Request.Builder()
+                .url("https://api.openai.com/v1/images/generations")
+                .header("Authorization", "Bearer " + API_KEY)
                 .post(RequestBody.create(MEDIA_TYPE_JSON, reqJson))
                 .build();
 
@@ -122,6 +141,36 @@ public class ChatGPT {
 
         public void setStop(String stop) {
             this.stop = stop;
+        }
+    }
+
+    private static class ImageGenerations {
+        private String prompt;
+        private int n = 2;
+        private String size = "1024x1024";
+
+        public String getPrompt() {
+            return prompt;
+        }
+
+        public void setPrompt(String prompt) {
+            this.prompt = prompt;
+        }
+
+        public int getN() {
+            return n;
+        }
+
+        public void setN(int n) {
+            this.n = n;
+        }
+
+        public String getSize() {
+            return size;
+        }
+
+        public void setSize(String size) {
+            this.size = size;
         }
     }
 

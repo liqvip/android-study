@@ -1,8 +1,5 @@
 package cn.blogss.frame.okhttp;
 
-import static org.junit.Assert.*;
-
-import org.checkerframework.checker.units.qual.C;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +21,16 @@ public class ChatGPTTest {
     @Test
     public void completion() {
         try {
-            chatGPT.completion("以我的妈妈为题写一篇500字文章");
+            chatGPT.completion("你能背诵多少位圆周率");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testImageGeneration() {
+        try {
+            chatGPT.imageGeneration("Jay Chou plays the piano");
         } catch (IOException e) {
             e.printStackTrace();
         }
