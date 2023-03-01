@@ -1,10 +1,12 @@
 package cn.blogss.frame.okhttp;
 
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.ProxySelector;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.UnknownHostException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -28,6 +30,13 @@ public class OkHttpOtherTest {
         while (proxyIterator.hasNext()) {
             Proxy it = proxyIterator.next();
             System.out.println(it + "\n");
+        }
+    }
+
+    public void domainResolution() throws UnknownHostException {
+        InetAddress[] inetAddresses = InetAddress.getAllByName("baidu.com");
+        for (InetAddress inetAddress : inetAddresses) {
+            System.out.println(inetAddress.toString());
         }
     }
 }
