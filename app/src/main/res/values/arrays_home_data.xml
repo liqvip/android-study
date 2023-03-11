@@ -17,6 +17,7 @@
         <item>开源库 RxJava</item>
         <item>开源库 PermissionX</item>
         <item>测试</item>
+        <item>Jetpack Lifecycle</item>
     </string-array>
 
     <string-array name="home_rv_item_intent_act">
@@ -36,5 +37,6 @@
         <item>cn.blogss.frame.rxjava.RxJavaActivity</item>
         <item>cn.blogss.frame.permissionx.PermissionXActivity</item>
         <item>cn.blogss.core.test.TestActivity</item>
+        <item>cn.blogss.jetpack.lifecycle.LifecycleActivity</item>
     </string-array>
 </resources>

@@ -12,7 +12,6 @@ import cn.blogss.androidstudy.home.view.HomeFragment
 import cn.blogss.androidstudy.profile.view.ProfileFragment
 import cn.blogss.helper.base.jetpack.BaseActivity
 import cn.blogss.helper.base.jetpack.BaseViewModel
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.permissionx.guolindev.PermissionX
 
 class MainActivity : BaseActivity<ActivityMainBinding, BaseViewModel>() {

@@ -42,7 +42,6 @@ public abstract class BaseRVAdapter<T> extends RecyclerView.Adapter<BaseRvHolder
     @Override
     public BaseRvHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         mViewHolderCount++;
-        Log.d(TAG, "onCreateViewHolder: ViewHolderCount: "+mViewHolderCount);
         BaseRvHolder holder = BaseRvHolder.get(mContext,null,parent,mLayoutId,-1);
         setItemClickListener(parent,holder,viewType);
         return holder;
@@ -50,7 +49,6 @@ public abstract class BaseRVAdapter<T> extends RecyclerView.Adapter<BaseRvHolder
 
     @Override
     public void onBindViewHolder(@NonNull BaseRvHolder holder, int position) {
-        Log.d(TAG, "onBindViewHolder: "+position);
         holder.updatePosition(position);
         convert(holder,mData.get(position),position);
     }

@@ -78,4 +78,5 @@ dependencies {
     implementation project(path: ':helper')
     implementation project(path: ':open_lib')
     implementation project(path: ':jni')
+    implementation project(path: ':jetpack')
 }

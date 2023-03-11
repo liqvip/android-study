@@ -4,7 +4,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
+import android.widget.Button
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -16,8 +16,6 @@ import cn.blogss.helper.base.jetpack.BaseFragment
 import cn.blogss.helper.base.recyclerview.BaseRVAdapter
 import cn.blogss.helper.base.recyclerview.BaseRvHolder
 import cn.blogss.helper.base.recyclerview.OnItemClickListener
-import cn.blogss.helper.dp2px
-import com.github.easyview.EasyButton
 
 open class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     private var homeRvItemAdapter: BaseRVAdapter<HomeRvItemBean?>? = null
@@ -25,7 +23,7 @@ open class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     override fun initData() {
         homeRvItemAdapter = object : BaseRVAdapter<HomeRvItemBean?>(context, R.layout.home_rv_item, viewModel.homeRvData) {
             override fun convert(holder: BaseRvHolder, itemData: HomeRvItemBean?, position: Int) {
-                val btName = holder.getView<EasyButton>(R.id.tv_name)
+                val btName = holder.getView<TextView>(R.id.tv_name)
                 btName.text = itemData!!.name
             }
         }
@@ -44,8 +42,8 @@ open class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         })
 
         val layoutManager = StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL)
-        viewBinding.rvItems.adapter = homeRvItemAdapter
         viewBinding.rvItems.layoutManager = layoutManager
+        viewBinding.rvItems.adapter = homeRvItemAdapter
     }
 
 

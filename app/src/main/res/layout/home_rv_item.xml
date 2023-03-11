@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorPrimary"
     android:layout_marginTop="@dimen/dp_10"
     android:layout_marginStart="@dimen/dp_5"
     android:layout_marginEnd="@dimen/dp_5">
-    <com.github.easyview.EasyButton
+
+    <!--华为鸿蒙 2.0.0 EasyButton 不显示？-->
+    <!--换成 Button 点击事件无效-->
+    <TextView
         android:id="@+id/tv_name"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:textSize="@dimen/sp_14.33"
-        android:background="@color/colorPrimary"
-        app:ev_radius="@dimen/dp_10"
         android:gravity="center_horizontal|center_vertical"
         android:padding="@dimen/dp_5"
         android:singleLine="true"

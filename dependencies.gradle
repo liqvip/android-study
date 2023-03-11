@@ -15,7 +15,6 @@ project.ext {
             "androidx.constraintlayout:constraintlayout:2.0.4",
             "androidx.recyclerview:recyclerview:1.1.0",
             "com.google.android.material:material:1.2.0",
-            "org.jetbrains.kotlin:kotlin-stdlib:1.4.20",
     ]
 
     testDependencies = [
