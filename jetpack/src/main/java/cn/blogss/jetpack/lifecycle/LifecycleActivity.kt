@@ -41,9 +41,4 @@ class LifecycleActivity: AppCompatActivity() {
         super.onDestroy()
         Log.e(TAG, "onDestroy")
     }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        Log.e(TAG, "onSaveInstanceState")
-    }
 }

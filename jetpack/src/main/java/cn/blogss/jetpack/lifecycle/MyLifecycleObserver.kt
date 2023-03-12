@@ -37,7 +37,7 @@ class MyLifecycleObserver: LifecycleObserver{
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     private fun onDestroy() {
-        Log.e(TAG, "onStop")
+        Log.e(TAG, "onDestroy")
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_ANY)
