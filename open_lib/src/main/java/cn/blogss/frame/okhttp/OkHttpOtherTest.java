@@ -1,7 +1,6 @@
 package cn.blogss.frame.okhttp;
 
 import java.net.InetAddress;
-import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.ProxySelector;
 import java.net.URI;
