@@ -84,7 +84,8 @@
             </intent-filter>
         </receiver>
         <!-- 声明桌面小部件广播接收器 -->
-        <receiver android:name=".remoteviews.MyAppWidgetProvider">
+        <receiver android:name=".remoteviews.MyAppWidgetProvider"
+            android:exported="true">
             <intent-filter>
                 <action android:name="cn.blogss.core.remoteviews.CLICK" />
                 <!-- 该 Action 作为小部件的标识必须存在，这是系统的规范，如果不加，那么这个 receiver就不是一个桌面工具并且无法出现在手机工具列表 -->

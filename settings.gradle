@@ -1,2 +1,3 @@
 include ':app', ':helper', ':core', ':open_lib', ':jni', ':network', "kotlin"
 include ':jetpack'
+include ':compose'

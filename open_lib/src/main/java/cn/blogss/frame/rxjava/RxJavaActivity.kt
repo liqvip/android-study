@@ -41,15 +41,15 @@ class RxJavaActivity : BaseActivity(), View.OnClickListener {
                 Log.i(TAG, "onComplete")
             }
 
-            override fun onSubscribe(d: Disposable?) {
+            override fun onSubscribe(d: Disposable) {
                 Log.i(TAG, "onSubscribe")
             }
 
-            override fun onNext(t: String?) {
+            override fun onNext(t: String) {
                 Log.i(TAG, "onNext: $t")
             }
 
-            override fun onError(e: Throwable?) {
+            override fun onError(e: Throwable) {
                 Log.i(TAG, "onError")
             }
 
@@ -113,14 +113,14 @@ class RxJavaActivity : BaseActivity(), View.OnClickListener {
          */
         val onNextAction = object: Consumer<String>{
             //  onNext()
-            override fun accept(t: String?) {
+            override fun accept(t: String) {
                 Log.i(TAG, "accept: $t")
             }
         }
 
         val onErrorAction = object:Consumer<Throwable>{
             // onError()
-            override fun accept(t: Throwable?) {
+            override fun accept(t: Throwable) {
 
             }
 
@@ -164,13 +164,13 @@ class RxJavaActivity : BaseActivity(), View.OnClickListener {
                 .subscribeOn(IoScheduler()) // 指定 subscribe() 发生在 IO 线程
                 .observeOn(AndroidSchedulers.mainThread())  // 指定观察者的回调发生在主线程
                 .subscribe(object: Consumer<Int>{
-                    override fun accept(t: Int?) {
+                    override fun accept(t: Int) {
                         Log.i(TAG, "accept: $t")
                     }
                 })
 
         Observable.create(object: ObservableOnSubscribe<String>{
-            override fun subscribe(emitter: ObservableEmitter<String>?) {
+            override fun subscribe(emitter: ObservableEmitter<String>) {
                 emitter!!.onNext("aaa")
                 emitter.onComplete()
             }
@@ -181,13 +181,13 @@ class RxJavaActivity : BaseActivity(), View.OnClickListener {
             override fun onComplete() {
             }
 
-            override fun onSubscribe(d: Disposable?) {
+            override fun onSubscribe(d: Disposable) {
             }
 
-            override fun onNext(t: String?) {
+            override fun onNext(t: String) {
             }
 
-            override fun onError(e: Throwable?) {
+            override fun onError(e: Throwable) {
             }
         })
 
@@ -195,7 +195,7 @@ class RxJavaActivity : BaseActivity(), View.OnClickListener {
         // map 变换，一对一，数据类型转换
         Observable.just("aaa")
                 .map(object : Function<String,Int> {
-                    override fun apply(t: String?): Int {// 参数类型 String
+                    override fun apply(t: String): Int {// 参数类型 String
                         return t!!.toInt()// 返回类型 Int
                     }
                 })
@@ -204,15 +204,15 @@ class RxJavaActivity : BaseActivity(), View.OnClickListener {
 
                     }
 
-                    override fun onSubscribe(d: Disposable?) {
+                    override fun onSubscribe(d: Disposable) {
 
                     }
 
-                    override fun onNext(t: Int?) {
+                    override fun onNext(t: Int) {
 
                     }
 
-                    override fun onError(e: Throwable?) {
+                    override fun onError(e: Throwable) {
                         Log.d(TAG, "onError: cast error !")
                     }
 
@@ -222,12 +222,12 @@ class RxJavaActivity : BaseActivity(), View.OnClickListener {
         val students = arrayOf(Student("liq", mutableListOf(Course("java"), Course("C"))))
         Observable.just(students[0])
                 .flatMap(object : Function<Student,ObservableSource<Course>> {
-                    override fun apply(t: Student?): Observable<Course> {
+                    override fun apply(t: Student): Observable<Course> {
                         return Observable.fromIterable(t!!.courses)
                     }
                 })
                 .subscribe(object : Consumer<Course> {
-                    override fun accept(t: Course?) {
+                    override fun accept(t: Course) {
                         Log.d(TAG, "accept: "+ t!!.name)
                     }
                 })
