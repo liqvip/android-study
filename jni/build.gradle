@@ -12,12 +12,6 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
-        externalNativeBuild {
-            cmake {
-                cppFlags ""
-            }
-        }
-        ndkVersion = "21.0.6113669"
     }
 
     buildTypes {
@@ -27,12 +21,15 @@ android {
         }
     }
 
+    // 配置参考 https://developer.android.com/studio/projects/install-ndk?hl=zh-cn#apply-specific-version
     externalNativeBuild {
         cmake {
             path "src/main/cpp/CMakeLists.txt"
-            version "3.10.2"
+            version "3.18.1"
         }
     }
+    // 指定 ndk 版本
+    ndkVersion "25.1.8937393"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
