@@ -27,9 +27,37 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    // 启用 Compose 功能
+    buildFeatures {
+        compose true
+    }
+
+    // Compose Compiler 版本与 Kotlin 版本的对应关系
+    // https://developer.android.com/jetpack/androidx/releases/compose-kotlin?hl=zh-cn
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.1"
+    }
 }
 
 dependencies {
+    // Compose 相关依赖，使用物料清单 BoM(bill of meterial)
+    // BOM 与 Compose 依赖库版本对应关系
+    // https://developer.android.com/jetpack/compose/bom/bom-mapping?hl=zh-cn
+    def composeBom = platform('androidx.compose:compose-bom:2023.01.00')
+    implementation composeBom
+    androidTestImplementation composeBom
+
+    implementation 'androidx.compose.material3:material3'
+    implementation 'androidx.compose.ui:ui'
+
+    // Android Studio Preview support
+    implementation 'androidx.compose.ui:ui-tooling-preview'
+    debugImplementation 'androidx.compose.ui:ui-tooling'
+
+    // UI Tests
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
+    debugImplementation 'androidx.compose.ui:ui-test-manifest'
 
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
