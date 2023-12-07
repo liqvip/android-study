@@ -37,6 +37,8 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
+    // https://blog.csdn.net/Jason_HD/article/details/82455471
+    // 不同 id 显示多条推送
     private fun popNotification() {
         val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val notification = getNotification(this@MainActivity, MainActivity::class.java, ChannelName.DEFAULT.channelName,
