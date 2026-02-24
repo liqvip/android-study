@@ -4,6 +4,7 @@ plugins {
 }
 
 android {
+    namespace "cn.blogss.androidstudy"
     compileSdk 33
 
     defaultConfig {

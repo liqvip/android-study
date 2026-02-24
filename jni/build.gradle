@@ -3,6 +3,7 @@ plugins {
 }
 
 android {
+    namespace "cn.blogss.jni"
     compileSdk 33
 
     defaultConfig {

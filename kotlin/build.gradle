@@ -4,6 +4,7 @@ plugins {
 }
 
 android {
+    namespace "cn.blogss.kotlin"
     compileSdk 33
 
     defaultConfig {

@@ -4,6 +4,7 @@ plugins {
 }
 
 android {
+    namespace "cn.blogss.network"
     compileSdk 33
 
     defaultConfig {
