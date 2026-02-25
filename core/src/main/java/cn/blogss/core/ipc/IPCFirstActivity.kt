@@ -40,7 +40,6 @@ class IPCFirstActivity : BaseActivity(), View.OnClickListener {
             try {
                 // 查询服务端图书列表
                 var list = iBookManager.bookList
-                Log.i(TAG, "Query book list, list type: "+list.javaClass.canonicalName)
                 Log.i(TAG, "Query book list: "+ list[list.size-1].bookName)
                 // 向服务端添加图书
                 iBookManager.addBook(Book(3,"Android 开发艺术探索"))

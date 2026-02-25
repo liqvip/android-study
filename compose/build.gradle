@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'org.jetbrains.kotlin.plugin.compose'
 }
 
 android {
@@ -21,23 +22,16 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
+
 
     // 启用 Compose 功能
     buildFeatures {
         compose true
     }
 
-    // Compose Compiler 版本与 Kotlin 版本的对应关系
-    // https://developer.android.com/jetpack/androidx/releases/compose-kotlin?hl=zh-cn
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.1"
-    }
 }
 
 dependencies {

@@ -1,8 +1,9 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext {
-        // kotlin 版本
-        kotlin_version = '1.8.0'
+        // KGP 版本说明
+        // https://kotlinlang.org/docs/gradle-configure-project.html?utm_campaign=gradle-jvm-toolchain&utm_medium=kgp&utm_source=warnings#apply-the-plugin
+        kotlin_version = '2.3.0'
         // kotlin 协程
         kotlin_coroutines = '1.7.0'
         // AGP 版本说明
@@ -17,6 +18,7 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:$agp_version"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:compose-compiler-gradle-plugin:$kotlin_version"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
