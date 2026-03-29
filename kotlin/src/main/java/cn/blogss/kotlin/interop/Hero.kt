@@ -5,6 +5,7 @@
 package cn.blogss.kotlin.interop
 
 import java.io.IOException
+import java.util.Locale
 import kotlin.jvm.Throws
 
 /**
@@ -18,8 +19,8 @@ fun main(args: Array<String>){
 
     // 1. 使用可空性注解
     val friendshipLevel = adversary.determineFriendshipLevel()
-    println(friendshipLevel?.toLowerCase())
-    println(friendshipLevel?.toLowerCase() ?: "It's complicated.")
+    println(friendshipLevel?.lowercase())
+    println(friendshipLevel?.lowercase() ?: "It's complicated.")
 
     // 2. Kotlin 与 Java 类型映射
     val adversaryHitPoint = adversary.hitPoints

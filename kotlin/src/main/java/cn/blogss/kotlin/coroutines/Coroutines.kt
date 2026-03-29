@@ -1,6 +1,11 @@
-package cn.blogss.kotlin
+package cn.blogss.kotlin.coroutines
 
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 /**
  * 协程
@@ -17,7 +22,7 @@ class Coroutines {
     fun method1(){
         runBlocking(Dispatchers.IO) {
             println("currentThread: ${Thread.currentThread().name}")
-            for(i in 0..5) {
+            for (i in 0..5) {
                 println("$i ")
             }
         }
@@ -29,7 +34,7 @@ class Coroutines {
         runBlocking(Dispatchers.IO) {
             val job = launch {
                 println("currentThread: ${Thread.currentThread().name}")
-                for(i in 0..5) {
+                for (i in 0..5) {
                     println("$i ")
                 }
             }
@@ -42,7 +47,7 @@ class Coroutines {
         runBlocking(Dispatchers.IO) {
             val job = async {
                 println("currentThread: ${Thread.currentThread().name}")
-                for(i in 0..5) {
+                for (i in 0..5) {
                     println("$i ")
                 }
                 10
