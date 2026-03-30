@@ -3,12 +3,14 @@ package cn.blogss.jetpack.viewmodel
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
 class ViewModelActivity: AppCompatActivity() {
-    private lateinit var vm: ViewModel
+//    private lateinit var vm: ViewModel
+    private val vm: MyViewModel by viewModels()
 
     companion object {
         private const val TAG = "ViewModelActivity"
@@ -18,7 +20,7 @@ class ViewModelActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         Log.i(TAG, "onCreate")
 
-        vm = ViewModelProvider(this).get(MyViewModel::class.java)
+//        vm = ViewModelProvider(this).get(MyViewModel::class.java)
     }
 
     override fun onStart() {
