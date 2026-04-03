@@ -25,7 +25,8 @@
         <activity
             android:name=".ipc.IPCFirstActivity"
             android:launchMode="singleTask"
-            android:process=":remote" />
+            android:process=":remote" >
+        </activity>
         <activity
             android:name=".message.MessageActivity"
             android:launchMode="singleTask" />
