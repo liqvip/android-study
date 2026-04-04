@@ -3,6 +3,7 @@
 
 # 版本标志符
 [versions]
+kotlin = "2.3.0"
 appcompat = "1.6.1"
 constraintlayout = "2.1.4"
 recyclerview = "1.3.1"
@@ -27,5 +28,7 @@ activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref
 [bundles]
 
 
-# 声明插件版本
+# 声明插件版本，插件 id + 版本号
 [plugins]
+org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
