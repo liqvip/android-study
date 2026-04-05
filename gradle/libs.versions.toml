@@ -3,6 +3,7 @@
 
 # 版本标志符
 [versions]
+activity-compose = "1.13.0"
 compose-bom = "2026.03.01"
 core-ktx = "1.9.0"
 junit = "4.13.2"
@@ -18,6 +19,7 @@ rxjava-version = "3.0.7"
 
 # 别名映射到 GAV(group, artifact, version) 坐标
 [libraries]
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }

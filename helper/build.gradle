@@ -25,9 +25,9 @@ android {
     // https://developer.android.com/build/jdks?hl=zh-cn
     compileOptions {
         // 用于确定在编译 Java 源代码期间可使用哪些 Java 语言功能。 它不会影响 Kotlin 源代码
-        sourceCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
         // 确定为已编译的 Java 源代码生成字节码时所用的 Java 类格式版本。
-        targetCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_21
     }
 
 }

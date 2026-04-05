@@ -36,9 +36,16 @@ android {
 
 dependencies {
     // Compose 相关依赖，使用物料清单 BoM(bill of meterial)
-    // [Compose 物料清单介绍](https://developer.android.com/develop/ui/compose/bom?hl=zh-cn)
-    // BOM 与 Compose 依赖库版本对应关系
-    // https://developer.android.com/jetpack/compose/bom/bom-mapping?hl=zh-cn
+
+    // 1. [Compose 物料清单介绍](https://developer.android.com/develop/ui/compose/bom?hl=zh-cn)
+    // 2. [BOM 与 Compose 依赖库版本对应关系]https://developer.android.com/jetpack/compose/bom/bom-mapping?hl=zh-cn
+    // 3 .[Compose 依赖项介绍](https://developer.android.com/develop/ui/compose/setup-compose-dependencies-and-compiler?hl=zh-cn#setup-compose-dependencies)
+
+
+    /**
+     * material3  ──依赖──▶  foundation  ──依赖──▶  ui
+     *（设计组件）          （通用组件）           （核心引擎）
+     */
 
     def composeBom = platform('androidx.compose:compose-bom:2026.03.01')
     implementation composeBom
@@ -55,6 +62,7 @@ dependencies {
     androidTestImplementation libs.androidx.ui.test.junit4
     debugImplementation libs.androidx.ui.test.manifest
 
+    implementation libs.androidx.activity.compose
     implementation libs.androidx.core.ktx
     implementation libs.androidx.appcompat
     implementation libs.google.material
