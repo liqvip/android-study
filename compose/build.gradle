@@ -42,15 +42,15 @@ dependencies {
     // 3 .[Compose 依赖项介绍](https://developer.android.com/develop/ui/compose/setup-compose-dependencies-and-compiler?hl=zh-cn#setup-compose-dependencies)
 
 
-    /**
-     * material3  ──依赖──▶  foundation  ──依赖──▶  ui
-     *（设计组件）          （通用组件）           （核心引擎）
-     */
 
     def composeBom = platform('androidx.compose:compose-bom:2026.03.01')
     implementation composeBom
     androidTestImplementation composeBom
 
+    /**
+     * material3  ──依赖──▶  foundation  ──依赖──▶  ui
+     *（设计组件）          （通用组件）           （核心引擎）
+     */
     implementation libs.androidx.material3
     implementation libs.androidx.ui
 
