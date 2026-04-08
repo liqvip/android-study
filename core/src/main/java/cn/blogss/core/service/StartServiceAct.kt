@@ -1,25 +1,23 @@
 package cn.blogss.core.service
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import cn.blogss.core.ui.components.LogScreen
 
 /**
  *
  */
 class StartServiceAct: AppCompatActivity() {
-    val logSb = StringBuilder()
-    
+
     companion object {
         private const val TAG = "StartServiceAct"
     }
@@ -34,34 +32,24 @@ class StartServiceAct: AppCompatActivity() {
 
 @Composable
 fun Body(){
+    val context = LocalContext.current
     Column {
         Row {
             Button(onClick = {
+                val intent = Intent(context, StartService::class.java)
+                context.startService(intent)
             }) {
                 Text("启动 Service")
             }
             Button(onClick = {
+                val intent = Intent(context, StartService::class.java)
+                context.stopService(intent)
             }) {
                 Text("停止 Service")
             }
         }
-        Row {
-            Button(onClick = {
-            }) {
-                Text("绑定 Service")
-            }
-            Button(onClick = {
-            }) {
-                Text("解绑 Service")
-            }
-        }
         // 日志打印
-        Text(
-            text = "",
-            modifier = Modifier
-                .padding(top = 20.dp)
-                .fillMaxSize()
-        )
+        LogScreen()
     }
 }
 

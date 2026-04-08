@@ -58,6 +58,16 @@
             </intent-filter>-->
         </activity>
         <activity
+            android:name=".service.StartServiceAct"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask">
+                <intent-filter>
+                    <action android:name="android.intent.action.MAIN" />
+                    <category android:name="android.intent.category.LAUNCHER" />
+                </intent-filter>
+        </activity>
+        <activity
             android:name=".view.ViewActivity"
             android:launchMode="singleTask"/>
         <activity
@@ -110,6 +120,8 @@
             android:name=".ipc.aidl.BookManagerService"
             android:process=":remoteService" />
         <service android:name=".service.MyIntentService"/>
+        <service
+            android:name=".service.StartService"/>
     </application>
 
 </manifest>
