@@ -44,6 +44,8 @@ class OkHttpAct: AppCompatActivity() {
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun Body(){
+    // by 左边的值由右边的代理对象返回
+    // MutableState 有 getValue 和 setValue 扩展方法
     var imageUrl by remember { mutableStateOf("") }
     Column {
         Row {
