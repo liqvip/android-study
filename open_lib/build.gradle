@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     alias(libs.plugins.org.jetbrains.kotlin.android)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -56,6 +57,9 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
+    implementation libs.glide
+    implementation libs.kotlinx.serialization.json
+    implementation 'com.github.bumptech.glide:compose:1.0.0-beta01'
     implementation libs.permissionx
     implementation libs.rxjava3.rxjava
     implementation libs.rxandroid
