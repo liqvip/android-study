@@ -8,25 +8,27 @@ import cn.blogss.frame.entity.GirlImageResponse
 import cn.blogss.frame.okhttp.OkHttpManager
 import cn.blogss.helper.LogRepository
 import kotlinx.serialization.json.Json
-import okhttp3.Request
-
-private const val baseUrl = "https://api.52vmy.cn/api/img/tu/girl"
 
 class OkHttpViewModel: ViewModel() {
-    // by 左边的值由右边的代理对象返回
-    // MutableState 有 getValue 和 setValue 扩展方法
-    private var _girlImageUrl by mutableStateOf("")
-    var girlImageUrl = _girlImageUrl
+    var girlImageUrl by mutableStateOf("")
+
+    private val http = OkHttpManager.instance
 
     fun getGirlImage(){
-        val request = Request.Builder()
-            .url(baseUrl)
-            .build()
-        OkHttpManager.instance.get(request, {
+        val request = http.buildRequest("girl", "/api/img/tu/girl").build()
+        http.get(request, {
             val body = it.body()?.string() ?: "响应为空"
             val result = Json.decodeFromString<GirlImageResponse>(body)
-            _girlImageUrl = result.url
+            girlImageUrl = result.url
             LogRepository.addLog(body)
+        })
+    }
+
+    fun getWeather(){
+        val request = http.buildRequest("weather", "/api/weather").build()
+        http.get(request, {
+            val body = it.body()?.string() ?: "响应为空"
+            LogRepository.addLog("天气信息: $body")
         })
     }
 }

@@ -12,7 +12,15 @@ class OkHttpManager private constructor(){
     /**
      * 默认的连接超时、读取超时、写入超时都为 10s
      */
+
+    val baseUrlInterceptor = BaseUrlInterceptor().apply {
+        putBaseUrl("girl", "https://api.52vmy.cn")
+        putBaseUrl("weather", "https://api.vvhan.com")
+        setDefaultBaseUrl("https://api.52vmy.cn")
+    }
+
     private val client: OkHttpClient = OkHttpClient.Builder()
+        .addInterceptor(baseUrlInterceptor)
         .connectTimeout(60, TimeUnit.SECONDS)
         .build()
 
@@ -20,6 +28,16 @@ class OkHttpManager private constructor(){
         val instance by lazy { OkHttpManager() }
     }
 
+
+    /**
+     * 构建请求，业务层只需传服务名和相对路径，自动拼接 baseUrl 并标记 Service-Name。
+     */
+    fun buildRequest(serviceName: String, path: String): Request.Builder {
+        val baseUrl = baseUrlInterceptor.getBaseUrl(serviceName)
+        return Request.Builder()
+            .url("$baseUrl$path")
+            .header(BaseUrlInterceptor.HEADER_SERVICE_NAME, serviceName)
+    }
 
     fun get(request: Request, onResponse: (response: Response) -> Unit,
             onFailure: (e: IOException) -> Unit = { it.printStackTrace() }
