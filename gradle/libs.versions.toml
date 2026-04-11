@@ -28,37 +28,64 @@ rxjava-version = "3.0.7"
 
 # 别名映射到 GAV(group, artifact, version) 坐标
 [libraries]
-androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
+# Android 向后兼容支持库，让新 API 可以在旧系统上运行
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
+# 约束布局，通过约束关系灵活定位子 View，替代嵌套布局
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+# AndroidX Core 的 Kotlin 扩展函数集合，简化常见 Android API 调用
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
-androidx-material3 = { module = "androidx.compose.material3:material3" }
-androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
-androidx-ui = { module = "androidx.compose.ui:ui" }
-androidx-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
-androidx-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
-androidx-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
-androidx-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
-disklrucache = { module = "com.jakewharton:disklrucache", version.ref = "disklrucache" }
-glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
-google-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-junit = { module = "junit:junit", version.ref = "junit" }
-kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines-android" }
-kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines-core" }
-kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
-material3 = { module = "androidx.compose.material3:material3" }
+# Activity 的 Kotlin 扩展，提供 viewModels() 等委托属性和 Result API
 activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activity-ktx"}
+
+# Compose BOM（物料清单），统一管理所有 Compose 组件的版本号
+androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
+# Compose 与 Activity 的集成库，在 Activity 中承载 Compose UI
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
+# Lifecycle ViewModel Compose 集成库，提供 viewModel() Composable 函数，在 Compose 中直接获取 ViewModel 实例
+lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose" }
+# Material Design 3 Compose 组件库，提供 Material You 风格的 UI 组件
+androidx-material3 = { module = "androidx.compose.material3:material3" }
+# Compose UI 核心库，提供布局、绘制、输入处理等基础能力
+androidx-ui = { module = "androidx.compose.ui:ui" }
+# Material Design 3 Compose 组件库（别名）
+material3 = { module = "androidx.compose.material3:material3" }
+# Compose UI 的 JUnit4 测试规则，用于编写 UI 自动化测试
+androidx-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
+# Compose UI 测试所需的 AndroidManifest 配置，供测试 APK 使用
+androidx-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
+# Compose UI 调试工具，提供布局检查器和运行时调试支持
+androidx-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
+# Compose UI 预览注解，支持在 Android Studio 中实时预览 Composable
+androidx-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+
+# RecyclerView 高性能列表/网格组件，支持大数据集的高效滚动展示
+androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
+# Jake Wharton 的磁盘 LRU 缓存库，基于 LinkedHashMap 实现有界磁盘缓存
+disklrucache = { module = "com.jakewharton:disklrucache", version.ref = "disklrucache" }
+# Glide 图片加载框架，支持图片加载、缓存、变换和生命周期管理
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+# Google Material Design 传统 View 体系组件库（非 Compose）
+google-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+# JUnit 4 单元测试框架
+junit = { module = "junit:junit", version.ref = "junit" }
+# Kotlin 协程 Android 扩展，提供 Dispatchers.Main 主线程调度器
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines-android" }
+# Kotlin 协程核心库，提供 launch、async、Flow 等协程基础设施
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines-core" }
+# Kotlin 官方 JSON 序列化/反序列化库，编译期生成代码，无反射
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
+# Square 出品的 JSON 解析库，轻量高效，支持 Kotlin 和注解驱动
 moshi = { module = "com.squareup.moshi:moshi", version.ref = "moshi" }
+# Square 出品的 HTTP 客户端（新版），支持 HTTP/2、连接池、拦截器
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+# OkHttp 旧版本（3.14.9），兼容 Android 4.x 等低版本系统
 okhttp-v3149 = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp-version" }
+# 郭霖出品的 Android 运行时权限请求框架，链式调用简化权限申请流程
 permissionx = { module = "com.permissionx.guolindev:permissionx", version.ref = "permissionx" }
+# RxJava 的 Android 扩展，提供 AndroidSchedulers.mainThread() 主线程调度
 rxandroid = { module = "io.reactivex.rxjava3:rxandroid", version.ref = "rxandroid" }
+# RxJava 3 响应式编程框架，基于观察者模式处理异步数据流
 rxjava3-rxjava = { module = "io.reactivex.rxjava3:rxjava", version.ref = "rxjava-version" }
-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
 
 # 声明依赖项包
 [bundles]

@@ -9,23 +9,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import cn.blogss.frame.components.LogScreen
-import cn.blogss.frame.entity.GirlImageResponse
-import cn.blogss.helper.LogRepository
+import cn.blogss.frame.vm.OkHttpViewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import kotlinx.serialization.json.Json
-import okhttp3.Request
-
-
-private const val baseUrl = "https://api.52vmy.cn/api/img/tu/girl"
 
 class OkHttpAct: AppCompatActivity() {
 
@@ -43,30 +34,19 @@ class OkHttpAct: AppCompatActivity() {
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun Body(){
-    // by 左边的值由右边的代理对象返回
-    // MutableState 有 getValue 和 setValue 扩展方法
-    var imageUrl by remember { mutableStateOf("") }
+fun Body(viewModel: OkHttpViewModel = viewModel()){
     Column {
         Row {
             Button(onClick = {
-                val request = Request.Builder()
-                    .url(baseUrl)
-                    .build()
-                OkHttpManager.instance.get(request, {
-                    val body = it.body()?.string() ?: "响应为空"
-                    val result = Json.decodeFromString<GirlImageResponse>(body)
-                    imageUrl = result.url
-                    LogRepository.addLog(body)
-                })
+                viewModel.getGirlImage()
             }) {
                 Text("获取女神照片")
             }
         }
         // 当 imageUrl 不为空时，用 GlideImage 显示
-        if(imageUrl.isNotEmpty()) {
+        if(viewModel.girlImageUrl.isNotEmpty()) {
             GlideImage(
-                model = imageUrl,
+                model = viewModel.girlImageUrl,
                 contentDescription = "女神照片",
                 modifier = Modifier.size(300.dp)
             )

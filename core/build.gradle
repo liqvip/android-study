@@ -44,12 +44,12 @@ dependencies {
     implementation libs.androidx.ui
 
     // Android Studio Preview support
-    implementation libs.ui.tooling.preview
-    debugImplementation libs.ui.tooling
+    implementation libs.androidx.ui.tooling.preview
+    debugImplementation libs.androidx.ui.tooling
 
     // UI Tests
-    androidTestImplementation libs.ui.test.junit4
-    debugImplementation libs.ui.test.manifest
+    androidTestImplementation libs.androidx.ui.test.junit4
+    debugImplementation libs.androidx.ui.test.manifest
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation libs.androidx.appcompat
