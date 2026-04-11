@@ -1,5 +1,7 @@
 package cn.blogss.frame.okhttp
 
+import cn.blogss.frame.entity.BaseUrl
+import cn.blogss.frame.entity.Server
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.OkHttpClient
@@ -14,9 +16,9 @@ class OkHttpManager private constructor(){
      */
 
     val baseUrlInterceptor = BaseUrlInterceptor().apply {
-        putBaseUrl("girl", "https://api.52vmy.cn")
-        putBaseUrl("weather", "https://api.vvhan.com")
-        setDefaultBaseUrl("https://api.52vmy.cn")
+        putBaseUrl(Server.VMY.server, BaseUrl.VMY.url)
+        putBaseUrl(Server.FREE_API.server, BaseUrl.FREE_API.url)
+        setDefaultBaseUrl(BaseUrl.VMY.url)
     }
 
     private val client: OkHttpClient = OkHttpClient.Builder()

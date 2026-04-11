@@ -43,11 +43,6 @@ fun Body(viewModel: OkHttpViewModel = viewModel()){
                 Text("获取女神照片")
             }
 
-            Button(onClick = {
-                viewModel.getWeather()
-            }) {
-                Text("获取天气")
-            }
         }
         if(viewModel.girlImageUrl.isNotEmpty()) {
             GlideImage(
