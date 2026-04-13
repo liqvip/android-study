@@ -8,7 +8,7 @@ public class Singleton {
     private static Singleton singleton;
     private Singleton(){}
 
-    public Singleton getInstance() {
+    public static Singleton getInstance() {
         if(singleton == null) {
             singleton = new Singleton();
         }
@@ -21,13 +21,49 @@ public class Singleton {
  * 线程安全
  */
 class Singleton1 {
-    private static volatile Singleton1 singleton;
+    private static Singleton1 singleton;
     private Singleton1(){}
 
-    public Singleton1 getInstance() {
+    public static synchronized Singleton1 getInstance() {
         if(singleton == null) {
             singleton = new Singleton1();
         }
         return singleton;
     }
 }
+
+/**
+ * 双重检查锁
+ * 线程安全
+ */
+class Singleton2 {
+    private volatile static Singleton2 singleton;
+    private Singleton2(){}
+
+    public static Singleton2 getInstance() {
+        if(singleton == null) {  // 第一次检查
+            synchronized (Singleton2.class) {
+                if(singleton == null) { // 第二次检查
+                    singleton = new Singleton2();
+                }
+            }
+        }
+        return singleton;
+    }
+}
+
+/**
+ * 内部静态类(推荐使用)
+ */
+class Singleton3 {
+    private Singleton3(){}
+
+    public static Singleton3 getInstance() {
+        return Holder.INSTANCE;
+    }
+
+    static class Holder {
+        private static final Singleton3 INSTANCE = new Singleton3();
+    }
+}
+
