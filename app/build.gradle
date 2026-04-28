@@ -48,8 +48,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
 }
 
@@ -64,7 +64,5 @@ dependencies {
     implementation 'com.github.liqvip:EasyView:1.0.1'
 
     implementation project(path: ':helper')
-    implementation project(path: ':open_lib')
     implementation project(path: ':jni')
-    implementation project(path: ':jetpack')
 }
