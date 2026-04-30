@@ -1,4 +1,6 @@
-package cn.blogss.kotlin
+package cn.blogss.kotlin.ext_func
+
+import cn.blogss.kotlin.Dog
 
 /**
  * also 扩展函数的返回值是调用者对象

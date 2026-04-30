@@ -1,4 +1,4 @@
-package cn.blogss.kotlin
+package cn.blogss.kotlin.delegate
 
 /**
  * 委托属性的语法如下：

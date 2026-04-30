@@ -1,9 +1,7 @@
 package cn.blogss.kotlin.array_collections
 
-/**
- * kotlin 数组
- */
-class Arr {
+
+fun main() {
     /*声明一个整形数组*/
     var ints: Array<Int> = arrayOf(1, 2, 3)
 
@@ -16,4 +14,5 @@ class Arr {
         println(strs[0])
         strs[1] = "A"
     }
+
 }

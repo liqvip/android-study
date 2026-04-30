@@ -1,9 +1,6 @@
 package cn.blogss.kotlin.array_collections
 
-/**
- * kotlin 集合
- */
-class Collect {
+fun main() {
     //List
     var strList = listOf("a", "b", "c")
 
@@ -31,7 +28,6 @@ class Collect {
 
         mtMap.put("key1", 2)
         mtMap["key1"] = 2
-
-
     }
+
 }
