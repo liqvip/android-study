@@ -1,9 +1,11 @@
 package cn.blogss.kotlin.coroutines
 
 import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlin.coroutines.EmptyCoroutineContext
 
 /**
  * 协程启动
@@ -22,6 +24,7 @@ class CoroutinesLaunch {
     }
 
     suspend fun method1(){
+        CoroutineScope(EmptyCoroutineContext)
         val res = coroutineScope {
             launch {
 
