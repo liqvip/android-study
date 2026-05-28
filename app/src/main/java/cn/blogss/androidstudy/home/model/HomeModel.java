@@ -5,5 +5,4 @@ import java.util.List;
 import cn.blogss.androidstudy.home.bean.HomeRvItemBean;
 
 public interface HomeModel {
-    List<HomeRvItemBean> queryAllHomeRvData();
 }

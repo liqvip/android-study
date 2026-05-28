@@ -11,17 +11,4 @@ import cn.blogss.helper.base.BaseApplication;
 
 public class HomeModelImpl implements HomeModel {
 
-    @Override
-    public List<HomeRvItemBean> queryAllHomeRvData() {
-        List<HomeRvItemBean> ls = new ArrayList<>();
-        String[] strArr = ResUtil.getStrArr(BaseApplication.Companion.getContext(), R.array.home_rv_item_data);
-        String[] intentActArr = ResUtil.getStrArr(BaseApplication.Companion.getContext(), R.array.home_rv_item_intent_act);
-        for (int i=0; i<strArr.length; i++) {
-            HomeRvItemBean homeRvItemBean = new HomeRvItemBean();
-            homeRvItemBean.setName(strArr[i]);
-            homeRvItemBean.setActName(intentActArr[i]);
-            ls.add(homeRvItemBean);
-        }
-        return ls;
-    }
 }

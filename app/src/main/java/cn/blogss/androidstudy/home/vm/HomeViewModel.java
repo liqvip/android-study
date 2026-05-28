@@ -13,12 +13,4 @@ public class HomeViewModel extends BaseViewModel {
     public HomeViewModel() {
         homeModel = new HomeModelImpl();
     }
-
-    /**
-     * 获取首页的数据
-     * @return
-     */
-    public List<HomeRvItemBean> getHomeRvData() {
-        return homeModel.queryAllHomeRvData();
-    }
 }

@@ -61,7 +61,6 @@ dependencies {
     implementation libs.glide
     implementation libs.kotlinx.serialization.json
     implementation 'com.github.bumptech.glide:compose:1.0.0-beta01'
-    implementation libs.permissionx
     implementation libs.rxjava3.rxjava
     implementation libs.rxandroid
     implementation libs.okhttp.v3149

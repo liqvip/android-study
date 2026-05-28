@@ -18,32 +18,9 @@ import cn.blogss.helper.base.recyclerview.BaseRvHolder
 import cn.blogss.helper.base.recyclerview.OnItemClickListener
 
 open class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
-    private var homeRvItemAdapter: BaseRVAdapter<HomeRvItemBean?>? = null
 
     override fun initData() {
-        homeRvItemAdapter = object : BaseRVAdapter<HomeRvItemBean?>(context, R.layout.home_rv_item, viewModel.homeRvData) {
-            override fun convert(holder: BaseRvHolder, itemData: HomeRvItemBean?, position: Int) {
-                val btName = holder.getView<TextView>(R.id.tv_name)
-                btName.text = itemData!!.name
-            }
-        }
 
-        /*设置点击事件*/
-        homeRvItemAdapter!!.setOnItemClickListener(object : OnItemClickListener<HomeRvItemBean?> {
-            override fun onItemClick(parent: ViewGroup?, view: View?, itemData: HomeRvItemBean?, position: Int) {
-                val intent = Intent()
-                intent.setClassName(context!!, itemData!!.actName)
-                startActivity(intent)
-            }
-
-            override fun onItemLongClick(parent: ViewGroup?, view: View?, itemData: HomeRvItemBean?, position: Int): Boolean {
-                return false
-            }
-        })
-
-        val layoutManager = StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL)
-        viewBinding.rvItems.layoutManager = layoutManager
-        viewBinding.rvItems.adapter = homeRvItemAdapter
     }
 
 

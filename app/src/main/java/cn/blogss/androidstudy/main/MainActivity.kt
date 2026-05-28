@@ -2,7 +2,6 @@ package cn.blogss.androidstudy.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import cn.blogss.androidstudy.R
@@ -12,7 +11,6 @@ import cn.blogss.androidstudy.home.view.HomeFragment
 import cn.blogss.androidstudy.profile.view.ProfileFragment
 import cn.blogss.helper.base.jetpack.BaseActivity
 import cn.blogss.helper.base.jetpack.BaseViewModel
-import com.permissionx.guolindev.PermissionX
 
 class MainActivity : BaseActivity<ActivityMainBinding, BaseViewModel>() {
     private lateinit var fm: FragmentManager
@@ -88,24 +86,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, BaseViewModel>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // 一次性申请必要的运行时权限
-        PermissionX.init(this).permissions(mutableListOf(
-            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            android.Manifest.permission.ACCESS_COARSE_LOCATION,
-            android.Manifest.permission.READ_CONTACTS))
-            .onForwardToSettings { scope, deniedList ->
-                scope.showForwardToSettingsDialog(deniedList,"您需要去应用程序设置当中手动开启权限", "我已明白", "取消")
-            }
-            .onExplainRequestReason {scope, deniedList ->
-                scope.showRequestReasonDialog(deniedList,"即将重新申请的权限是程序必须依赖的权限","我已明白","取消")
-            }
-            .request { allGranted, _, deniedList ->
-                if(allGranted)
-                    Toast.makeText(this,"所有申请的权限都已通过", Toast.LENGTH_SHORT).show()
-                else
-                    Toast.makeText(this,"您拒绝了如下权限：$deniedList", Toast.LENGTH_SHORT).show()
-            }
-
     }
 
 }
